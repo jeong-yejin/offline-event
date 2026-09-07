@@ -1,0 +1,98 @@
+- generic "Motion enabled" [ref=f8e3]:
+  - banner [ref=f8e4]:
+    - link "Go to PERP-DEX DAY home" [ref=f8e5] [cursor=pointer]:
+      - /url: "#top"
+      - generic [ref=f8e6]: PERP-DEX DAY
+  - main [ref=f8e7]:
+    - region [ref=f8e8]:
+      - generic [ref=f8e9]:
+        - paragraph [ref=f8e10]: Wake up. The arena is calling.
+        - heading "PERP-DEX DAY" [level=1] [ref=f8e11]
+        - paragraph [ref=f8e13]: PERP-DEX DAY is a side event during Korea Blockchain Week 2026, built to strengthen the competitive edge and brand awareness of Perpetual DEXs. Experience live trading, competition on stage, and meaningful networking—and discover the next possibilities of Perp-DEX, firsthand.
+        - paragraph [ref=f8e14]: Korea Blockchain Week 2026 · Seoul, Korea
+        - button "Take the red pill" [ref=f8e15] [cursor=pointer]:
+          - generic [ref=f8e17]:
+            - generic [ref=f8e18]: Take
+            - generic [ref=f8e19]: Take
+          - generic [ref=f8e21]:
+            - generic [ref=f8e22]: the
+            - generic [ref=f8e23]: the
+          - generic [ref=f8e25]:
+            - generic [ref=f8e26]: red pill
+            - generic [ref=f8e27]: red pill
+    - navigation "Event selection" [ref=f8e30]:
+      - tablist "Event selection" [ref=f8e31]:
+        - tab "PERP-DEX DAY" [selected] [ref=f8e32] [cursor=pointer]
+        - tab "REBOUNDX IN WONDERLAND" [ref=f8e35] [cursor=pointer]
+        - tab "TOKEN2049 SIDE EVENT" [ref=f8e38] [cursor=pointer]
+    - tabpanel "PERP-DEX DAY" [ref=f8e41]:
+      - region [ref=f8e42]:
+        - paragraph [ref=f8e43]: The teams behind them
+        - generic "Sponsors" [ref=f8e44]:
+          - img "Variational" [ref=f8e45]
+          - img "Lighter" [ref=f8e46]
+          - img "Aster" [ref=f8e47]
+          - img "Extended" [ref=f8e48]
+          - img "MetaMask" [ref=f8e49]
+      - region [ref=f8e50]:
+        - generic [ref=f8e51]:
+          - heading "Speakers" [level=2] [ref=f8e52]
+          - img "Stefano" [ref=f8e55]
+        - generic [ref=f8e56]:
+          - generic [ref=f8e58]:
+            - strong [ref=f8e59]: Stefano
+            - generic [ref=f8e60]: CTO of Extended
+          - generic [ref=f8e62]:
+            - strong [ref=f8e63]: Arnold
+            - generic [ref=f8e64]: CEO of Aster
+          - generic [ref=f8e66]:
+            - strong [ref=f8e67]: Justin
+            - generic [ref=f8e68]: Product Head of Variational
+          - generic [ref=f8e70]:
+            - strong [ref=f8e71]: Nick
+            - generic [ref=f8e72]: Product Head of Lighter
+      - region [ref=f8e73]:
+        - heading "Timetable" [level=2] [ref=f8e74]
+        - generic [ref=f8e76]:
+          - generic [ref=f8e77]:
+            - time [ref=f8e78]: 16:00
+            - strong [ref=f8e80]: Check in/Booth open
+          - generic [ref=f8e83]:
+            - time [ref=f8e84]: 17:30 - 17:45
+            - strong [ref=f8e86]: Magon Pitch
+          - generic [ref=f8e89]:
+            - time [ref=f8e90]: 17:45 - 18:45
+            - strong [ref=f8e92]: The Alpha Talk (debate)
+          - generic [ref=f8e95]:
+            - time [ref=f8e96]: 18:45 - 18:55
+            - strong [ref=f8e98]: Live trading competition winner betting
+          - generic [ref=f8e101]:
+            - time [ref=f8e102]: 19:00 - 19:30
+            - strong [ref=f8e104]: Trading Competition
+          - generic [ref=f8e107]:
+            - time [ref=f8e108]: 19:45 - 20:00
+            - strong [ref=f8e110]: Raffle
+          - generic [ref=f8e113]:
+            - time [ref=f8e114]: 20:00 -
+            - strong [ref=f8e116]: VIP MAFIA NIGHT/ Networking
+      - region [ref=f8e119]:
+        - generic [ref=f8e120]:
+          - paragraph [ref=f8e121]: Choose the red pill. Enter the construct.
+          - heading "Trading, elevated to e-sports." [level=2] [ref=f8e122]
+          - paragraph [ref=f8e124]: There is only one. The rest are forks. The strongest Perp DEX teams get unplugged and return bigger, stronger, and ready to trade in front of the crowd.
+  - contentinfo [ref=f8e125]:
+    - generic "PERP-DEX DAY" [ref=f8e126]:
+      - generic [aria-hidden] [ref=f8e127]: P
+      - generic [aria-hidden] [ref=f8e128]: E
+      - generic [aria-hidden] [ref=f8e129]: R
+      - generic [aria-hidden] [ref=f8e130]: P
+      - generic [aria-hidden] [ref=f8e131]: "-"
+      - generic [aria-hidden] [ref=f8e132]: D
+      - generic [aria-hidden] [ref=f8e133]: E
+      - generic [aria-hidden] [ref=f8e134]: X
+      - generic [aria-hidden] [ref=f8e136]: D
+      - generic [aria-hidden] [ref=f8e137]: A
+      - generic [aria-hidden] [ref=f8e138]: "Y"
+    - link "Back to the arena" [ref=f8e139] [cursor=pointer]:
+      - /url: "#top"
+    - generic [ref=f8e140]: © 2026 PERP-DEX DAY

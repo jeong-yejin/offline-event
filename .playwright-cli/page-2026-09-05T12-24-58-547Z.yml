@@ -1,0 +1,38 @@
+- generic "Motion enabled" [ref=e3]:
+  - banner [ref=e4]:
+    - link "Go to PERP-DEX DAY home" [ref=e5] [cursor=pointer]:
+      - /url: "#top"
+      - generic [ref=e6]: PERP-DEX DAY
+  - main [ref=e7]:
+    - region [ref=e135]:
+      - generic [ref=e9]:
+        - paragraph [ref=e10]: Follow the signal. Enter Wonderland.
+        - heading "REBOUNDX IN WONDERLAND" [level=1] [ref=e136]
+        - paragraph [ref=e13]: A new event world is being assembled for Korea Blockchain Week 2026. Check back soon for the first signal from Wonderland.
+        - paragraph [ref=e14]: Korea Blockchain Week 2026 · Seoul, Korea
+        - generic "Event details coming soon" [ref=e137]: Details coming soon
+    - navigation "Event selection" [ref=e30]:
+      - tablist "Event selection" [ref=e31]:
+        - tab "PERP-DEX DAY ↗" [ref=e32] [cursor=pointer]
+        - tab "REBOUNDX IN WONDERLAND ↗" [active] [selected] [ref=e33] [cursor=pointer]
+        - tab "TOKEN2049 SIDE EVENT ↗" [ref=e34] [cursor=pointer]
+    - tabpanel "REBOUNDX IN WONDERLAND ↗" [ref=e138]:
+      - paragraph [ref=e139]: Transmission queued
+      - heading "REBOUNDX IN WONDERLAND" [level=2] [ref=e140]
+      - paragraph [ref=e141]: Coming soon. The event details are still being written into the construct.
+  - contentinfo [ref=e119]:
+    - generic "PERP-DEX DAY" [ref=e120]:
+      - generic [aria-hidden] [ref=e121]: P
+      - generic [aria-hidden] [ref=e122]: E
+      - generic [aria-hidden] [ref=e123]: R
+      - generic [aria-hidden] [ref=e124]: P
+      - generic [aria-hidden] [ref=e125]: "-"
+      - generic [aria-hidden] [ref=e126]: D
+      - generic [aria-hidden] [ref=e127]: E
+      - generic [aria-hidden] [ref=e128]: X
+      - generic [aria-hidden] [ref=e130]: D
+      - generic [aria-hidden] [ref=e131]: A
+      - generic [aria-hidden] [ref=e132]: "Y"
+    - link "Back to the arena" [ref=e133] [cursor=pointer]:
+      - /url: "#top"
+    - generic [ref=e134]: © 2026 PERP-DEX DAY

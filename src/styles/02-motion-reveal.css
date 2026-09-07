@@ -1,0 +1,7 @@
+/* Shared reveal keyframes and in-view animation hooks. */
+@keyframes slideInAnimation { 100% { opacity: 1; filter: blur(0); transform: translateY(0%); } }
+@keyframes moveBgPosition { 0% { background-position: 100% 0; } 40% { background-position: -50% 0; } 100% { background-position: -50% 200%; } }
+@keyframes grain { 0%, 100% { background-position: 0 0; } 10% { background-position: -5% -10%; } 20% { background-position: -15% 5%; } 30% { background-position: 7% -25%; } 40% { background-position: -5% 25%; } 50% { background-position: -15% 10%; } 60% { background-position: 15% 0; } 70% { background-position: 0 15%; } 80% { background-position: 3% 25%; } 90% { background-position: -10% 10%; } }
+.slideIn { filter: blur(6px); opacity: 0; transform: translateY(50%); will-change: transform, opacity, filter; }
+.slideIn[data-inview="true"] { animation: slideInAnimation var(--duration, .8s) cubic-bezier(0.215, .61, .355, 1) var(--delay, 0s) forwards; }
+.heading-reveal { display: inline-block; filter: blur(12px); }

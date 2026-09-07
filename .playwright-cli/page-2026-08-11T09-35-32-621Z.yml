@@ -1,0 +1,100 @@
+- generic "Motion enabled" [ref=e3]:
+  - banner [ref=e4]:
+    - link "Go to PERP-DEX DAY home" [ref=e5] [cursor=pointer]:
+      - /url: "#top"
+      - generic [ref=e6]: PERP-DEX DAY
+  - main [ref=e7]:
+    - region [ref=e8]:
+      - img "Abstract blue event canvas" [ref=e9]
+      - generic [ref=e10]:
+        - paragraph [ref=e11]: Wake up. The arena is calling.
+        - heading "PERP-DEX DAY" [level=1] [ref=e12]
+        - paragraph [ref=e14]: PERP-DEX DAY is a side event during Korea Blockchain Week 2026, built to strengthen the competitive edge and brand awareness of Perpetual DEXs. Experience live trading, competition on stage, and meaningful networking—and discover the next possibilities of Perp-DEX, firsthand.
+        - paragraph [ref=e15]: Korea Blockchain Week 2026 · Seoul, Korea
+        - button "Take the red pill" [ref=e16] [cursor=pointer]:
+          - generic [ref=e18]:
+            - generic [ref=e19]: Take
+            - generic [ref=e20]: Take
+          - generic [ref=e22]:
+            - generic [ref=e23]: the
+            - generic [ref=e24]: the
+          - generic [ref=e26]:
+            - generic [ref=e27]: red pill
+            - generic [ref=e28]: red pill
+    - region [ref=e31]:
+      - paragraph [ref=e32]: The teams behind them
+      - generic "Sponsors" [ref=e33]:
+        - img "Variational" [ref=e34]
+        - img "Lighter" [ref=e35]
+        - img "Aster" [ref=e36]
+        - img "Extended" [ref=e37]
+        - img "MetaMask" [ref=e38]
+    - region [ref=e39]:
+      - generic [ref=e40]:
+        - heading "Speakers" [level=2] [ref=e41]
+        - img "Nick" [ref=e43]
+      - generic [ref=e44]:
+        - generic [ref=e46]:
+          - strong [ref=e47]: Nick
+          - generic [ref=e48]: Business Strategy of Lighter
+        - generic [ref=e50]:
+          - strong [ref=e51]: Larry
+          - generic [ref=e52]: Founder, Engineer of Dango
+        - generic [ref=e54]:
+          - strong [ref=e55]: Sehaj
+          - generic [ref=e56]: Founder of Avantis
+        - generic [ref=e58]:
+          - strong [ref=e59]: Julie
+          - generic [ref=e60]: BD of Avantis
+        - generic [ref=e62]:
+          - strong [ref=e63]: Lucas
+          - generic [ref=e64]: Founder of Variational
+    - region [ref=e65]:
+      - heading "Timetable" [level=2] [ref=e66]
+      - generic [ref=e68]:
+        - generic [ref=e69]:
+          - time [ref=e70]: 16:00 ~ 17:00
+          - generic [ref=e71]:
+            - strong [ref=e72]: The Original Returns
+            - generic [ref=e73]: Jack-In Mission · Event Coin
+        - generic [ref=e76]:
+          - time [ref=e77]: 17:00 ~ 18:30
+          - generic [ref=e78]:
+            - strong [ref=e79]: The Teams Behind Them
+            - generic [ref=e80]: Top-tier teams · live showcase
+        - generic [ref=e83]:
+          - time [ref=e84]: 19:30 ~ 20:30
+          - generic [ref=e85]:
+            - strong [ref=e86]: Trading, elevated to e-sports.
+            - generic [ref=e87]: The market is the arena.
+        - generic [ref=e90]:
+          - time [ref=e91]: 20:30 ~ 21:00
+          - generic [ref=e92]:
+            - strong [ref=e93]: Raffle & gacha rewards
+            - generic [ref=e94]: Limited merch · prizes
+        - generic [ref=e97]:
+          - time [ref=e98]: 21:00 ~ 24:00
+          - generic [ref=e99]:
+            - strong [ref=e100]: Networking in the arena
+            - generic [ref=e101]: Every booth is a construct. Every quest brings rewards.
+    - region [ref=e104]:
+      - generic [ref=e105]:
+        - paragraph [ref=e106]: Choose the red pill. Enter the construct.
+        - heading "Trading, elevated to e-sports." [level=2] [ref=e107]
+        - paragraph [ref=e109]: There is only one. The rest are forks. The strongest Perp DEX teams get unplugged and return bigger, stronger, and ready to trade in front of the crowd.
+  - contentinfo [ref=e110]:
+    - generic "PERP-DEX DAY" [ref=e111]:
+      - generic [ref=e112]: P
+      - generic [ref=e113]: E
+      - generic [ref=e114]: R
+      - generic [ref=e115]: P
+      - generic [ref=e116]: "-"
+      - generic [ref=e117]: D
+      - generic [ref=e118]: E
+      - generic [ref=e119]: X
+      - generic [ref=e121]: D
+      - generic [ref=e122]: A
+      - generic [ref=e123]: "Y"
+    - link "Back to the arena" [ref=e124] [cursor=pointer]:
+      - /url: "#top"
+    - generic [ref=e125]: © 2026 PERP-DEX DAY

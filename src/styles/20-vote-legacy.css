@@ -1,0 +1,57 @@
+/* Vote page legacy baseline: retained for cascade compatibility. */
+.vote-page { background: #0a0a0a; color: #f8f7f7; min-height: 100dvh; overflow: hidden; }
+.vote-header { align-items: center; border-bottom: 1px solid rgba(248,247,247,.12); display: flex; font-size: 12px; justify-content: space-between; letter-spacing: .14em; padding: 24px 48px; text-transform: uppercase; }
+.vote-back { background: none; border: 0; color: inherit; cursor: pointer; font: inherit; letter-spacing: inherit; padding: 0; text-transform: inherit; }
+.vote-feature { background: #000; height: min(850px, 72vw); min-height: 640px; overflow: hidden; position: relative; }
+
+/* Legacy countdown, intro, and candidate card defaults. */
+.vote-countdown { align-items: center; background: #1a1a1a; display: flex; flex-direction: column; gap: 28px; padding: 48px 24px; text-align: center; }
+.vote-countdown > p { color: #caff5d; font-size: 20px; letter-spacing: .12em; margin: 0; }
+.countdown-values { align-items: flex-start; display: flex; gap: 32px; justify-content: center; }
+.countdown-values span { align-items: center; display: flex; flex-direction: column; min-width: 92px; }
+.countdown-values strong { font-family: 'Neue Machina', sans-serif; font-size: 64px; font-weight: 400; letter-spacing: -.04em; line-height: 1.2; }
+.countdown-values small { color: #909090; font-size: 13px; letter-spacing: .08em; }
+.countdown-values i { font-family: 'Neue Machina', sans-serif; font-size: 40px; font-style: normal; line-height: 1.8; }
+.vote-content { margin: 0 auto; max-width: 1000px; padding: 120px 40px; }
+.vote-intro { margin: 0 auto 48px; text-align: center; }
+.vote-intro h1 { font-size: clamp(28px, 3vw, 36px); letter-spacing: -.03em; line-height: 1.3; white-space: normal; }
+.vote-intro p { color: #b0b0b0; font-size: 20px; line-height: 1.5; margin: 4px 0 0; }
+.vote-intro p + p { color: #f8f7f7; }
+.candidate-grid { display: grid; gap: 24px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.candidate-card { align-items: center; background: #e0e0e0; border: 3px solid transparent; border-radius: 12px; box-shadow: 0 5px 7.5px rgba(255,255,255,.16); color: #1a1a1a; cursor: pointer; display: flex; flex-direction: column; gap: 8px; height: 132px; justify-content: flex-end; padding: 20px 40px; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+.candidate-card:hover { transform: translateY(-2px); }
+.candidate-card[data-selected="true"] { background: #f9ffe9; border-color: #caff5d; }
+.candidate-card > span:last-child { color: #909090; font-size: 18px; line-height: 1.6; }
+.vote-card-logo { height: 32px; max-width: 190px; object-fit: contain; width: auto; }
+.vote-helper, .vote-disclaimer, .vote-legal { color: #b0b0b0; font-size: 16px; line-height: 1.5; text-align: center; }
+.vote-helper { margin: 16px 0 24px; }
+.vote-disclaimer, .vote-legal { margin: 8px 0 0; }
+.vote-legal { color: #e0e0e0; }
+.vote-submit { align-items: center; background: #3d3d3d; border: 0; border-radius: 12px; color: #a7a7a7; cursor: pointer; display: flex; font: inherit; gap: 10px; justify-content: center; padding: 22px 12px; width: 100%; }
+.vote-submit:hover { background: #4b4b4b; color: #fff; }
+.vote-submit .arrow-icon { display: none; }
+.vote-success { align-items: center; background: #f9ffe9; border-radius: 12px; color: #3fbf00; display: flex; gap: 12px; justify-content: center; margin-top: 24px; padding: 20px 24px; }
+.vote-success img { height: 24px; width: 24px; }
+
+/* Legacy results, brand CTA, and footer defaults. */
+.vote-results { background: #111; border-top: 1px solid rgba(248,247,247,.12); padding: 100px max(40px, calc((100vw - 1000px) / 2)); }
+.vote-results-heading { margin-bottom: 48px; text-align: center; }
+.vote-results h2 { font-size: clamp(28px, 3vw, 36px); letter-spacing: -.03em; }
+.vote-results-heading p { color: #b0b0b0; font-size: 16px; margin: 10px 0 0; }
+.result-list { display: grid; gap: 30px; }
+.result-row { align-items: center; display: grid; gap: 24px; grid-template-columns: 90px minmax(0, 1fr) 55px 90px; }
+.result-row > span { font-size: 16px; }
+.result-row strong, .result-row em { font-size: 14px; font-style: normal; white-space: nowrap; }
+.result-row em { color: #b0b0b0; }
+.result-track { background: #3d3d3d; border-radius: 24px; height: 18px; overflow: hidden; }
+.result-track > span { background: linear-gradient(90deg, #a1e53c, #edff9f); border-radius: inherit; display: block; height: 100%; min-width: 0; transition: width .4s ease; }
+.vote-brand-card { border: 1px solid rgba(202,255,93,.3); border-radius: 40px; box-shadow: 0 2px 4px rgba(227,255,138,.32); isolation: isolate; margin: 0 auto 100px; max-width: 1120px; overflow: hidden; padding: 60px; position: relative; text-align: center; }
+.vote-brand-art { inset: 0; opacity: .42; overflow: hidden; position: absolute; z-index: -1; }
+.vote-brand-copy { position: relative; }
+.vote-brand-copy h2 { font-size: clamp(28px, 3vw, 36px); letter-spacing: -.03em; line-height: 1.3; }
+.vote-brand-copy p { color: #e0e0e0; font-size: 18px; margin: 12px 0 24px; }
+.vote-brand-copy a { align-items: center; background: #caff5d; border-radius: 24px; color: #1a1a1a; display: inline-flex; font-size: 14px; gap: 8px; padding: 10px 16px; text-decoration: none; }
+.vote-brand-copy .arrow-icon { height: 18px; width: 18px; }
+.vote-footer { align-items: center; background: #0a0a0a; border-top: 1px solid rgba(248,247,247,.12); color: #909090; display: flex; font-size: 12px; gap: 24px; justify-content: space-between; letter-spacing: .08em; padding: 24px 48px; }
+.vote-footer > div { display: flex; gap: 12px; }
+.vote-footer img { border-radius: 50%; height: 24px; object-fit: contain; width: 24px; }

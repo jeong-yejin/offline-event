@@ -1,0 +1,76 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - text: PERP-DEX DAY
+    - button "Back to PERP-DEX DAY" [ref=f1e5] [cursor=pointer]: PERP-DEX DAY
+    - generic [ref=f1e6]: THE RED PILL / 01
+  - main [ref=f1e7]:
+    - generic [ref=f1e10]:
+      - paragraph [ref=f1e11]: REWARD IS YOURS
+      - paragraph [ref=f1e12]: CHOOSE NOW!
+    - region "Countdown to the trading competition" [ref=f1e13]:
+      - paragraph [ref=f1e14]: THE ARENA OPENS IN
+      - generic [ref=f1e15]:
+        - generic [ref=f1e16]:
+          - strong [ref=f1e17]: "03"
+          - generic [ref=f1e18]: HOURS
+        - generic [ref=f1e19]: ":"
+        - generic [ref=f1e20]:
+          - strong [ref=f1e21]: "24"
+          - generic [ref=f1e22]: MINUTES
+        - generic [ref=f1e23]: ":"
+        - generic [ref=f1e24]:
+          - strong [ref=f1e25]: "18"
+          - generic [ref=f1e26]: SECONDS
+    - region [ref=f1e27]:
+      - generic [ref=f1e28]:
+        - heading "Choose the trader who will own the arena." [level=1] [ref=f1e29]
+        - paragraph [ref=f1e30]: Select the winner of the live trading competition.
+      - group "Trader candidates" [ref=f1e31]:
+        - button "Variational logo Variational" [pressed] [ref=f1e32] [cursor=pointer]:
+          - img "Variational logo" [ref=f1e33]
+          - generic [ref=f1e34]: Variational
+        - button "Lighter logo Lighter" [ref=f1e35] [cursor=pointer]:
+          - img "Lighter logo" [ref=f1e36]
+          - generic [ref=f1e37]: Lighter
+        - button "Aster logo Aster" [ref=f1e38] [cursor=pointer]:
+          - img "Aster logo" [ref=f1e39]
+          - generic [ref=f1e40]: Aster
+        - button "Extended logo Extended" [ref=f1e41] [cursor=pointer]:
+          - img "Extended logo" [ref=f1e42]
+          - generic [ref=f1e43]: Extended
+      - paragraph [ref=f1e44]: You can change your vote any time before the arena opens.
+      - button "Cast your vote" [ref=f1e45] [cursor=pointer]
+      - paragraph [ref=f1e48]: This is a one-time event and is not a gambling activity.
+      - paragraph [ref=f1e49]: By voting, you agree to our event terms and privacy policy.
+    - region [ref=f1e50]:
+      - generic [ref=f1e51]:
+        - heading "Live vote results" [level=2] [ref=f1e52]
+        - paragraph [ref=f1e53]: Results update as the arena fills with players.
+      - generic [ref=f1e54]:
+        - generic [ref=f1e55]:
+          - generic [ref=f1e56]: Variational
+          - strong [ref=f1e59]: 33.3%
+          - emphasis [ref=f1e60]: 245 votes
+        - generic [ref=f1e61]:
+          - generic [ref=f1e62]: Lighter
+          - strong [ref=f1e65]: 33.3%
+          - emphasis [ref=f1e66]: 245 votes
+        - generic [ref=f1e67]:
+          - generic [ref=f1e68]: Aster
+          - strong [ref=f1e71]: 33.3%
+          - emphasis [ref=f1e72]: 245 votes
+        - generic [ref=f1e73]:
+          - generic [ref=f1e74]: Extended
+          - strong [ref=f1e76]: 0%
+          - emphasis [ref=f1e77]: 0 votes
+    - generic [ref=f1e80]:
+      - heading "See what moves the PERP-DEX market." [level=2] [ref=f1e81]
+      - paragraph [ref=f1e82]: Volume, share, and rewards — all in one construct.
+      - link "Back to the arena" [ref=f1e83] [cursor=pointer]:
+        - /url: "#top"
+  - contentinfo [ref=f1e86]:
+    - generic [ref=f1e87]: PERP-DEX DAY
+    - generic [ref=f1e88]: REBOUND X / ALL RIGHTS RESERVED
+    - generic [ref=f1e89]:
+      - img "Symbol" [ref=f1e90]
+      - img "X" [ref=f1e91]

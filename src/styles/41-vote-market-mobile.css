@@ -1,0 +1,24 @@
+/* Prediction market responsive states: stack the ticket, then trim the tape. */
+@media (max-width: 1100px) {
+  .market-layout { display: block; }
+  .market-side { margin-top: 56px; position: static; }
+  .chart-ranges button, .chart-legend button, .ticket-steps button, .ticket-directions button { min-height: 44px; }
+}
+
+@media (max-width: 700px) {
+  .market-bar { gap: 24px 40px; margin-bottom: 40px; }
+  .market-bar dd { font-size: 18px; }
+  .market-settled { margin-bottom: 40px; padding: 24px 20px; }
+  .market-settled h2 { font-size: 20px; }
+  .market-main { gap: 44px; }
+  .chart-frame { gap: 10px; grid-template-columns: 32px minmax(0, 1fr); }
+  .chart-plot { height: 200px; }
+  .chart-axis { margin-left: 42px; }
+  .chart-legend button { font-size: 12px; gap: 8px; padding: 7px 10px; }
+  .outcome-row { gap: 12px 16px; grid-template-columns: minmax(0, 1fr) auto; padding: 18px 0; }
+  .outcome-pick { gap: 14px; }
+  .outcome-actions { grid-column: span 2; }
+  .outcome-chance strong { font-size: 22px; }
+  .market-activity li { font-size: 12px; gap: 10px; grid-template-columns: 46px minmax(0, 1fr) auto; }
+  .tape-size, .tape-notional { display: none; }
+}

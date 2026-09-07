@@ -1,0 +1,4 @@
+/* Shared form inheritance, links, and tap target behavior. */
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; }

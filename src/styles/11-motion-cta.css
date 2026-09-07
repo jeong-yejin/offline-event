@@ -1,0 +1,9 @@
+/* CTA hover, active, shine, and word-track motion. */
+.motion-cta { overflow: hidden; position: relative; transform-origin: center; }
+.motion-cta:hover { border-radius: 6px; transform: scale(1.025); }
+.motion-cta:active { border-radius: 3px; opacity: .8; transform: scale(1.01); }
+.cta-shine { background: linear-gradient(110deg, transparent, rgba(255,255,255,.52), transparent); inset: -40% -80%; mix-blend-mode: hard-light; opacity: 0; pointer-events: none; position: absolute; transform: translateX(-45%); transition: opacity .2s ease-out, transform .45s cubic-bezier(0.215, .61, .355, 1); }
+.motion-cta:hover .cta-shine { opacity: .6; transform: translateX(45%); }
+.cta-word { display: inline-block; height: 1.25em; overflow: hidden; }
+.cta-word-track { display: flex; flex-direction: column; line-height: 1.25; transition: transform .32s cubic-bezier(0.215, .61, .355, 1); }
+.motion-cta:hover .cta-word-track { transform: translateY(-50%); }

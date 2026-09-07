@@ -1,0 +1,6 @@
+{
+  "name": "@event-perpdex/codex-orchestrator",
+  "private": true,
+  "type": "module",
+  "bin": { "codex-orchestrate": "bin/codex-orchestrate.mjs" }
+}
