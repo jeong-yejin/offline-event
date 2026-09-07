@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ArrowIcon } from '../components/ArrowIcon';
+import { LangToggle } from '../components/LangToggle';
 import { CtaWord } from '../components/CtaWord';
 import { FooterWordmark } from '../components/FooterWordmark';
 import BlackHoleBG from '../components/BlackHoleBG';
@@ -7,13 +8,15 @@ import DigitalRain from '../components/DigitalRain';
 import { ReboundXHero } from '../components/ReboundXHero';
 import { EVENTS, type EventKey } from '../data/eventContent';
 import { AGENDA, SPEAKERS, SPONSORS } from '../data/homeContent';
+import { localizeAgenda, localizeEvent, localizeRole } from '../i18n/content';
+import type { I18nProps, Strings } from '../i18n/strings';
 import { revealStyle, useMotionReveal } from '../motion/reveal';
 
-type HomePageProps = {
+type HomePageProps = I18nProps & {
   onVote(): void;
 };
 
-function ReboundXPanel() {
+function ReboundXPanel({ t }: { t: Strings }) {
   const [frameHeight, setFrameHeight] = useState(960);
 
   function syncFrameHeight(frame: HTMLIFrameElement) {
@@ -25,7 +28,7 @@ function ReboundXPanel() {
     <div className="reboundx-frame-wrap">
       <iframe
         className="reboundx-frame"
-        title="ReboundX in Wonderland event page"
+        title={t.reboundxFrame}
         src="/reboundx/index.html?content=1"
         loading="eager"
         style={{ height: `${frameHeight}px` }}
@@ -53,11 +56,13 @@ function ReboundXPanel() {
   );
 }
 
-export function HomePage({ onVote }: HomePageProps) {
+export function HomePage({ onVote, lang, t, onLangChange }: HomePageProps) {
   const motionReady = useMotionReveal();
   const [activeSpeaker, setActiveSpeaker] = useState(0);
   const [activeEvent, setActiveEvent] = useState<EventKey>('perp-dex-day');
-  const selectedEvent = EVENTS.find((event) => event.key === activeEvent) ?? EVENTS[0];
+  const selectedEvent = localizeEvent(lang, EVENTS.find((event) => event.key === activeEvent) ?? EVENTS[0]);
+  const speakers = SPEAKERS.map((speaker) => localizeRole(lang, speaker));
+  const agenda = AGENDA.map((item) => localizeAgenda(lang, item));
 
   useEffect(() => {
     const media = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -67,11 +72,12 @@ export function HomePage({ onVote }: HomePageProps) {
   }, []);
 
   return (
-    <div className="site-shell" data-motion-ready={motionReady} aria-label="Motion enabled">
+    <div className="site-shell" data-motion-ready={motionReady} aria-label={t.motionEnabled}>
       <header className="site-header">
-        <a href="#top" className="brand-link" aria-label="Go to PERP-DEX DAY home">
-          <span className="brand-wordmark">PERP-DEX DAY</span>
+        <a href="#top" className="brand-link" aria-label={t.brandHome(selectedEvent.label)}>
+          <span className="brand-wordmark">{selectedEvent.label}</span>
         </a>
+        <LangToggle lang={lang} onChange={onLangChange} t={t} />
       </header>
 
       <main id="top">
@@ -82,15 +88,15 @@ export function HomePage({ onVote }: HomePageProps) {
             <h1 id="hero-title"><span className="slideIn heading-reveal" data-motion-reveal style={revealStyle(520, 900)}>{selectedEvent.title}</span></h1>
             <p className="hero-copy slideIn" data-motion-reveal style={revealStyle(1040)}>{selectedEvent.copy}</p>
             <p className="event-date slideIn" data-motion-reveal style={revealStyle(1840)}>{selectedEvent.date}</p>
-            {selectedEvent.key === 'perp-dex-day' ? <button className="outline-button hero-button motion-cta" type="button" onClick={onVote} aria-label="Take the red pill">
+            {selectedEvent.key === 'perp-dex-day' ? <button className="outline-button hero-button motion-cta" type="button" onClick={onVote} aria-label={t.takeRedPill}>
               <span className="cta-shine" aria-hidden="true" />
-              <CtaWord delay={2150}>Take</CtaWord><CtaWord delay={2300}>the</CtaWord><CtaWord delay={2450}>red pill</CtaWord><ArrowIcon />
-            </button> : <span className="hero-status" aria-label="Event details coming soon">Details coming soon</span>}
+              {t.ctaWords.map((word, index) => <CtaWord delay={2150 + index * 150} key={word}>{word}</CtaWord>)}<ArrowIcon />
+            </button> : <span className="hero-status" aria-label={t.detailsSoonAria}>{t.detailsSoon}</span>}
           </div>
         </section>}
 
-        <nav className="event-switcher" aria-label="Event selection">
-          <div className="event-switcher-inner" role="tablist" aria-label="Event selection">
+        <nav className="event-switcher" aria-label={t.eventSelection}>
+          <div className="event-switcher-inner" role="tablist" aria-label={t.eventSelection}>
             {EVENTS.map((event, index) => <button
               className="event-tab"
               data-active={activeEvent === event.key ? 'true' : 'false'}
@@ -116,34 +122,34 @@ export function HomePage({ onVote }: HomePageProps) {
 
         {selectedEvent.key === 'perp-dex-day' ? <div id="panel-perp-dex-day" role="tabpanel" aria-labelledby="tab-perp-dex-day" aria-label="PERP-DEX DAY">
         <section className="sponsors content-section" aria-labelledby="sponsors-title">
-          <p id="sponsors-title" className="section-intro slideIn" data-motion-reveal style={revealStyle(120)}>The teams behind them</p>
-          <div className="logo-row" aria-label="Sponsors">{SPONSORS.map(([name, file], index) => <img className="slideIn" data-motion-reveal style={revealStyle(220 + index * 80)} key={name} src={`/assets/sponsors/${file}`} alt={name} />)}</div>
+          <p id="sponsors-title" className="section-intro slideIn" data-motion-reveal style={revealStyle(120)}>{t.sponsorsTitle}</p>
+          <div className="logo-row" aria-label={t.sponsorsLabel}>{SPONSORS.map(([name, file], index) => <img className="slideIn" data-motion-reveal style={revealStyle(220 + index * 80)} key={name} src={`/assets/sponsors/${file}`} alt={name} />)}</div>
         </section>
 
         <section className="speakers content-section split-section" aria-labelledby="speakers-title">
-          <div className="speaker-feature"><h2 id="speakers-title"><span className="slideIn heading-reveal" data-motion-reveal style={revealStyle(100)}>Speakers</span></h2><div className="speaker-feature-media slideIn" data-motion-reveal style={revealStyle(280)}>{SPEAKERS.map(([name, , image], index) => <img className="featured-speaker" data-active={activeSpeaker === index ? 'true' : 'false'} key={name} src={image} alt={activeSpeaker === index ? name : ''} />)}</div></div>
-          <div className="speaker-list dense-speaker-list">{SPEAKERS.map(([name, role], index) => <div className="speaker" data-speaker-row data-active={activeSpeaker === index ? 'true' : 'false'} onMouseEnter={() => setActiveSpeaker(index)} onFocus={() => setActiveSpeaker(index)} tabIndex={0} key={name}><div><strong>{name}</strong><span>{role}</span></div></div>)}</div>
+          <div className="speaker-feature"><h2 id="speakers-title"><span className="slideIn heading-reveal" data-motion-reveal style={revealStyle(100)}>{t.speakersTitle}</span></h2><div className="speaker-feature-media slideIn" data-motion-reveal style={revealStyle(280)}>{speakers.map(([name, , image], index) => <img className="featured-speaker" data-active={activeSpeaker === index ? 'true' : 'false'} key={name} src={image} alt={activeSpeaker === index ? name : ''} />)}</div></div>
+          <div className="speaker-list dense-speaker-list">{speakers.map(([name, role], index) => <div className="speaker" data-speaker-row data-active={activeSpeaker === index ? 'true' : 'false'} onMouseEnter={() => setActiveSpeaker(index)} onFocus={() => setActiveSpeaker(index)} tabIndex={0} key={name}><div><strong>{name}</strong><span>{role}</span></div></div>)}</div>
         </section>
 
         <section id="agenda" className="agenda content-section" aria-labelledby="agenda-title">
-          <h2 id="agenda-title"><span className="slideIn heading-reveal" data-motion-reveal style={revealStyle(100)}>Timetable</span></h2>
-          <div className="agenda-list">{AGENDA.map(([time, title, type], index) => <div className="agenda-row slideIn" data-motion-reveal style={revealStyle(180 + index * 70)} key={time}><time>{time}</time><div><strong>{title}</strong>{type ? <span>{type}</span> : null}</div><ArrowIcon /></div>)}</div>
+          <h2 id="agenda-title"><span className="slideIn heading-reveal" data-motion-reveal style={revealStyle(100)}>{t.agendaTitle}</span></h2>
+          <div className="agenda-list">{agenda.map(([time, title, type], index) => <div className="agenda-row slideIn" data-motion-reveal style={revealStyle(180 + index * 70)} key={time}><time>{time}</time><div><strong>{title}</strong>{type ? <span>{type}</span> : null}</div><ArrowIcon /></div>)}</div>
         </section>
 
         <section className="operations content-section" aria-labelledby="operations-title">
           <BlackHoleBG style={{ inset: 0, pointerEvents: 'none', position: 'absolute', zIndex: 0 }} />
-          <div className="operations-content"><p className="eyebrow eyebrow-dark slideIn" data-motion-reveal style={revealStyle(90)}>Choose the red pill. Enter the construct.</p><h2 id="operations-title"><span className="slideIn heading-reveal" data-motion-reveal style={revealStyle(180)}>Trading, elevated to e-sports.</span></h2><p className="operations-copy slideIn" data-motion-reveal style={revealStyle(300)}>There is only one. The rest are forks. The strongest Perp DEX teams get unplugged and return bigger, stronger, and ready to trade in front of the crowd.</p></div>
+          <div className="operations-content"><p className="eyebrow eyebrow-dark slideIn" data-motion-reveal style={revealStyle(90)}>{t.opsEyebrow}</p><h2 id="operations-title"><span className="slideIn heading-reveal" data-motion-reveal style={revealStyle(180)}>{t.opsTitle}</span></h2><p className="operations-copy slideIn" data-motion-reveal style={revealStyle(300)}>{t.opsCopy}</p></div>
         </section>
         </div> : selectedEvent.key === 'reboundx-in-wonderland' ? <section className="reboundx-panel" id="panel-reboundx-in-wonderland" role="tabpanel" aria-labelledby="tab-reboundx-in-wonderland" aria-label="REBOUNDX IN WONDERLAND">
-          <ReboundXPanel />
+          <ReboundXPanel t={t} />
         </section> : <section className="event-placeholder content-section" id={`panel-${selectedEvent.key}`} role="tabpanel" aria-labelledby={`tab-${selectedEvent.key}`} aria-label={selectedEvent.label}>
-          <p className="eyebrow">Transmission queued</p>
+          <p className="eyebrow">{t.placeholderEyebrow}</p>
           <h2>{selectedEvent.label}</h2>
-          <p>Coming soon. The event details are still being written into the construct.</p>
+          <p>{t.placeholderCopy}</p>
         </section>}
       </main>
 
-      <footer className="site-footer"><FooterWordmark /><a href="#top">Back to the arena</a><span>© 2026 PERP-DEX DAY</span></footer>
+      <footer className="site-footer"><FooterWordmark /><a href="#top">{t.backToArena}</a><span>{t.copyright}</span></footer>
     </div>
   );
 }

@@ -1,0 +1,14 @@
+# Claude Code artifacts — keep local, never publish.
+CLAUDE.md
+.claude/
+docs/superpowers/
+
+# Dependencies and build output.
+node_modules/
+dist/
+
+# Test and tooling scratch.
+.playwright-cli/
+output/
+test-results/
+tmp/

@@ -3,13 +3,13 @@
 .vote-header { align-items: center; border: 0; left: 48px; padding: 24px 0; position: absolute; right: 48px; top: 0; z-index: 5; }
 .vote-header::before { color: #f8f7f7; content: 'PERP-DEX DAY'; font-size: 14px; font-weight: 600; letter-spacing: -.04em; line-height: 25px; }
 .vote-back { font-size: 0; height: 25px; left: 0; position: absolute; top: 24px; width: 150px; }
-.vote-header > span { color: rgba(248,247,247,.68); font-size: 13px; letter-spacing: .08em; }
+.vote-header span { color: rgba(248,247,247,.68); font-size: 13px; letter-spacing: .08em; }
 .vote-feature { align-items: center; background: #000; display: flex; height: 953px; justify-content: center; min-height: 0; overflow: hidden; position: relative; }
 .vote-countdown { align-items: flex-start; background: #000; border-top: 1px solid rgba(248,247,247,.18); display: grid; gap: 40px; grid-template-columns: 1fr 1.1fr; padding: 160px 48px; text-align: left; }
 .vote-countdown > p { color: rgba(248,247,247,.65); font-size: 13px; letter-spacing: .16em; margin: 0; text-transform: uppercase; }
 .countdown-values { gap: 20px; justify-content: flex-start; }
 .countdown-values span { align-items: flex-start; min-width: 116px; }
-.countdown-values strong { font-family: 'Neue Machina', sans-serif; font-size: clamp(42px, 5.5vw, 86px); letter-spacing: -.055em; line-height: .9; }
+.countdown-values strong { font-family: 'Neue Machina', 'Wanted Sans', sans-serif; font-size: clamp(42px, 5.5vw, 86px); letter-spacing: -.055em; line-height: .9; }
 .countdown-values small { color: #a7a7a7; font-size: 12px; letter-spacing: .14em; margin-top: 16px; }
 .countdown-values i { color: #a7a7a7; font-size: 34px; line-height: .9; }
 .vote-content { border-top: 1px solid rgba(248,247,247,.18); max-width: 1508px; padding: 160px 48px; }

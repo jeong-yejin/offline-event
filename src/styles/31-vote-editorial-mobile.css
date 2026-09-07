@@ -3,7 +3,7 @@
   .vote-header { left: 20px; padding: 20px 0; right: 20px; }
   .vote-header::before { font-size: 12px; }
   .vote-back { top: 20px; width: 120px; }
-  .vote-header > span { font-size: 10px; }
+  .vote-header span { font-size: 10px; }
   .vote-feature { height: 760px; }
   .vote-countdown { display: block; padding: 92px 20px; }
   .vote-countdown > p { margin-bottom: 40px; }

@@ -100,7 +100,7 @@ describe('PERP-DEX DAY interface', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.hover(screen.getByText('Justin'));
+    await user.hover(screen.getByText('Hansolar'));
 
     const rows = Array.from(document.querySelectorAll('[data-speaker-row]'));
     const portraits = Array.from(document.querySelectorAll('.featured-speaker'));
@@ -192,5 +192,20 @@ describe('PERP-DEX DAY interface', () => {
 
     expect(screen.getByRole('button', { name: /^buy 9,000 yes$/i })).toBeDisabled();
     expect(screen.getByRole('status')).toHaveTextContent(/not enough pill/i);
+  });
+
+  it('switches the whole interface to Korean and remembers the choice', async () => {
+    const user = userEvent.setup();
+    const view = render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /read in korean/i }));
+
+    expect(screen.getByText('빨간 알약을 골라라. 구조체로 들어가라.')).toBeInTheDocument();
+    expect(document.documentElement.lang).toBe('ko');
+
+    view.unmount();
+    render(<App />);
+
+    expect(screen.getByText('빨간 알약을 골라라. 구조체로 들어가라.')).toBeInTheDocument();
   });
 });

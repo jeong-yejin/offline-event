@@ -1,3 +1,0 @@
-[     113ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5174/node_modules/.vite/deps/react-dom_client.js?v=48a9cfab:14333
-[  101917ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5174/node_modules/.vite/deps/react-dom_client.js?v=48a9cfab:14333
-[  106062ms] [ERROR] Failed to load resource: the server responded with a status of 409 () @ https://mcp.figma.com/mcp/capture/50b880ef-a257-42a6-a6b2-bccb8107cebc/submit?bindVariables=true:0

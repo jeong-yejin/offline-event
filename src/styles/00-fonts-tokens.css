@@ -1,5 +1,6 @@
 /* Typography and global color defaults. */
 @font-face { font-display: swap; font-family: 'Neue Machina'; font-style: normal; font-weight: 100 900; src: url('/fonts/PPNeueMachina-PlainVariable.woff') format('woff'); }
 @font-face { font-display: swap; font-family: 'Perfect DOS VGA 437'; font-style: normal; font-weight: 400; src: url('/fonts/Perfect%20DOS%20VGA%20437.ttf') format('truetype'); }
+@font-face { font-display: swap; font-family: 'Wanted Sans'; font-style: normal; font-weight: 100 900; src: url('/fonts/WantedSansVariable.woff2') format('woff2'); }
 
-:root { color: #f8f7f7; background: #000; color-scheme: dark; font-family: 'Perfect DOS VGA 437', monospace; font-synthesis: none; }
+:root { color: #f8f7f7; background: #000; color-scheme: dark; font-family: 'Perfect DOS VGA 437', 'Wanted Sans', monospace; font-synthesis: none; }

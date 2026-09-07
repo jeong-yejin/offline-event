@@ -19,3 +19,6 @@
 @import './styles/31-vote-editorial-mobile.css';
 @import './styles/40-vote-market.css';
 @import './styles/41-vote-market-mobile.css';
+
+/* Language toggle and Korean typography. */
+@import './styles/42-i18n.css';

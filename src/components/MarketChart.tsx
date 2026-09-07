@@ -1,4 +1,5 @@
 import { VOTE_CANDIDATES, type VoteCandidateId } from '../data/voteContent';
+import type { Strings } from '../i18n/strings';
 import { formatTime } from '../market/format';
 import type { PricePoint } from '../market/marketEngine';
 
@@ -12,6 +13,7 @@ const PLOT_HEIGHT = 260;
 const MAX_PLOT_POINTS = 180;
 
 type MarketChartProps = {
+  t: Strings;
   history: readonly PricePoint[];
   range: ChartRange;
   focusId: VoteCandidateId;
@@ -36,7 +38,7 @@ const linePath = (points: readonly PricePoint[], id: VoteCandidateId) =>
     })
     .join(' ');
 
-export function MarketChart({ history, range, focusId, onRangeChange, onFocusChange }: MarketChartProps) {
+export function MarketChart({ t, history, range, focusId, onRangeChange, onFocusChange }: MarketChartProps) {
   const points = rangePoints(history, range);
   const first = points[0];
   const last = points[points.length - 1];
@@ -44,15 +46,15 @@ export function MarketChart({ history, range, focusId, onRangeChange, onFocusCha
   return (
     <figure className="market-chart">
       <figcaption className="chart-head">
-        <h3>Probability history</h3>
-        <div className="chart-ranges" role="group" aria-label="Chart range">
+        <h3>{t.chartTitle}</h3>
+        <div className="chart-ranges" role="group" aria-label={t.chartRange}>
           {RANGES.map((option) => <button aria-pressed={option === range} data-active={option === range ? 'true' : 'false'} key={option} onClick={() => onRangeChange(option)} type="button">{option}</button>)}
         </div>
       </figcaption>
 
       <div className="chart-frame">
         <ul className="chart-scale" aria-hidden="true">{[...GRID_LINES].reverse().map((value) => <li key={value}>{value}%</li>)}</ul>
-        <svg className="chart-plot" viewBox={`0 0 ${PLOT_WIDTH} ${PLOT_HEIGHT}`} preserveAspectRatio="none" role="img" aria-label={`Probability history for ${VOTE_CANDIDATES.map((candidate) => candidate.name).join(', ')}`}>
+        <svg className="chart-plot" viewBox={`0 0 ${PLOT_WIDTH} ${PLOT_HEIGHT}`} preserveAspectRatio="none" role="img" aria-label={t.chartAria(VOTE_CANDIDATES.map((candidate) => candidate.name).join(', '))}>
           {GRID_LINES.map((value) => <line className="chart-grid" key={value} x1="0" x2={PLOT_WIDTH} y1={PLOT_HEIGHT - (value / 100) * PLOT_HEIGHT} y2={PLOT_HEIGHT - (value / 100) * PLOT_HEIGHT} vectorEffect="non-scaling-stroke" />)}
           {VOTE_CANDIDATES.map((candidate) => <path d={linePath(points, candidate.id)} data-focus={candidate.id === focusId ? 'true' : 'false'} fill="none" key={candidate.id} stroke={candidate.color} vectorEffect="non-scaling-stroke" />)}
         </svg>

@@ -1,7 +1,7 @@
 /* Tablet layout: keep the desktop rhythm while reducing type and horizontal pressure. */
 @media (min-width: 701px) and (max-width: 1100px) {
   .site-header { left: 32px; right: 32px; }
-  .hero { min-height: 700px; }
+  .hero { min-height: max(520px, 68dvh); }
   .hero-content { max-width: 900px; padding-left: 32px; padding-right: 32px; }
   h1 { font-size: clamp(58px, 9vw, 104px); }
   .hero-copy { font-size: 16px; margin: 44px auto 40px; max-width: 680px; }
@@ -22,7 +22,7 @@
 /* Home page mobile layout adjustments. */
 @media (max-width: 700px) {
   .site-header { left: 20px; right: 20px; }
-  .hero { height: 100dvh; min-height: 680px; }
+  .hero { min-height: max(500px, 70dvh); }
   .hero-content { max-width: 100%; padding: 62px 20px 0; }
   .eyebrow { font-size: 10px; line-height: 1.5; }
   h1 { font-size: clamp(52px, 15vw, 80px); white-space: normal; }
@@ -40,7 +40,7 @@
   .logo-row img:first-child { height: 34px; max-width: 142px; }
   .split-section { gap: 44px; grid-template-columns: 1fr; }
   .speaker-feature { gap: 34px; }
-  .speaker-feature-media { height: 280px; width: 100%; }
+  .speaker-feature-media { width: 100%; }
   .speaker-list { margin-top: 4px; }
   .dense-speaker-list .speaker { transform: none; }
   .dense-speaker-list .speaker > div { gap: 12px; }
@@ -55,7 +55,7 @@
   .event-placeholder h2 { font-size: clamp(44px, 13vw, 72px); }
   .event-placeholder > p:last-child { font-size: 15px; margin-top: 28px; }
   .reboundx-frame { min-height: 1400px; }
-  .reboundx-hero { min-height: 720px; padding: 76px 20px 64px; }
+  .reboundx-hero { min-height: 560px; padding: 76px 20px 64px; }
   .reboundx-hero__title { width: min(660px, 94vw); }
   .reboundx-hero__copy { gap: 22px; padding-top: 24px; }
   .reboundx-hero__lede { font-size: 13px; line-height: 1.7; }
@@ -67,7 +67,7 @@
 }
 
 @media (max-width: 420px) {
-  .hero { min-height: 640px; }
+  .hero { min-height: max(460px, 68dvh); }
   .hero-content { padding-left: 16px; padding-right: 16px; }
   .hero-copy { font-size: 13px; margin-bottom: 28px; margin-top: 28px; }
   .event-date { font-size: 11px; }

@@ -13,10 +13,10 @@ export const SPONSORS: readonly Sponsor[] = [
 ];
 
 export const SPEAKERS: readonly Speaker[] = [
-  ['Stefano', 'CTO of Extended', SPEAKER_PLACEHOLDER],
-  ['Arnold', 'CEO of Aster', SPEAKER_PLACEHOLDER],
-  ['Justin', 'Product Head of Variational', SPEAKER_PLACEHOLDER],
+  ['Hansolar', 'APAC Growth Head of Variational', '/assets/speakers/speaker_variational-hansolar.webp'],
   ['Nick', 'Product Head of Lighter', SPEAKER_PLACEHOLDER],
+  ['Arnold', 'CEO of Aster', '/assets/speakers/speaker_Aster-Arnold.webp'],
+  ['Stefano', 'CTO of Extended', '/assets/speakers/speaker_Extended-Stefano.webp'],
 ];
 
 export const AGENDA: readonly AgendaItem[] = [
