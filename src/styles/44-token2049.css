@@ -1,0 +1,30 @@
+/* TOKEN2049 side event: intro, run of show, and the hand-off to the prediction market. */
+.t2049-intro { border-top: 1px solid rgba(248,247,247,.18); }
+.t2049-intro h2 { max-width: 900px; }
+.t2049-lede { color: rgba(248,247,247,.72); font-size: 1.125rem; line-height: 1.55; margin: 44px 0 0; max-width: 620px; }
+.t2049-facts { display: grid; gap: 0 32px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 96px 0 0; }
+.t2049-facts div { border-top: 1px solid rgba(248,247,247,.18); display: flex; flex-direction: column; gap: 16px; padding: 24px 0 0; }
+.t2049-facts dt { color: #a7a7a7; font-size: .8125rem; letter-spacing: .16em; text-transform: uppercase; }
+.t2049-facts dd { color: #f8f7f7; font-size: clamp(1.25rem, 2vw, 1.75rem); letter-spacing: -.02em; margin: 0; }
+.t2049-schedule { border-top: 1px solid rgba(248,247,247,.18); }
+#t2049-schedule-title { scroll-margin-top: 40px; }
+.t2049-note { color: #a7a7a7; font-size: .9375rem; margin: 28px 0 0; }
+.t2049-schedule .agenda-list { margin-top: 56px; }
+.t2049-market { border-top: 1px solid rgba(248,247,247,.18); }
+.t2049-market h2 { max-width: 900px; }
+.t2049-market-copy { color: rgba(248,247,247,.72); font-size: 1.125rem; line-height: 1.55; margin: 44px 0 48px; max-width: 560px; }
+.t2049-market-cta .arrow-icon { height: 18px; width: 18px; }
+
+@media (min-width: 701px) and (max-width: 1100px) {
+  .t2049-facts { column-gap: 24px; margin-top: 72px; }
+  .t2049-lede, .t2049-market-copy { font-size: 1rem; }
+}
+
+@media (max-width: 700px) {
+  .t2049-facts { column-gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 56px; row-gap: 28px; }
+  .t2049-facts dt { font-size: .6875rem; }
+  .t2049-lede, .t2049-market-copy { font-size: .9375rem; margin-top: 28px; }
+  .t2049-market-copy { margin-bottom: 36px; }
+  .t2049-note { font-size: .8125rem; }
+  .t2049-schedule .agenda-list { margin-top: 36px; }
+}

@@ -1,50 +1,50 @@
 /* Vote page: keep the same editorial, full-bleed system as the main page. */
 .vote-page { background: #000; }
 .vote-header { align-items: center; border: 0; left: 48px; padding: 24px 0; position: absolute; right: 48px; top: 0; z-index: 5; }
-.vote-header::before { color: #f8f7f7; content: 'PERP-DEX DAY'; font-size: 14px; font-weight: 600; letter-spacing: -.04em; line-height: 25px; }
+.vote-header::before { color: #f8f7f7; content: 'PERP-DEX DAY'; font-size: .875rem; font-weight: 600; letter-spacing: -.04em; line-height: 25px; }
 .vote-back { font-size: 0; height: 25px; left: 0; position: absolute; top: 24px; width: 150px; }
-.vote-header span { color: rgba(248,247,247,.68); font-size: 13px; letter-spacing: .08em; }
+.vote-header span { color: rgba(248,247,247,.68); font-size: .8125rem; letter-spacing: .08em; }
 .vote-feature { align-items: center; background: #000; display: flex; height: 953px; justify-content: center; min-height: 0; overflow: hidden; position: relative; }
 .vote-countdown { align-items: flex-start; background: #000; border-top: 1px solid rgba(248,247,247,.18); display: grid; gap: 40px; grid-template-columns: 1fr 1.1fr; padding: 160px 48px; text-align: left; }
-.vote-countdown > p { color: rgba(248,247,247,.65); font-size: 13px; letter-spacing: .16em; margin: 0; text-transform: uppercase; }
+.vote-countdown > p { color: rgba(248,247,247,.65); font-size: .8125rem; letter-spacing: .16em; margin: 0; text-transform: uppercase; }
 .countdown-values { gap: 20px; justify-content: flex-start; }
 .countdown-values span { align-items: flex-start; min-width: 116px; }
-.countdown-values strong { font-family: 'Neue Machina', 'Wanted Sans', sans-serif; font-size: clamp(42px, 5.5vw, 86px); letter-spacing: -.055em; line-height: .9; }
-.countdown-values small { color: #a7a7a7; font-size: 12px; letter-spacing: .14em; margin-top: 16px; }
-.countdown-values i { color: #a7a7a7; font-size: 34px; line-height: .9; }
+.countdown-values strong { font-family: 'Neue Machina', 'Wanted Sans', sans-serif; font-size: clamp(2.625rem, 5.5vw, 5.375rem); letter-spacing: -.055em; line-height: .9; }
+.countdown-values small { color: #a7a7a7; font-size: .75rem; letter-spacing: .14em; margin-top: 16px; }
+.countdown-values i { color: #a7a7a7; font-size: 2.125rem; line-height: .9; }
 .vote-content { border-top: 1px solid rgba(248,247,247,.18); max-width: 1508px; padding: 160px 48px; }
 .vote-intro { display: grid; gap: 80px; grid-template-columns: 1fr 1.1fr; margin: 0 0 80px; text-align: left; }
-.vote-intro h1 { font-size: clamp(54px, 7vw, 108px); letter-spacing: -.055em; line-height: 1; }
-.vote-intro p { align-self: end; color: rgba(248,247,247,.72); font-size: 20px; line-height: 1.5; margin: 0; max-width: 440px; }
+.vote-intro h1 { font-size: clamp(3.375rem, 7vw, 6.75rem); letter-spacing: -.055em; line-height: 1; }
+.vote-intro p { align-self: end; color: rgba(248,247,247,.72); font-size: 1.25rem; line-height: 1.5; margin: 0; max-width: 440px; }
 .vote-intro p + p { color: rgba(248,247,247,.72); grid-column: 2; margin-top: -68px; }
 .candidate-grid { border-top: 1px solid rgba(248,247,247,.18); gap: 0 40px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .candidate-card { align-items: center; background: transparent; border: 0; border-bottom: 1px solid rgba(248,247,247,.18); border-radius: 0; box-shadow: none; color: #f8f7f7; cursor: pointer; flex-direction: row; gap: 24px; height: 152px; justify-content: flex-start; padding: 24px 0 24px 24px; text-align: left; }
 .candidate-card:hover { background: rgba(248,247,247,.04); transform: none; }
 .candidate-card[data-selected="true"] { background: rgba(202,255,93,.06); border-bottom-color: #caff5d; }
-.candidate-card > span:last-child { color: rgba(248,247,247,.72); font-size: 14px; letter-spacing: .12em; text-transform: uppercase; }
+.candidate-card > span:last-child { color: rgba(248,247,247,.72); font-size: .875rem; letter-spacing: .12em; text-transform: uppercase; }
 .vote-card-logo { filter: brightness(0) invert(1); height: 32px; max-width: 190px; }
-.vote-helper, .vote-disclaimer, .vote-legal { color: #a7a7a7; font-size: 16px; line-height: 1.5; text-align: center; }
+.vote-helper, .vote-disclaimer, .vote-legal { color: #a7a7a7; font-size: 1rem; line-height: 1.5; text-align: center; }
 .vote-helper { margin: 24px 0 28px; }
 .vote-disclaimer, .vote-legal { margin: 12px 0 0; }
 .vote-legal { color: rgba(248,247,247,.72); }
-.vote-submit { align-items: center; background: transparent; border: 1.5px solid #f8f7f7; border-radius: 4px; color: #f8f7f7; cursor: pointer; display: flex; font-size: 16px; gap: 10px; justify-content: center; margin: 0 auto; min-height: 44px; padding: 0 22px; width: max-content; }
+.vote-submit { align-items: center; background: transparent; border: 1.5px solid #f8f7f7; border-radius: 4px; color: #f8f7f7; cursor: pointer; display: flex; font-size: 1rem; gap: 12px; justify-content: center; margin: 0 auto; min-height: 44px; padding: 0 24px; width: max-content; }
 .vote-submit:hover { background: rgba(255,255,255,.12); color: #f8f7f7; }
 .vote-submit .arrow-icon { display: block; }
 .vote-success { align-items: center; background: transparent; border-top: 1px solid #caff5d; border-radius: 0; color: #caff5d; display: flex; gap: 12px; justify-content: flex-start; margin-top: 40px; padding: 20px 0 0; }
 .vote-results { background: #000; border-top: 1px solid rgba(248,247,247,.18); padding: 160px max(48px, calc((100vw - 1508px) / 2 + 48px)); }
 .vote-results-heading { display: grid; gap: 80px; grid-template-columns: 1fr 1.1fr; margin-bottom: 72px; text-align: left; }
-.vote-results h2 { font-size: clamp(54px, 7vw, 108px); }
-.vote-results-heading p { align-self: end; color: rgba(248,247,247,.72); font-size: 16px; line-height: 1.5; margin: 0; max-width: 440px; }
+.vote-results h2 { font-size: clamp(3.375rem, 7vw, 6.75rem); }
+.vote-results-heading p { align-self: end; color: rgba(248,247,247,.72); font-size: 1rem; line-height: 1.5; margin: 0; max-width: 440px; }
 .result-list { border-top: 1px solid rgba(248,247,247,.18); gap: 0; }
-.result-row { border-bottom: 1px solid rgba(248,247,247,.18); gap: 24px; grid-template-columns: 120px minmax(0, 1fr) 60px 90px; padding: 22px 0; }
-.result-row > span { font-size: 15px; letter-spacing: .08em; }
-.result-row strong, .result-row em { font-size: 16px; }
+.result-row { border-bottom: 1px solid rgba(248,247,247,.18); gap: 24px; grid-template-columns: 120px minmax(0, 1fr) 60px 90px; padding: 24px 0; }
+.result-row > span { font-size: .9375rem; letter-spacing: .08em; }
+.result-row strong, .result-row em { font-size: 1rem; }
 .result-track { background: #242424; border-radius: 0; height: 12px; border-radius: 12px; }
 .result-track > span { background:linear-gradient(90deg, #edff9f, #caff5d); border-radius: 12px; }
 .vote-brand-card { border: 0; border-top: 1px solid rgba(248,247,247,.18); border-radius: 0; box-shadow: none; margin: 0; max-width: none; padding: 160px max(48px, calc((100vw - 1508px) / 2 + 48px)); text-align: left; }
 .vote-brand-art { opacity: .24; }
 .vote-brand-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 760px; }
-.vote-brand-copy h2 { font-size: clamp(54px, 7vw, 108px); line-height: calc(1em + 8px); }
-.vote-brand-copy p { color: rgba(248,247,247,.72); font-size: 16px; line-height: 1.5; margin: 0; }
-.vote-brand-copy a { background: transparent; border: 1.5px solid #f8f7f7; border-radius: 4px; color: #f8f7f7; font-size: 16px; margin-top: 8px; padding: 12px 18px; }
-.vote-footer { align-items: center; background: #000; border-top: 1px solid rgba(248,247,247,.22); color: #f8f7f7; font-size: 16px; gap: 28px; letter-spacing: 0; padding: 26px 48px 32px; }
+.vote-brand-copy h2 { font-size: clamp(3.375rem, 7vw, 6.75rem); line-height: calc(1em + 8px); }
+.vote-brand-copy p { color: rgba(248,247,247,.72); font-size: 1rem; line-height: 1.5; margin: 0; }
+.vote-brand-copy a { background: transparent; border: 1.5px solid #f8f7f7; border-radius: 4px; color: #f8f7f7; font-size: 1rem; margin-top: 8px; padding: 12px 20px; }
+.vote-footer { align-items: center; background: #000; border-top: 1px solid rgba(248,247,247,.22); color: #f8f7f7; font-size: 1rem; gap: 28px; letter-spacing: 0; padding: 28px 48px 32px; }

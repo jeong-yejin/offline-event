@@ -1,13 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
+import { EVENTS, type EventKey } from '../data/eventContent';
 
-export type AppRoute = 'home' | 'vote';
+/* Each event is its own page, so the hub at '/' only introduces them. */
+export type AppRoute = 'home' | 'vote' | EventKey;
+
+const EVENT_KEYS: readonly string[] = EVENTS.map((event) => event.key);
 
 function detectRoute(): AppRoute {
-  return window.location.pathname === '/vote' ? 'vote' : 'home';
+  const slug = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  if (slug === 'vote') return 'vote';
+  if (EVENT_KEYS.includes(slug)) return slug as EventKey;
+  return 'home';
 }
 
-function routePath(route: AppRoute) {
-  return route === 'vote' ? '/vote' : '/';
+export function routePath(route: AppRoute) {
+  return route === 'home' ? '/' : `/${route}`;
 }
 
 function resetScroll() {

@@ -10,7 +10,7 @@ function App() {
 
   if (route === 'vote') return <VotePage onBack={() => navigate('home')} {...i18n} />;
 
-  return <HomePage onVote={() => navigate('vote')} {...i18n} />;
+  return <HomePage event={route === 'home' ? null : route} onNavigate={navigate} {...i18n} />;
 }
 
 export default App;

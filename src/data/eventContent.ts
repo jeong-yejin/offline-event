@@ -29,9 +29,9 @@ export const EVENTS: readonly EventContent[] = [
   {
     key: 'token2049-side-event',
     label: 'TOKEN2049 SIDE EVENT',
-    eyebrow: 'The side room is powering up.',
+    eyebrow: 'The arena moves to Singapore.',
     title: 'TOKEN2049 SIDE EVENT',
-    copy: 'The next side event is still in the construct. Check back soon for venue, program, and registration details.',
-    date: 'TOKEN2049 · Singapore',
+    copy: 'PerpDEX Day is the live trading competition that started in Seoul. On 05 October 2026 it runs at Zouk during TOKEN2049 week — booth missions from 17:00, the Alpha Talk, audience betting, and a tournament settled on-chain in front of 1,000+ traders.',
+    date: 'TOKEN2049 Singapore · 05 October 2026',
   },
 ];

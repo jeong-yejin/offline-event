@@ -1,7 +1,6 @@
-import { VOTE_CANDIDATES, type VoteCandidateId } from '../data/voteContent';
 import type { Strings } from '../i18n/strings';
 import { formatTime } from '../market/format';
-import type { PricePoint } from '../market/marketEngine';
+import type { MarketId, MarketTrader, Snapshot } from '../market/marketEngine';
 
 export type ChartRange = '1H' | '6H' | 'ALL';
 
@@ -14,14 +13,15 @@ const MAX_PLOT_POINTS = 180;
 
 type MarketChartProps = {
   t: Strings;
-  history: readonly PricePoint[];
+  traders: readonly MarketTrader[];
+  history: readonly Snapshot[];
   range: ChartRange;
-  focusId: VoteCandidateId;
+  focusId: MarketId;
   onRangeChange(range: ChartRange): void;
-  onFocusChange(id: VoteCandidateId): void;
+  onFocusChange(id: MarketId): void;
 };
 
-export function rangePoints(history: readonly PricePoint[], range: ChartRange): PricePoint[] {
+export function rangePoints(history: readonly Snapshot[], range: ChartRange): Snapshot[] {
   const latest = history[history.length - 1];
   if (!latest) return [];
   const windowed = history.filter((point) => latest.time - point.time <= RANGE_SPAN[range]);
@@ -29,7 +29,7 @@ export function rangePoints(history: readonly PricePoint[], range: ChartRange): 
   return stride > 1 ? windowed.filter((_point, index) => index % stride === 0 || index === windowed.length - 1) : windowed;
 }
 
-const linePath = (points: readonly PricePoint[], id: VoteCandidateId) =>
+const linePath = (points: readonly Snapshot[], id: MarketId) =>
   points
     .map((point, index) => {
       const x = points.length > 1 ? (index / (points.length - 1)) * PLOT_WIDTH : 0;
@@ -38,7 +38,7 @@ const linePath = (points: readonly PricePoint[], id: VoteCandidateId) =>
     })
     .join(' ');
 
-export function MarketChart({ t, history, range, focusId, onRangeChange, onFocusChange }: MarketChartProps) {
+export function MarketChart({ t, traders, history, range, focusId, onRangeChange, onFocusChange }: MarketChartProps) {
   const points = rangePoints(history, range);
   const first = points[0];
   const last = points[points.length - 1];
@@ -54,21 +54,21 @@ export function MarketChart({ t, history, range, focusId, onRangeChange, onFocus
 
       <div className="chart-frame">
         <ul className="chart-scale" aria-hidden="true">{[...GRID_LINES].reverse().map((value) => <li key={value}>{value}%</li>)}</ul>
-        <svg className="chart-plot" viewBox={`0 0 ${PLOT_WIDTH} ${PLOT_HEIGHT}`} preserveAspectRatio="none" role="img" aria-label={t.chartAria(VOTE_CANDIDATES.map((candidate) => candidate.name).join(', '))}>
+        <svg className="chart-plot" viewBox={`0 0 ${PLOT_WIDTH} ${PLOT_HEIGHT}`} preserveAspectRatio="none" role="img" aria-label={t.chartAria(traders.map((candidate) => candidate.trader).join(', '))}>
           {GRID_LINES.map((value) => <line className="chart-grid" key={value} x1="0" x2={PLOT_WIDTH} y1={PLOT_HEIGHT - (value / 100) * PLOT_HEIGHT} y2={PLOT_HEIGHT - (value / 100) * PLOT_HEIGHT} vectorEffect="non-scaling-stroke" />)}
-          {VOTE_CANDIDATES.map((candidate) => <path d={linePath(points, candidate.id)} data-focus={candidate.id === focusId ? 'true' : 'false'} fill="none" key={candidate.id} stroke={candidate.color} vectorEffect="non-scaling-stroke" />)}
+          {traders.map((candidate) => <path d={linePath(points, candidate.id)} data-focus={candidate.id === focusId ? 'true' : 'false'} fill="none" key={candidate.id} stroke={candidate.color} vectorEffect="non-scaling-stroke" />)}
         </svg>
       </div>
 
       <div className="chart-axis" aria-hidden="true"><span>{first ? formatTime(first.time) : ''}</span><span>{last ? formatTime(last.time) : ''}</span></div>
 
       <ul className="chart-legend">
-        {VOTE_CANDIDATES.map((candidate) => {
+        {traders.map((candidate) => {
           const change = last && first ? Math.round(last.prices[candidate.id]) - Math.round(first.prices[candidate.id]) : 0;
           return <li key={candidate.id}>
             <button aria-pressed={candidate.id === focusId} data-active={candidate.id === focusId ? 'true' : 'false'} onClick={() => onFocusChange(candidate.id)} type="button">
               <i style={{ background: candidate.color }} aria-hidden="true" />
-              {candidate.name}
+              {candidate.trader}
               <strong>{last ? Math.round(last.prices[candidate.id]) : 0}%</strong>
               <em data-move={change > 0 ? 'up' : change < 0 ? 'down' : 'flat'}>{change > 0 ? '+' : change < 0 ? '−' : ''}{Math.abs(change)}</em>
             </button>

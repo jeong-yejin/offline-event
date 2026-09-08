@@ -1,88 +1,119 @@
-import { useState } from 'react';
-import { CONTRACT_PAYOUT, type VoteCandidate } from '../data/voteContent';
+import { useEffect, useState } from 'react';
 import type { Strings } from '../i18n/strings';
-import { formatPill } from '../market/format';
-import { findHolding, quote, type Direction, type Holding, type PriceMap, type Side } from '../market/marketEngine';
+import { formatPoint } from '../market/format';
+import { findHolding, quote as priceOf, type DataStatus, type Direction, type Holding, type MarketTrader, type PriceMap, type Side } from '../market/marketEngine';
+import { parseQuantity, quoteSecondsLeft, type OrderQuote } from '../market/quote';
 
 const SIDES: readonly Side[] = ['yes', 'no'];
 const DIRECTIONS: readonly Direction[] = ['buy', 'sell'];
-const STEPS = [1, 10, 100];
 
 type OrderTicketProps = {
   t: Strings;
-  candidate: VoteCandidate;
+  candidate: MarketTrader;
   prices: PriceMap;
   side: Side;
-  balance: number;
+  direction: Direction;
+  point: number;
   holdings: readonly Holding[];
-  closed: boolean;
+  tradable: boolean;
+  status: DataStatus;
+  now: number;
+  quote: OrderQuote | null;
+  notice: string;
   onSideChange(side: Side): void;
-  onTrade(qty: number, direction: Direction): void;
+  onDirectionChange(direction: Direction): void;
+  onRequestQuote(quantity: number, direction: Direction): void;
+  onConfirm(): void;
+  onCancel(): void;
 };
 
-export function OrderTicket({ t, candidate, prices, side, balance, holdings, closed, onSideChange, onTrade }: OrderTicketProps) {
-  const [direction, setDirection] = useState<Direction>('buy');
-  const [draft, setDraft] = useState('25');
-  const [notice, setNotice] = useState('');
+export function OrderTicket({ t, candidate, prices, side, direction, point, holdings, tradable, status, now, quote, notice, onSideChange, onDirectionChange, onRequestQuote, onConfirm, onCancel }: OrderTicketProps) {
+  const [draft, setDraft] = useState('1');
+  const [error, setError] = useState('');
 
-  const price = quote(prices, candidate.id, side);
-  const held = findHolding(holdings, candidate.id, side);
-  const owned = held ? held.qty : 0;
-  const qty = Math.max(0, Math.floor(Number(draft) || 0));
-  const notional = qty * price;
-  const ceiling = direction === 'buy' ? Math.floor(balance / price) : owned;
-  const blocked = closed || qty < 1 || qty > ceiling;
+  useEffect(() => { setError(''); }, [candidate.id, side, direction]);
 
-  const hint = closed
-    ? t.hintClosed
-    : direction === 'sell' && owned < 1
-      ? t.hintNoHold(side, candidate.name)
-      : qty > ceiling
-        ? direction === 'buy' ? t.hintAfford(formatPill(ceiling)) : t.hintOnlyHold(formatPill(owned))
-        : '';
+  const owned = findHolding(holdings, candidate.id, side)?.qty ?? 0;
+  const unit = priceOf(prices, candidate.id, side, direction);
+  const quantity = parseQuantity(draft);
+  const expired = quote ? quoteSecondsLeft(quote, now) === 0 : false;
+  const closed = !tradable;
+  const stale = status === 'stale';
+  const locked = closed || stale;
+
+  /* Quantity is a count of positions. Anything else never reaches a quote request. */
+  function check(): number | null {
+    if (quantity === null) {
+      setError(t.errorQuantity);
+      return null;
+    }
+    if (direction === 'sell' && quantity > owned) {
+      setError(t.errorOwned(owned));
+      return null;
+    }
+    if (direction === 'buy' && quantity * unit > point) {
+      setError(t.errorPoint(formatPoint(point), Math.floor(point / unit)));
+      return null;
+    }
+    setError('');
+    return quantity;
+  }
 
   function submit(event: React.FormEvent) {
     event.preventDefault();
-    if (blocked) return;
-    onTrade(qty, direction);
-    setNotice(t.filled(direction, formatPill(qty), side, candidate.name, price));
+    if (locked) return;
+    const valid = check();
+    if (valid === null) return;
+    onRequestQuote(valid, direction);
   }
 
   return (
     <form className="order-ticket" onSubmit={submit} aria-label={t.ticketLabel}>
-      <header className="ticket-head"><img alt="" className="ticket-logo" src={`/assets/sponsors/${candidate.logo}`} /><strong>{candidate.name}</strong></header>
+      <header className="ticket-head">
+        <img alt="" className="ticket-logo" src={`/assets/sponsors/${candidate.logo}`} />
+        <div><strong>{candidate.trader}</strong><span>{candidate.exchange}</span></div>
+      </header>
 
       <div className="ticket-directions" role="group" aria-label={t.directionGroup}>
-        {DIRECTIONS.map((option) => <button aria-pressed={option === direction} data-active={option === direction ? 'true' : 'false'} key={option} onClick={() => { setDirection(option); setNotice(''); }} type="button">{t.directionName(option)}</button>)}
+        {DIRECTIONS.map((option) => <button aria-pressed={option === direction} data-active={option === direction ? 'true' : 'false'} disabled={Boolean(quote)} key={option} onClick={() => onDirectionChange(option)} type="button">{t.directionName(option)}</button>)}
       </div>
 
       <div className="ticket-sides" role="group" aria-label={t.sideGroup}>
-        {SIDES.map((option) => <button aria-pressed={option === side} data-active={option === side ? 'true' : 'false'} data-side={option} key={option} onClick={() => { onSideChange(option); setNotice(''); }} type="button">
-          <span>{t.sideName(option)}</span><strong>{quote(prices, candidate.id, option)}</strong>
+        {SIDES.map((option) => <button aria-pressed={option === side} data-active={option === side ? 'true' : 'false'} data-side={option} disabled={Boolean(quote)} key={option} onClick={() => onSideChange(option)} type="button">
+          <span>{t.sideName(option)}</span><strong>{priceOf(prices, candidate.id, option, direction)}</strong>
         </button>)}
       </div>
 
-      <label className="ticket-qty" htmlFor="order-contracts">{t.contracts}</label>
+      <label className="ticket-qty" htmlFor="order-quantity">{t.quantity}</label>
       <div className="ticket-input">
-        <button aria-label={t.decrease} onClick={() => setDraft(String(Math.max(0, qty - 1)))} type="button">−</button>
-        <input id="order-contracts" inputMode="numeric" min="0" onChange={(event) => { setDraft(event.target.value); setNotice(''); }} type="number" value={draft} />
-        <button aria-label={t.increase} onClick={() => setDraft(String(qty + 1))} type="button">+</button>
-      </div>
-
-      <div className="ticket-steps">
-        {STEPS.map((step) => <button key={step} onClick={() => setDraft(String(qty + step))} type="button">+{step}</button>)}
-        <button onClick={() => setDraft(String(Math.max(0, ceiling)))} type="button">{t.stepMax}</button>
+        <button aria-label={t.decrease} disabled={Boolean(quote)} onClick={() => setDraft(String(Math.max(1, (quantity ?? 1) - 1)))} type="button">−</button>
+        <input aria-describedby="ticket-notice" aria-invalid={error ? 'true' : 'false'} disabled={Boolean(quote)} id="order-quantity" inputMode="numeric" onChange={(event) => { setDraft(event.target.value); setError(''); }} type="text" value={draft} />
+        <button aria-label={t.increase} disabled={Boolean(quote)} onClick={() => setDraft(String((quantity ?? 0) + 1))} type="button">+</button>
       </div>
 
       <dl className="ticket-summary">
-        <div><dt>{t.price}</dt><dd>{price} PILL</dd></div>
-        <div><dt>{direction === 'buy' ? t.youPay : t.youReceive}</dt><dd>{formatPill(notional)} PILL</dd></div>
-        <div><dt>{direction === 'buy' ? t.toWin : t.contractsLeft}</dt><dd>{direction === 'buy' ? `${formatPill(qty * CONTRACT_PAYOUT)} PILL` : formatPill(Math.max(0, owned - qty))}</dd></div>
+        <div><dt>{t.unitPrice}</dt><dd>{unit} pt</dd></div>
+        <div><dt>{direction === 'buy' ? t.requiredPoint : t.expectedPoint}</dt><dd>{quantity === null ? '—' : `${formatPoint(quantity * unit)} pt`}</dd></div>
+        <div><dt>{direction === 'buy' ? t.availablePoint : t.ownedQuantity}</dt><dd>{direction === 'buy' ? `${formatPoint(point)} pt` : owned}</dd></div>
       </dl>
 
-      <button className="ticket-submit" data-side={side} disabled={blocked} type="submit">{t.ticketSubmit(direction, formatPill(qty), side)}</button>
+      {quote
+        ? <div className="ticket-quote" data-expired={expired ? 'true' : 'false'} role="status">
+            <p className="quote-id">{t.quoteId} <code>{quote.quoteId}</code></p>
+            <dl>
+              <div><dt>{t.unitPrice}</dt><dd>{quote.unitPrice} pt</dd></div>
+              <div><dt>{t.quantity}</dt><dd>{quote.quantity}</dd></div>
+              <div><dt>{t.totalPrice}</dt><dd>{formatPoint(quote.totalPrice)} pt</dd></div>
+            </dl>
+            <p className="quote-life">{expired ? t.quoteExpired : t.quoteLife(quoteSecondsLeft(quote, now))}</p>
+            <div className="quote-actions">
+              <button className="ticket-submit" data-side={quote.positionSide} disabled={expired} onClick={onConfirm} type="button">{t.confirmOrder(quote.orderSide)}</button>
+              <button className="quote-cancel" onClick={onCancel} type="button">{expired ? t.requoteCta : t.cancelQuote}</button>
+            </div>
+          </div>
+        : <button className="ticket-submit" data-side={side} disabled={locked} type="submit">{t.requestQuote(direction)}</button>}
 
-      <p className="ticket-notice" role="status">{hint || notice}</p>
+      <p className="ticket-notice" id="ticket-notice" role="status">{error || (closed ? t.hintClosed : stale ? t.hintStale(candidate.trader) : notice)}</p>
     </form>
   );
 }

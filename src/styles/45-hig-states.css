@@ -1,0 +1,36 @@
+/* Keyboard entry point, embedded-page states, and minimum target sizing. */
+.skip-link { background: #050805; border: 1px solid #f8f7f7; border-radius: 4px; color: #f8f7f7; font-size: .8125rem; left: 16px; letter-spacing: .08em; padding: 16px 24px; position: fixed; text-decoration: none; text-transform: uppercase; top: 16px; transform: translateY(-180%); z-index: 20; transition: transform .18s ease; }
+.skip-link:focus-visible { outline: 2px solid #caff5d; outline-offset: 2px; transform: translateY(0); }
+.visually-hidden { clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+
+/* The Wonderland page is an embed, so it needs its own loading and failure copy. */
+.reboundx-frame-wrap { position: relative; }
+.reboundx-frame[data-state="loading"] { opacity: 0; }
+.reboundx-frame[data-state="failed"] { display: none; }
+.frame-skeleton { align-content: start; display: grid; gap: 24px; inset: 0; padding: 120px 80px; pointer-events: none; position: absolute; }
+.frame-skeleton span { background: rgba(244,239,230,.06); border-radius: 3px; display: block; height: 26px; overflow: hidden; position: relative; }
+.frame-skeleton span:nth-child(odd) { width: 62%; }
+.frame-skeleton span:nth-child(even) { width: 84%; }
+.frame-skeleton span:first-child { height: 74px; width: 46%; }
+.frame-skeleton span::after { background: linear-gradient(90deg, transparent, rgba(244,239,230,.16), transparent); content: ''; inset: 0; position: absolute; will-change: transform; animation: frame-shimmer 1.5s ease-in-out infinite; }
+.frame-skeleton span:nth-child(2)::after { animation-delay: .12s; }
+.frame-skeleton span:nth-child(3)::after { animation-delay: .24s; }
+.frame-skeleton span:nth-child(4)::after { animation-delay: .36s; }
+.frame-skeleton span:nth-child(5)::after { animation-delay: .48s; }
+.frame-error { display: flex; flex-direction: column; gap: 28px; padding: 140px 80px; }
+.frame-error p { color: #c3b7ae; font-size: 1.0625rem; line-height: 1.6; margin: 0; max-width: 480px; }
+.frame-error .outline-button { align-self: flex-start; border-color: #f3dfa8; color: #f3dfa8; }
+@keyframes frame-shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+@media (max-width: 700px) {
+  .frame-skeleton { gap: 20px; padding: 76px 20px; }
+  .frame-skeleton span { height: 20px; }
+  .frame-skeleton span:first-child { height: 52px; width: 72%; }
+  .frame-error { gap: 24px; padding: 92px 20px; }
+  .frame-error p { font-size: .9375rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link { transition: none; }
+  .frame-skeleton span::after { animation: none; }
+}

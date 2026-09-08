@@ -1,33 +1,56 @@
 import { useCallback, useEffect, useReducer } from 'react';
-import { INITIAL_COUNTDOWN_SECONDS, MARKET_STORAGE_KEY, OPENING_VOLUME, STARTING_BALANCE, type VoteCandidateId } from '../data/voteContent';
-import { OPEN_PRICES, addFill, applyImpact, createRandom, findHolding, quote, removeFill, seedHistory, settlementPayout, simulateFill, stepPrices, winnerOf, type Direction, type Fill, type Holding, type PriceMap, type PricePoint, type Side } from './marketEngine';
+import { COMPETITION_SECONDS, MARKET_STORAGE_KEY, OPENING_VOLUME, SETTLING_SECONDS, STARTING_POINT } from '../data/voteContent';
+import { CANDIDATE_IDS, MOMENTUM_WINDOW_MS, OPEN_BALANCES, OPEN_PRICES, addFill, applyOpen, createRandom, dataStatusOf, findHolding, midPrices, removeFill, seedHistory, seedOpenInterest, settlementPayout, simulateFill, stepBalances, winnersOf, type BalanceMap, type DataStatus, type Direction, type Fill, type Holding, type MarketId, type OpenMap, type PriceMap, type Side, type Snapshot } from './marketEngine';
+import { isExpired, type OrderQuote } from './quote';
 
-export type Settlement = { winner: VoteCandidateId; payout: number };
+export type Phase = 'ready' | 'live' | 'settling' | 'ended';
+export type Settlement = { winners: MarketId[]; payout: number; balances: BalanceMap };
 
 export type MarketState = {
   time: number;
+  startAt: number;
   closeAt: number;
+  settleAt: number;
+  balances: BalanceMap;
   prices: PriceMap;
-  history: PricePoint[];
+  open: OpenMap;
+  updatedAt: Record<MarketId, number>;
+  history: Snapshot[];
   fills: Fill[];
   volume: number;
-  balance: number;
+  point: number;
   holdings: Holding[];
   settlement: Settlement | null;
+  filled: string[];
 };
 
-type TradeRequest = { id: VoteCandidateId; side: Side; direction: Direction; qty: number };
+type MarketAction = ({ type: 'tick'; seed: number } | { type: 'fill'; quote: OrderQuote }) & { time: number };
 
-type MarketAction = ({ type: 'tick'; seed: number } | ({ type: 'trade' } & TradeRequest)) & { time: number };
-
-type StoredAccount = Pick<MarketState, 'closeAt' | 'balance' | 'holdings' | 'settlement'>;
+type StoredAccount = Pick<MarketState, 'startAt' | 'closeAt' | 'point' | 'holdings' | 'settlement'>;
 
 const TICK_INTERVAL = 1000;
 const HISTORY_LIMIT = 3600;
 const FILL_LIMIT = 12;
 const FILL_CHANCE = 0.34;
+/* Each trader's feed refreshes on most ticks. The gaps are what turn a card delayed. */
+const FEED_REFRESH_CHANCE = 0.92;
 
-export const secondsLeftOf = (state: MarketState) => Math.max(0, Math.round((state.closeAt - state.time) / 1000));
+export function phaseOf(state: MarketState): Phase {
+  if (state.time < state.startAt) return 'ready';
+  if (state.time < state.closeAt) return 'live';
+  return state.settlement ? 'ended' : 'settling';
+}
+
+export const secondsLeftOf = (state: MarketState) =>
+  Math.max(0, Math.round(((phaseOf(state) === 'ready' ? state.startAt : state.closeAt) - state.time) / 1000));
+
+export const statusOf = (state: MarketState, id: MarketId): DataStatus => dataStatusOf(state.updatedAt[id], state.time);
+
+const pastBalances = (history: readonly Snapshot[], time: number): BalanceMap => {
+  const cutoff = time - MOMENTUM_WINDOW_MS;
+  const older = history.filter((point) => point.time <= cutoff);
+  return older.length ? older[older.length - 1].balances : OPEN_BALANCES;
+};
 
 function readAccount(): StoredAccount | null {
   try {
@@ -49,62 +72,82 @@ function writeAccount(account: StoredAccount) {
 export function createInitialState(): MarketState {
   const time = Date.now();
   const stored = readAccount();
+  const startAt = stored?.startAt ?? time;
+  const closeAt = stored?.closeAt ?? startAt + COMPETITION_SECONDS * 1000;
+  const history = seedHistory(time);
   return {
     time,
-    closeAt: stored?.closeAt ?? time + INITIAL_COUNTDOWN_SECONDS * 1000,
+    startAt,
+    closeAt,
+    settleAt: closeAt + SETTLING_SECONDS * 1000,
+    balances: OPEN_BALANCES,
     prices: OPEN_PRICES,
-    history: seedHistory(time),
+    open: seedOpenInterest(),
+    updatedAt: CANDIDATE_IDS.reduce((map, id) => ({ ...map, [id]: time }), {} as Record<MarketId, number>),
+    history,
     fills: [],
     volume: OPENING_VOLUME,
-    balance: stored?.balance ?? STARTING_BALANCE,
+    point: stored?.point ?? STARTING_POINT,
     holdings: stored?.holdings ?? [],
     settlement: stored?.settlement ?? null,
+    filled: [],
   };
 }
 
+/* Final margin balances decide the winner, so settlement reads the balances as they stand at
+   the end of the settling window rather than the prices. */
 function settle(state: MarketState): MarketState {
-  const winner = winnerOf(state.prices);
-  const payout = settlementPayout(state.holdings, winner);
-  return { ...state, balance: state.balance + payout, settlement: { winner, payout } };
+  const winners = winnersOf(state.balances);
+  const payout = settlementPayout(state.holdings, winners);
+  return { ...state, point: state.point + payout, settlement: { winners, payout, balances: state.balances } };
 }
 
 function applyTick(state: MarketState, time: number, seed: number): MarketState {
   const random = createRandom(seed);
-  const closed = time >= state.closeAt;
-  if (closed && state.settlement) return { ...state, time };
-  if (closed) return settle({ ...state, time });
-  const prices = stepPrices(state.prices, random);
+  const phase = phaseOf({ ...state, time });
+  if (phase === 'ended') return { ...state, time };
+  if (phase === 'settling') return time >= state.settleAt ? settle({ ...state, time }) : { ...state, time };
+  if (phase === 'ready') return { ...state, time };
+
+  const balances = stepBalances(state.balances, random);
+  const prices = midPrices(balances, pastBalances(state.history, time), state.open);
   const fill = random() < FILL_CHANCE ? simulateFill(prices, random, time) : null;
+  const open = fill ? applyOpen(state.open, fill.id, fill.side, fill.direction === 'buy' ? fill.qty : -fill.qty) : state.open;
   return {
     ...state,
     time,
+    balances,
     prices,
-    history: [...state.history, { time, prices }].slice(-HISTORY_LIMIT),
+    open,
+    updatedAt: CANDIDATE_IDS.reduce((map, id) => ({ ...map, [id]: random() < FEED_REFRESH_CHANCE ? time : state.updatedAt[id] }), {} as Record<MarketId, number>),
+    history: [...state.history, { time, balances, prices }].slice(-HISTORY_LIMIT),
     fills: fill ? [fill, ...state.fills].slice(0, FILL_LIMIT) : state.fills,
     volume: state.volume + (fill ? fill.qty * fill.price : 0),
   };
 }
 
-function applyTrade(state: MarketState, time: number, request: TradeRequest): MarketState {
-  const { id, side, direction, qty } = request;
-  if (state.settlement || qty <= 0) return state;
-  const price = quote(state.prices, id, side);
-  const notional = price * qty;
-  const held = findHolding(state.holdings, id, side);
-  if (direction === 'buy' ? notional > state.balance : !held || held.qty < qty) return state;
+/* A quote is the only way in. It has to be live, affordable, and never filled before. */
+function applyFill(state: MarketState, time: number, quote: OrderQuote): MarketState {
+  const { marketId, positionSide, orderSide, quantity, unitPrice, totalPrice } = quote;
+  if (phaseOf({ ...state, time }) !== 'live') return state;
+  if (isExpired(quote, time) || state.filled.includes(quote.idempotencyKey)) return state;
+  if (statusOf({ ...state, time }, marketId) === 'stale') return state;
+  const held = findHolding(state.holdings, marketId, positionSide);
+  if (orderSide === 'buy' ? totalPrice > state.point : !held || held.qty < quantity) return state;
   return {
     ...state,
     time,
-    prices: applyImpact(state.prices, id, side, direction, qty),
-    balance: direction === 'buy' ? state.balance - notional : state.balance + notional,
-    holdings: direction === 'buy' ? addFill(state.holdings, id, side, qty, price) : removeFill(state.holdings, id, side, qty),
-    fills: [{ id, side, direction, qty, price, time, mine: true }, ...state.fills].slice(0, FILL_LIMIT),
-    volume: state.volume + notional,
+    point: orderSide === 'buy' ? state.point - totalPrice : state.point + totalPrice,
+    holdings: orderSide === 'buy' ? addFill(state.holdings, marketId, positionSide, quantity, unitPrice) : removeFill(state.holdings, marketId, positionSide, quantity),
+    open: applyOpen(state.open, marketId, positionSide, orderSide === 'buy' ? quantity : -quantity),
+    fills: [{ id: marketId, side: positionSide, direction: orderSide, qty: quantity, price: unitPrice, time, mine: true }, ...state.fills].slice(0, FILL_LIMIT),
+    volume: state.volume + totalPrice,
+    filled: [...state.filled, quote.idempotencyKey].slice(-64),
   };
 }
 
 export const reduceMarket = (state: MarketState, action: MarketAction): MarketState =>
-  action.type === 'tick' ? applyTick(state, action.time, action.seed) : applyTrade(state, action.time, action);
+  action.type === 'tick' ? applyTick(state, action.time, action.seed) : applyFill(state, action.time, action.quote);
 
 export function useMarket() {
   const [state, dispatch] = useReducer(reduceMarket, undefined, createInitialState);
@@ -115,10 +158,12 @@ export function useMarket() {
   }, []);
 
   useEffect(() => {
-    writeAccount({ closeAt: state.closeAt, balance: state.balance, holdings: state.holdings, settlement: state.settlement });
-  }, [state.closeAt, state.balance, state.holdings, state.settlement]);
+    writeAccount({ startAt: state.startAt, closeAt: state.closeAt, point: state.point, holdings: state.holdings, settlement: state.settlement });
+  }, [state.startAt, state.closeAt, state.point, state.holdings, state.settlement]);
 
-  const trade = useCallback((request: TradeRequest) => dispatch({ type: 'trade', time: Date.now(), ...request }), []);
+  const fill = useCallback((quote: OrderQuote) => dispatch({ type: 'fill', time: Date.now(), quote }), []);
 
-  return { state, trade };
+  return { state, fill };
 }
+
+export type { Direction, Side };

@@ -1,0 +1,40 @@
+import type { MarketTrader } from '../market/marketEngine';
+
+/* Eight seats open the TOKEN2049 competition. Real nicknames land the week of the event, so the
+   seat letter stands in and no sponsor logo is claimed for a person. */
+export const T2049_TRADERS: readonly MarketTrader[] = [
+  { id: 'seat-a', trader: 'Trader A', exchange: 'Seat 01', logo: '', color: '#caff5d' },
+  { id: 'seat-b', trader: 'Trader B', exchange: 'Seat 02', logo: '', color: '#5dd0ff' },
+  { id: 'seat-c', trader: 'Trader C', exchange: 'Seat 03', logo: '', color: '#ff9f5d' },
+  { id: 'seat-d', trader: 'Trader D', exchange: 'Seat 04', logo: '', color: '#c98dff' },
+  { id: 'seat-e', trader: 'Trader E', exchange: 'Seat 05', logo: '', color: '#5dffb0' },
+  { id: 'seat-f', trader: 'Trader F', exchange: 'Seat 06', logo: '', color: '#ff6f9c' },
+  { id: 'seat-g', trader: 'Trader G', exchange: 'Seat 07', logo: '', color: '#ffe45d' },
+  { id: 'seat-h', trader: 'Trader H', exchange: 'Seat 08', logo: '', color: '#8d9cff' },
+];
+
+export const T2049_INITIAL_TRADER_COUNT = 8;
+
+/* Config §76. Every seat opens on the same margin balance, so the eight YES prices start at 12.5. */
+export const T2049_INITIAL_TRADER_BALANCE = 10000;
+
+export const T2049_SESSION_A_SECONDS = 1800;
+export const T2049_BREAK_SECONDS = 600;
+export const T2049_SESSION_C_SECONDS = 1800;
+
+/* One seat leaves every 7:30. Four cuts fit inside Session A, which is what leaves four
+   finalists for Session C. */
+export const T2049_ELIMINATION_INTERVAL_SECONDS = 450;
+export const T2049_FINALIST_COUNT = 4;
+
+/* The PRD settles after the event. The front end holds SETTLING briefly so the state is visible. */
+export const T2049_SETTLING_SECONDS = 20;
+
+export const T2049_STARTING_POINT = 100;
+
+export const T2049_REWARD_TOP = 50;
+export const T2049_REWARD_FIRST_USDT = 100;
+
+export const T2049_OPENING_VOLUME = 268800;
+
+export const T2049_STORAGE_KEY = 'perpdex.t2049.v1';

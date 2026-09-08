@@ -1,5 +1,6 @@
 import type { AgendaItem, Speaker } from '../data/homeContent';
 import type { EventContent, EventKey } from '../data/eventContent';
+import type { EventFact } from '../data/token2049Content';
 import type { Lang } from './strings';
 
 /* Korean overrides keyed by the English source's own identity, so the data files stay single-source. */
@@ -17,9 +18,9 @@ const KO_EVENTS: Record<EventKey, EventCopy> = {
     date: 'Korea Blockchain Week 2026 · 서울, 대한민국',
   },
   'token2049-side-event': {
-    eyebrow: '사이드 룸이 켜지고 있다.',
-    copy: '다음 사이드 이벤트는 아직 구조체 안에 있습니다. 장소, 프로그램, 등록 정보를 곧 공개합니다.',
-    date: 'TOKEN2049 · 싱가포르',
+    eyebrow: '아레나가 싱가포르로 간다.',
+    copy: 'PerpDEX Day는 서울에서 시작된 라이브 트레이딩 대회입니다. 2026년 10월 5일, TOKEN2049 위크 기간에 Zouk에서 열립니다. 17시 부스 미션부터 알파 토크, 관객 배팅, 그리고 1,000명이 넘는 관중 앞에서 온체인으로 정산되는 트레이딩 토너먼트까지 이어집니다.',
+    date: 'TOKEN2049 싱가포르 · 2026년 10월 5일',
   },
 };
 
@@ -38,6 +39,19 @@ const KO_AGENDA_TITLES: Record<string, string> = {
   'Trading Competition': '트레이딩 대회',
   Raffle: '경품 추첨',
   'VIP MAFIA NIGHT/ Networking': 'VIP 마피아 나이트 / 네트워킹',
+  'Doors open / Booth missions begin': '입장 시작 / 부스 미션 오픈',
+  'The Alpha Talk': '알파 토크',
+  'Audience Betting for Winner': '우승자 관객 배팅',
+  'Live Trading Tournament': '라이브 트레이딩 토너먼트',
+  'Raffle & awards': '경품 추첨 & 시상',
+  'Nightlife transition — Zouk main floor': '애프터파티 — Zouk 메인 플로어',
+};
+
+const KO_FACT_LABELS: Record<string, string> = {
+  Date: '일정',
+  Venue: '장소',
+  Crowd: '참가 규모',
+  Hosts: '주최',
 };
 
 export const localizeEvent = (lang: Lang, event: EventContent): EventContent =>
@@ -48,3 +62,7 @@ export const localizeRole = (lang: Lang, [name, role, image]: Speaker): Speaker 
 
 export const localizeAgenda = (lang: Lang, [time, title, type]: AgendaItem): AgendaItem =>
   lang === 'ko' ? [time, KO_AGENDA_TITLES[title] ?? title, type] : [time, title, type];
+
+export const localizeFact = (lang: Lang, [label, value]: EventFact): EventFact =>
+  lang === 'ko' ? [KO_FACT_LABELS[label] ?? label, value] : [label, value];
+

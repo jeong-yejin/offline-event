@@ -1,0 +1,39 @@
+/* Betting leaderboard: your own record ranked against the simulated operators. */
+.leaderboard table { border-collapse: collapse; table-layout: fixed; width: 100%; }
+.leaderboard th { color: rgba(248,247,247,.55); font-size: .75rem; font-weight: 400; letter-spacing: .16em; padding: 0 0 12px; text-align: left; text-transform: uppercase; }
+.leaderboard th:nth-child(1) { width: 52px; }
+.leaderboard th:nth-child(3) { width: 168px; }
+.leaderboard th:nth-child(4) { width: 108px; }
+.leaderboard th:nth-child(5) { width: 116px; }
+.leaderboard th:nth-child(4), .leaderboard th:nth-child(5) { text-align: right; }
+.leaderboard td { border-top: 1px solid rgba(248,247,247,.12); color: rgba(248,247,247,.72); font-size: .8125rem; overflow: hidden; padding: 12px 0; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Numeric columns hold their width while the board reranks every second. */
+.leader-place, .leader-pnl, .leader-net, .leader-return { font-variant-numeric: tabular-nums; }
+.leader-pnl, .leader-return { text-align: right; }
+
+.leaderboard .leader-name span { color: #f8f7f7; }
+.leader-name em { border: 1px solid rgba(202,255,93,.45); color: #caff5d; font-size: .625rem; font-style: normal; letter-spacing: .14em; margin-left: 12px; padding: 4px 8px; }
+.leaderboard .leader-pnl[data-move="up"], .leaderboard .leader-return[data-move="up"] { color: #caff5d; }
+.leaderboard .leader-pnl[data-move="down"], .leaderboard .leader-return[data-move="down"] { color: #e47467; }
+
+/* Your row stays findable at a glance. */
+.leaderboard tr[data-you="true"] td { background: rgba(202,255,93,.07); }
+.leaderboard tr[data-you="true"] .leader-name span { color: #caff5d; }
+.leaderboard tr[data-you="true"] td:first-child { box-shadow: inset 2px 0 0 #caff5d; padding-left: 12px; }
+
+.leader-place [data-scramble="true"] { color: #caff5d; }
+.leaderboard-note { color: rgba(248,247,247,.55); font-size: .8125rem; line-height: 1.5; margin: 16px 0 0; }
+
+@media (max-width: 700px) {
+  .leaderboard th:nth-child(5), .leaderboard td:nth-child(5) { display: none; }
+  .leaderboard th:nth-child(3) { width: 132px; }
+  .leaderboard th:nth-child(4) { width: 96px; }
+  .leaderboard td { font-size: .75rem; padding: 12px 0; }
+  .leader-name em { display: none; }
+}
+
+@media (max-width: 520px) {
+  .leaderboard th:nth-child(3), .leaderboard td:nth-child(3) { display: none; }
+  .leaderboard th:nth-child(1) { width: 40px; }
+}
