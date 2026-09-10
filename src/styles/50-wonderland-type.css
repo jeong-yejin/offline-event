@@ -1,0 +1,10 @@
+/* REBOUNDX IN WONDERLAND typography: Latin in Hellcats BV, Hangul in Zen Serif. */
+/* Hellcats is an all-caps display face with no Hangul and no lowercase, and it stops resolving as words
+   under roughly 20px, so it takes the display slots and Zen Serif carries anything read as a sentence.
+   Zen Serif covers both scripts, so no per-script rule is needed. The page body is the embedded
+   /reboundx build, which already ships this pair; this file covers the shell around it. */
+.site-shell[data-event="reboundx-in-wonderland"] { font-family: 'Zen Serif', serif; }
+/* The switcher names its own face, so inheriting the shell is not enough to reach it. It sits at 15px,
+   below the size Hellcats stays legible at, so it takes the reading face like the rest of the chrome. */
+.site-shell[data-event="reboundx-in-wonderland"] .event-switcher-tab { font-family: 'Zen Serif', serif; }
+.site-shell[data-event="reboundx-in-wonderland"] .footer-brand { font-family: 'Hellcats BV', 'Zen Serif', serif; }

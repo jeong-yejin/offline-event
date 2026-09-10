@@ -2,3 +2,4 @@
 button, input { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 a { color: inherit; }
+.back-arrow { flex: none; height: 14px; width: 14px; }

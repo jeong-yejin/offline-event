@@ -1,0 +1,9 @@
+/* PERP-DEX DAY typography: Latin in Matrix Sans, Hangul in Wanted Sans. */
+/* The site default is already that pair, so this file only hands back the elements that name a different
+   face for the shell every event shares. Matrix Sans carries no Hangul, so Wanted Sans picks up the Korean
+   without a per-script rule. */
+.site-shell[data-event="perp-dex-day"] :is(h1, h2, .footer-brand, .event-switcher-tab, .dense-speaker-list .speaker span) { font-family: 'Matrix Sans', 'Wanted Sans', sans-serif; }
+
+/* The market page renders outside the shell, where the site-wide `h1, h2` rule would set its headings in
+   Neue Machina. The TOKEN2049 market shares the class and keeps that face, so it is excluded by name. */
+.market-page:not(.t2049-market-page) :is(h1, h2) { font-family: 'Matrix Sans', 'Wanted Sans', sans-serif; }

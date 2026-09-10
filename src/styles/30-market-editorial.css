@@ -1,0 +1,19 @@
+/* Market pages: keep the same editorial, full-bleed system as the event pages. */
+.market-page { background: #000; }
+.market-header { align-items: center; border: 0; left: 48px; padding: 14px 0; position: absolute; right: 48px; top: 0; z-index: 5; }
+.market-back { align-items: center; color: #f8f7f7; display: inline-flex; font-size: 12px; gap: 8px; letter-spacing: .08em; min-height: 44px; transition: color .2s ease; }
+.market-back:hover { color: rgba(248,247,247,.68); }
+.market-header span { color: rgba(248,247,247,.68); font-size: 12px; letter-spacing: .08em; }
+.market-feature { align-items: center; background: #000; display: flex; height: 952px; justify-content: center; min-height: 0; overflow: hidden; position: relative; }
+.market-content { border-top: 1px solid rgba(248,247,247,.18); max-width: 1508px; padding: 160px 48px; }
+.market-intro { display: grid; gap: 80px; grid-template-columns: 1fr 1.1fr; margin: 0 0 80px; text-align: left; }
+.market-intro h1 { font-size: clamp(56px, 7vw, 108px); letter-spacing: -.055em; line-height: 1; }
+.market-intro p { align-self: end; color: rgba(248,247,247,.72); font-size: 20px; line-height: 1.5; margin: 0; max-width: 440px; }
+.market-intro p + p { color: rgba(248,247,247,.72); grid-column: 2; margin-top: -68px; }
+.market-brand-card { border: 0; border-top: 1px solid rgba(248,247,247,.18); border-radius: 0; box-shadow: none; margin: 0; max-width: none; padding: 160px max(48px, calc((100vw - 1508px) / 2 + 48px)); text-align: left; }
+.market-brand-art { opacity: .24; }
+.market-brand-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 760px; }
+.market-brand-copy h2 { font-size: clamp(56px, 7vw, 108px); line-height: calc(1em + 8px); }
+.market-brand-copy p { color: rgba(248,247,247,.72); font-size: 16px; line-height: 1.5; margin: 0; }
+.market-brand-copy a { background: transparent; border: 1.5px solid #f8f7f7; border-radius: 4px; color: #f8f7f7; font-size: 16px; margin-top: 8px; padding: 12px 20px; }
+.market-footer { align-items: center; background: #000; border-top: 1px solid rgba(248,247,247,.22); color: #f8f7f7; font-size: 16px; gap: 28px; letter-spacing: 0; padding: 28px 48px 32px; }

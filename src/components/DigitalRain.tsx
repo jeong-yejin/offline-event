@@ -3,7 +3,7 @@ import { useEffect, useRef, type CSSProperties } from 'react';
 const DEFAULTS = {
   headColor: '#FFFFFF',
   trailColor: '#CFFF4B',
-  glyphSize: 10,
+  glyphSize: 12,
   speed: 8,
   angle: 0,
   density: 50,
@@ -81,6 +81,8 @@ export default function DigitalRain({
     const rate = speed * glyphSize;
     const gap = glyphSize * (1 + (50 - density) / 12);
     const tailLength = Math.max(1, Math.round(trail));
+    const taperByRow = Array.from({ length: tailLength }, (_, index) =>
+      index === 0 ? 1 : Math.pow(1 - index / tailLength, TRAIL_FALLOFF));
 
     let alive = true;
     let raf = 0;
@@ -162,7 +164,7 @@ export default function DigitalRain({
           for (let i = 0; i < tailLength; i++) {
             const row = headRow - i;
             if (row < 0 || row >= column.glyphs.length) continue;
-            const taper = i === 0 ? 1 : Math.pow(1 - i / tailLength, TRAIL_FALLOFF);
+            const taper = taperByRow[i];
             context.globalAlpha = columnAlpha * taper;
             context.fillStyle = i === 0 ? headColor : trailColor;
             context.shadowBlur = i === 0 ? glyphSize : 0;
@@ -170,7 +172,12 @@ export default function DigitalRain({
           }
         });
 
-        column.streams = column.streams.filter((stream) => stream.alpha > 0 && stream.y - lead <= span);
+        // Streams are effect-local mutable simulation data, safe to compact in place.
+        let kept = 0;
+        for (const stream of column.streams) {
+          if (stream.alpha > 0 && stream.y - lead <= span) column.streams[kept++] = stream;
+        }
+        column.streams.length = kept;
         const newest = column.streams[column.streams.length - 1];
         if (!newest || newest.y >= column.releaseAt) {
           column.streams.push(spawn(-lead));

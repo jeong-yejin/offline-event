@@ -1,0 +1,15 @@
+/* Final market mobile layout: overrides both the home and the legacy mobile rules. */
+@media (max-width: 700px) {
+  .market-header { left: 20px; padding: 10px 0; right: 20px; }
+  .market-header span { font-size: 12px; }
+  .market-feature { height: 760px; }
+  .market-content { padding: 92px 20px; }
+  .market-intro { display: block; margin-bottom: 56px; }
+  .market-intro h1, .market-brand-copy h2 { font-size: clamp(44px, 12vw, 64px); }
+  .market-intro p { margin-top: 28px; }
+  .market-intro p + p { margin-top: 12px; }
+  .market-brand-card { padding: 92px 20px; }
+  .market-brand-copy { gap: 8px; }
+  .market-brand-copy p { margin: 0; }
+  .market-footer { align-items: flex-start; flex-direction: column; padding: 24px 20px 28px; }
+}

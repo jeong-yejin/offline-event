@@ -1,0 +1,64 @@
+/* TOKEN2049 survival market. Eight seats, a cut every 7:30, and two trading sessions. */
+
+.t2049-market-page .market-content { border-top: 0; }
+
+/* This page sits outside the site shell, so it names the TOKEN2049 pair itself. Inter reads the copy;
+   headings keep the site-wide 'Neue Machina', 'Wanted Sans' chain, whose Hangul fallback never
+   fires on an English-only page. */
+.t2049-market-page { font-family: 'Inter', sans-serif; }
+
+/* Every section label on the page was set at .55 alpha and 11px. Both move up together. */
+.t2049-market-page .market-bar dt,
+.t2049-market-page .trader-table thead th,
+.t2049-market-page .rules-list dt,
+.t2049-market-page .market-positions h3,
+.t2049-market-page .market-history h3,
+.t2049-market-page .market-rules h3,
+.t2049-market-page .chart-head h3,
+.t2049-market-page .leaderboard h3,
+.t2049-market-page .leaderboard th,
+.t2049-market-page .ticket-summary dt,
+.t2049-market-page .ticket-quote dt,
+.t2049-market-page .position-table thead th,
+.t2049-market-page .positions-total dt { color: rgba(248,247,247,.68); font-size: 12px; letter-spacing: .12em; }
+.t2049-market-page .rules-list dd,
+.t2049-market-page .leaderboard-note,
+.t2049-market-page .ticket-notice { color: rgba(248,247,247,.7); font-size: 16px; }
+.t2049-market-page .leaderboard td,
+.t2049-market-page .position-row > td { color: rgba(248,247,247,.8); font-size: 16px; }
+.t2049-market-page .chart-scale,
+.t2049-market-page .chart-axis { color: rgba(248,247,247,.62); font-size: 12px; }
+.t2049-market-page .chart-chips button { color: rgba(248,247,247,.68); }
+.t2049-market-page .chart-chips button[data-active="true"] { color: #f8f7f7; }
+
+
+/* ---- status rail ------------------------------------------------------------------------- */
+/* The break is neither live nor over, so it drops the live green rather than borrowing the cut red. */
+.market-state[data-phase="break"] { background: rgba(255,255,255,.05); border-color: var(--edge); color: rgba(248,247,247,.72); }
+
+/* A cut clock and the session clock never run at once, so they share the fourth card. The clock
+   turns red only inside the last 60 seconds, when the seat is already going out. */
+.market-cut-clock[data-urgent="true"] dt, .market-cut-clock[data-urgent="true"] dd { color: #ff6467; }
+
+
+/* ---- phase banners ------------------------------------------------------------------------ */
+.market-break { border-left: 2px solid rgba(248,247,247,.4); color: rgba(248,247,247,.72); font-size: 16px; line-height: 1.5; margin: 0 0 48px; padding: 4px 0 4px 20px; }
+.market-cut { border: 1px solid #e47467; margin: 0 0 48px; padding: 28px 32px; }
+.market-cut h2 { font-size: 24px; letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.market-cut p { color: rgba(248,247,247,.72); font-size: 16px; line-height: 1.5; margin: 12px 0 0; text-wrap: pretty; }
+
+
+/* ---- the seat board ---------------------------------------------------------------------- */
+/* Only this event cuts seats, so only its cards carry a standing. */
+.trader-state { border: 1px solid currentcolor; color: rgba(248,247,247,.55); font-size: 12px; justify-self: start; letter-spacing: .12em; margin: 0; padding: 4px 8px; text-transform: uppercase; }
+.trader-state[data-state="finalist"] { color: #caff5d; }
+.trader-state[data-state="winner"] { color: #00bc7d; }
+.trader-state[data-state="eliminated"] { color: #ff6467; }
+.trader-row[data-state="eliminated"] { opacity: .45; }
+.trader-row[data-state="winner"] { background: rgba(0,188,125,.08); }
+
+
+/* ---- the order ticket --------------------------------------------------------------------- */
+/* The ticket names a seat instead of a sponsor, so the head stacks rather than sitting inline. */
+.t2049-market-page .ticket-head div { display: flex; flex-direction: column; gap: 4px; }
+.t2049-market-page .ticket-head span { color: rgba(248,247,247,.6); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }

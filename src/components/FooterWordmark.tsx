@@ -1,7 +1,7 @@
 import { revealStyle } from '../motion/reveal';
 
 export function FooterWordmark() {
-  const text = 'PERP-DEX DAY';
+  const text = 'ReboundX';
   return (
     <div className="footer-brand footer-wordmark" aria-label={text}>
       {Array.from(text).map((letter, index) => (

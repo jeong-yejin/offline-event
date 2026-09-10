@@ -11,14 +11,15 @@
 @import './styles/12-home-content.css';
 @import './styles/13-home-mobile.css';
 @import './styles/14-reduced-motion.css';
+@import './styles/15-shiny-cta.css';
 
-/* Vote page: preserve legacy rules before editorial overrides. */
-@import './styles/20-vote-legacy.css';
-@import './styles/21-vote-legacy-mobile.css';
-@import './styles/30-vote-editorial.css';
-@import './styles/31-vote-editorial-mobile.css';
-@import './styles/40-vote-market.css';
-@import './styles/41-vote-market-mobile.css';
+/* Market pages: the shared shell, legacy rules first so the editorial overrides win. */
+@import './styles/20-market-legacy.css';
+@import './styles/21-market-legacy-mobile.css';
+@import './styles/30-market-editorial.css';
+@import './styles/31-market-editorial-mobile.css';
+@import './styles/40-market.css';
+@import './styles/41-market-mobile.css';
 
 /* Language toggle and Korean typography. */
 @import './styles/42-i18n.css';
@@ -33,4 +34,17 @@
 @import './styles/45-hig-states.css';
 @import './styles/46-event-switcher.css';
 
-/* Hub landing sections on '/'. */
+/* TOKEN2049 survival market. */
+@import './styles/47-t2049-market.css';
+
+/* Wonderland leaderboard. */
+@import './styles/48-wonderland-board.css';
+
+/* Per-event typeface pairs, last so they win over the shell every event shares. */
+@import './styles/49-perp-dex-day.css';
+@import './styles/50-wonderland-type.css';
+
+/* TOKEN2049 entry screens. They sit after the pairs above, which name no selector these pages carry. */
+@import './styles/51-t2049-teams.css';
+@import './styles/52-t2049-kalshi.css';
+@import './styles/53-hub-auth.css';

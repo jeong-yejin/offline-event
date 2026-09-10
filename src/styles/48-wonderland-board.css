@@ -1,0 +1,132 @@
+/* Wonderland leaderboard. The page is the void of the tunnel; the board is an ivory playing card laid on it. */
+
+.wonder-cta { border-color: #f3dfa8; color: #f3dfa8; font-family: 'Zen Serif', serif; font-size: 16px; }
+.wonder-cta:hover { background: rgba(243,223,168,.14); }
+/* The trading section's Drink Me ticket, rebuilt here because that button lives inside the embedded
+   build and its stylesheet does not reach this page. Values are the build's, converted from rem. */
+.wonder-ticket { align-items: center; background: linear-gradient(to bottom, #f7f0e0, #e1d3ba); border: 1px solid #c0ac86; border-radius: 4px 16px 16px 4px; box-shadow: 0 16px 30px -18px rgba(0,0,0,.55); display: flex; flex-direction: column; gap: 4px; margin-top: 28px; padding: 16px 36px 12px 44px; position: relative; text-decoration: none; transition: transform .15s ease-out; z-index: 1; }
+/* The punched hole that makes the card read as a torn ticket stub. */
+.wonder-ticket::before { background: #0a0509; border-radius: 50%; content: ''; height: 12px; left: 16px; position: absolute; top: 32px; width: 12px; }
+.wonder-ticket:hover { transform: translateY(-4px); }
+.wonder-ticket:active { transform: translateY(0); }
+.wonder-ticket__label { color: #1a1220; font-family: 'Hellcats BV', 'Zen Serif', serif; font-size: 32px; font-weight: 400; letter-spacing: .02em; line-height: 1.3333; }
+.wonder-ticket__sub { color: #6b5b44; font-family: 'Zen Serif', serif; font-size: 16px; letter-spacing: .03em; line-height: 1.4; text-transform: uppercase; }
+.wonder-board-link { display: flex; justify-content: center; margin: 0; padding: 40px 20px 64px; }
+
+.wonder-page { background: #0a0509; color: #f4efe6; display: flex; flex-direction: column; font-family: 'Zen Serif', serif; min-height: 100vh; }
+
+.wonder-header { align-items: center; border-bottom: 1px solid rgba(138,101,36,.4); display: flex; gap: 20px; justify-content: space-between; padding: 20px 32px; }
+.wonder-back { align-items: center; background: none; border: 1px solid rgba(244,239,230,.28); border-radius: 1000px; color: #f4efe6; cursor: pointer; display: inline-flex; font-family: inherit; font-size: 12px; gap: 8px; letter-spacing: .04em; min-height: 44px; padding: 0 18px; transition: border-color .2s ease, color .2s ease; }
+.wonder-back:hover { border-color: #f3dfa8; color: #f3dfa8; }
+.wonder-header-end { align-items: center; color: #8a6524; display: flex; font-size: 12px; gap: 20px; letter-spacing: .12em; }
+
+.wonder-main { flex: 1; margin: 0 auto; max-width: 1080px; padding: 56px 32px 72px; width: 100%; }
+
+/* The title heads the board rather than the page, so the reader arrives at a named table instead of
+   a bare header row. */
+.wonder-head { margin: 56px 0 0; }
+.wonder-eyebrow { color: #8a6524; font-size: 12px; letter-spacing: .18em; margin: 0 0 12px; text-transform: uppercase; }
+.wonder-title { color: #f3dfa8; font-family: 'Hellcats BV', 'Zen Serif', serif; font-size: clamp(44px, 7vw, 88px); font-weight: 400; letter-spacing: .02em; line-height: .96; margin: 0; }
+
+/* The heat's clock first and my own numbers under it, both above the title. One column, so the
+   trader who opened the page mid-heat reads whether it is running before where they stand. */
+.wonder-dashboard { display: grid; gap: 20px; margin: 0; }
+.wonder-competition, .wonder-mine { border: 1px solid rgba(138,101,36,.4); border-radius: 16px; padding: 24px; }
+.wonder-mine { background: rgba(243,223,168,.05); }
+
+.wonder-phase { align-items: center; border: 1px solid currentcolor; border-radius: 1000px; color: rgba(244,239,230,.72); display: inline-flex; font-size: 12px; gap: 8px; letter-spacing: .14em; margin: 0; padding: 6px 14px; text-transform: uppercase; }
+.wonder-phase i { background: currentcolor; border-radius: 50%; height: 7px; width: 7px; }
+.wonder-phase[data-phase="live"] { color: #f3dfa8; }
+.wonder-phase[data-phase="settling"] { color: #e0b64a; }
+
+.wonder-facts { display: grid; gap: 18px 20px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 26px 0 0; }
+.wonder-facts dt { color: #8a6524; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+.wonder-facts dd { color: #f4efe6; font-size: 20px; font-variant-numeric: tabular-nums; margin: 6px 0 0; }
+
+.wonder-mine-title { color: #8a6524; font-size: 11px; letter-spacing: .18em; margin: 0; text-transform: uppercase; }
+.wonder-mine-profile { align-items: center; color: #f3dfa8; display: flex; font-size: 24px; gap: 10px; margin: 10px 0 0; }
+.wonder-mine-stats { border-top: 1px solid rgba(138,101,36,.4); margin: 18px 0 0; }
+.wonder-mine-stats div { align-items: baseline; border-bottom: 1px solid rgba(138,101,36,.22); display: flex; gap: 20px; justify-content: space-between; padding: 11px 0; }
+.wonder-mine-stats div:last-child { border-bottom: 0; }
+.wonder-mine-stats dt { color: rgba(244,239,230,.66); font-size: 13px; }
+.wonder-mine-stats dd { color: #f4efe6; font-size: 16px; font-variant-numeric: tabular-nums; margin: 0; text-align: right; }
+.wonder-mine-stats dd[data-move="up"] { color: #6fbf9a; }
+.wonder-mine-stats dd[data-move="down"] { color: #e2606f; }
+
+/* The line that keeps a competition score from being read as the exchange account's own P&L. */
+.wonder-basis { border-left: 2px solid rgba(138,101,36,.5); color: rgba(244,239,230,.66); font-size: 13px; line-height: 1.7; margin: 20px 0 0; padding-left: 16px; }
+.wonder-basis p { margin: 0; max-width: 92ch; }
+
+/* Only on screen while the reports have stopped, so it carries the fault colour the P&L column uses. */
+.wonder-cut { color: #e2606f; font-size: 13px; line-height: 1.7; margin: 16px 0 0; max-width: 62ch; }
+
+.wonder-boards { margin: 24px 0 0; }
+
+/* The inner rule is the card's printed border. */
+.wonder-board { background: #fbf7ef; border-radius: 16px; color: #151019; margin: 0; padding: 16px; position: relative; }
+.wonder-board::before { border: 1px solid rgba(21,16,25,.18); border-radius: 8px; content: ''; inset: 8px; pointer-events: none; position: absolute; }
+.wonder-board table { border-collapse: collapse; position: relative; table-layout: fixed; width: 100%; }
+/* Zen Serif has no tabular figures, so the columns are measured out here instead. Without this the
+   whole table relayouts every second and the rows slide sideways as the numbers reprint. */
+.wonder-board thead th:first-child { width: 92px; }
+.wonder-board thead th:nth-child(3) { width: 128px; }
+.wonder-board thead th:nth-child(4), .wonder-board thead th:nth-child(5) { width: 140px; }
+.wonder-board th, .wonder-board td { padding: 16px 16px; text-align: left; }
+.wonder-board thead th { border-bottom: 1px solid rgba(21,16,25,.24); color: rgba(21,16,25,.6); font-size: 12px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; }
+.wonder-board tbody tr + tr td { border-top: 1px solid rgba(21,16,25,.1); }
+.wonder-board tbody tr[data-place="1"] { background: rgba(190,18,48,.16); }
+/* The leader takes the red, my own row the gold. The blue edge and tag stay on so the row is still
+   marked on the turn I am the leader and the red fill wins. */
+.wonder-board tbody tr[data-mine="true"] { box-shadow: inset 3px 0 0 #23508c; }
+.wonder-board tbody tr[data-mine="true"]:not([data-place="1"]) { background: rgba(212,172,99,.22); }
+
+.wonder-place { color: rgba(21,16,25,.7); font-size: 20px; font-variant-numeric: tabular-nums; }
+.wonder-climb { font-size: 12px; margin-left: 8px; }
+.wonder-climb[data-move="up"] { color: #0f6b46; }
+.wonder-climb[data-move="down"] { color: #be1230; }
+.wonder-climb[data-move="flat"] { color: rgba(21,16,25,.3); }
+
+.wonder-name { font-size: 24px; letter-spacing: .01em; }
+/* A portrait stands in for the trader's own picture. It holds 16px so the circle sits on the handle's
+   line rather than lifting the row, and a hairline keeps a pale ground off the ivory card. */
+.wonder-portrait { border-radius: 50%; box-shadow: 0 0 0 1px rgba(21,16,25,.2); height: 16px; margin-right: 12px; vertical-align: -2px; width: 16px; }
+.wonder-mine-profile .wonder-portrait { box-shadow: 0 0 0 1px rgba(243,223,168,.35); margin-right: 0; }
+.wonder-name em { color: #be1230; font-size: 12px; font-style: normal; letter-spacing: .14em; margin-left: 12px; vertical-align: middle; }
+.wonder-tag-mine { background: #23508c; border-radius: 4px; color: #fbf7ef; font-size: 11px; letter-spacing: .12em; padding: 3px 8px; text-transform: uppercase; }
+
+/* The score is what the rank is drawn on, so it prints heavier than the two measures behind it.
+   The unscored marker is a whole phrase, and it holds one line so the row keeps its height. */
+.wonder-score { font-size: 20px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wonder-pnl, .wonder-return { font-size: 16px; font-variant-numeric: tabular-nums; }
+.wonder-pnl[data-move="up"], .wonder-return[data-move="up"] { color: #0f6b46; }
+.wonder-pnl[data-move="down"], .wonder-return[data-move="down"] { color: #be1230; }
+.wonder-pnl[data-move="flat"], .wonder-return[data-move="flat"] { color: rgba(21,16,25,.5); }
+
+.wonder-note { color: #8a6524; font-size: 16px; line-height: 1.6; margin: 24px 0 0; max-width: 62ch; }
+
+.wonder-footer { align-items: center; border-top: 1px solid rgba(138,101,36,.4); color: #8a6524; display: flex; font-size: 12px; gap: 20px; justify-content: space-between; letter-spacing: .12em; padding: 24px 32px; }
+
+@media (max-width: 900px) {
+  .wonder-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wonder-head { margin: 40px 0 0; }
+}
+
+@media (max-width: 720px) {
+  .wonder-header, .wonder-footer { padding: 16px 20px; }
+  .wonder-main { padding: 36px 20px 56px; }
+  .wonder-competition, .wonder-mine { padding: 20px; }
+  .wonder-board { padding: 12px; }
+  .wonder-board th, .wonder-board td { padding: 12px 8px; }
+  /* Rank, score, P&L and return are all named in the spec, so on a phone the card scrolls sideways
+     rather than dropping a column or rounding a score to fit. */
+  .wonder-board { overflow-x: auto; overscroll-behavior-x: contain; }
+  .wonder-board::before { display: none; }
+  .wonder-board table { min-width: 528px; }
+  .wonder-board thead th:first-child { width: 68px; }
+  .wonder-board thead th:nth-child(3) { width: 100px; }
+  .wonder-board thead th:nth-child(4), .wonder-board thead th:nth-child(5) { width: 100px; }
+  .wonder-score { font-size: 16px; }
+  .wonder-name { font-size: 16px; }
+  /* The leader's flourish goes; the tag that says which row is mine stays. */
+  .wonder-name em:not(.wonder-tag-mine) { display: none; }
+}

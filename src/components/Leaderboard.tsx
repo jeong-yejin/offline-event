@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import type { Strings } from '../i18n/strings';
+import { memo, useEffect, useState } from 'react';
+import type { Strings } from '../i18n/strings/market';
 import { formatPercent, formatPoint, formatSigned, moveOf } from '../market/format';
 import { visibleRanks, type Rank } from '../market/leaderboard';
 
@@ -38,7 +38,7 @@ type LeaderboardProps = {
   final: boolean;
 };
 
-export function Leaderboard({ t, ranks, final }: LeaderboardProps) {
+export const Leaderboard = memo(function Leaderboard({ t, ranks, final }: LeaderboardProps) {
   const rows = visibleRanks(ranks);
 
   return (
@@ -58,14 +58,14 @@ export function Leaderboard({ t, ranks, final }: LeaderboardProps) {
         <tbody>
           {rows.map((row) => <tr data-you={row.you ? 'true' : 'false'} key={row.name}>
             <td className="leader-place">{final ? row.place : <Scramble value={String(row.place)} />}</td>
-            <td className="leader-name"><span>{row.you ? t.leaderYou : row.name}</span>{row.place === 1 ? <em>THE ONE</em> : null}</td>
+            <td className="leader-name"><span>{row.you ? t.leaderYou : row.name}</span>{row.place === 1 ? <em>TOP PREDICTOR</em> : null}</td>
             <td className="leader-net">{formatPoint(row.asset)} pt</td>
             <td className="leader-pnl" data-move={moveOf(row.pnl)}>{formatSigned(row.pnl)}</td>
             <td className="leader-return" data-move={moveOf(row.percent)}>{formatPercent(row.percent)}</td>
           </tr>)}
         </tbody>
       </table>
-      <p className="leaderboard-note">{final ? t.leaderFinalNote : t.leaderNote}</p>
+      {final ? <p className="leaderboard-note">{t.leaderFinalNote}</p> : null}
     </section>
   );
-}
+});

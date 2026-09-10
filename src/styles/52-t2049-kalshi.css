@@ -1,0 +1,31 @@
+/* Kalshi account screen, /perps-day/kalshi. The shell, the form and the confirmation come from
+   51-t2049-teams.css; only the flow, the payout caption, the status pill and the filled submit are
+   new. */
+
+/* Five stops on one line so the reader can see where the address is used and where it stops being
+   ours to answer for. The rule is drawn on the marker, not on the item, so it never overruns the
+   last step. */
+.kalshi-flow { counter-reset: kalshi-step; display: grid; gap: 0; list-style: none; margin: 40px 0 0; padding: 0; }
+.kalshi-flow li { counter-increment: kalshi-step; display: grid; gap: 16px; grid-template-columns: 28px minmax(0, 1fr); padding-bottom: 20px; }
+.kalshi-flow li:last-child { padding-bottom: 0; }
+.kalshi-flow span { align-items: center; border: 1px solid var(--t2049-rule); border-radius: 50%; color: var(--t2049-dim); display: flex; font-size: 12px; font-variant-numeric: tabular-nums; height: 28px; justify-content: center; position: relative; width: 28px; }
+.kalshi-flow span::before { content: counter(kalshi-step); }
+.kalshi-flow li:not(:last-child) span::after { background: var(--t2049-rule); content: ''; height: calc(100% - 8px); left: 50%; position: absolute; top: calc(100% + 4px); width: 1px; }
+.kalshi-flow p { color: var(--t2049-dim); font-size: 14px; line-height: 1.5; margin: 0; padding-top: 4px; }
+
+.kalshi-payout { border-top: 1px solid var(--t2049-rule); color: var(--t2049-dim); font-size: 14px; line-height: 1.6; margin: 40px 0 0; padding-top: 20px; }
+
+.kalshi-pill { align-items: center; border: 1px solid var(--t2049-rule); border-radius: 999px; display: inline-flex; font-size: 12px; letter-spacing: .1em; margin: 0 0 28px; padding: 6px 14px; text-transform: uppercase; }
+.kalshi-pill[data-status="NOT_SUBMITTED"] { color: var(--t2049-dim); }
+.kalshi-pill[data-status="PENDING"] { border-color: rgba(202,255,93,.4); color: var(--t2049-accent); }
+.kalshi-pill[data-status="VERIFIED"] { background: rgba(202,255,93,.12); border-color: var(--t2049-accent); color: var(--t2049-accent); }
+.kalshi-pill[data-status="REJECTED"] { border-color: rgba(251,44,54,.5); color: #fb2c36; }
+
+/* Saving the address is the only thing this screen asks for, so it is filled where every other button
+   on the TOKEN2049 screens is outlined. Off-black on this green measures 11:1, past AAA. */
+.kalshi-submit { background: #00dd94; border-color: #00dd94; color: #0a0a0a; }
+.kalshi-submit:hover { background: #00c383; border-color: #00c383; }
+
+@media (max-width: 900px) {
+  .kalshi-flow, .kalshi-payout { margin-top: 32px; }
+}

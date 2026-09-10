@@ -1,0 +1,38 @@
+/* Prediction market responsive states: stack the ticket, then trim the tables. */
+@media (max-width: 1100px) {
+  .market-layout { display: block; }
+  .market-side { margin-top: 20px; position: static; }
+  .chart-chips button, .ticket-directions button, .ticket-presets button, .ticket-stepper button { min-height: 44px; }
+}
+
+/* Two columns of terms stop fitting before the layout does: 140px of label leaves too little for
+   "The trader with the highest final margin balance", so the value moves under its label. */
+@media (max-width: 860px) {
+  .market-spec > div { gap: 4px; grid-template-columns: minmax(0, 1fr); padding: 12px 0; }
+  .market-spec dt { line-height: 1.6; }
+}
+
+@media (max-width: 700px) {
+  .market-spec { margin-top: 28px; }
+  .market-overview { gap: 16px; padding: 20px; }
+  .market-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .market-bar dd { font-size: 20px; }
+  .market-settled { margin-bottom: 20px; padding: 20px; }
+  .market-settled h2 { font-size: 20px; }
+  .market-main { gap: 16px; }
+  .market-card, .market-page .market-chart, .market-page .order-ticket, .market-page .leaderboard { padding: 20px; }
+  .chart-frame { gap: 12px; grid-template-columns: 32px minmax(0, 1fr); }
+  .chart-plot { height: 200px; }
+  .chart-axis, .chart-chips { margin-left: 44px; }
+  .trader-probability { font-size: 16px; }
+  /* "Market probability" tracked out on one line is wider than the number under it. Let the labels
+     wrap instead, so the phone scrolls the table by a thumb-width rather than half a screen. */
+  .trader-table thead th { letter-spacing: .06em; white-space: normal; }
+  /* Return is the margin balance restated against the same 10,000 USDT start, so the phone drops it
+     and keeps the number the market actually settles on. */
+  .trader-table thead th:nth-child(3), .trader-move { display: none; }
+  .trader-name { gap: 8px; }
+  .trader-row > th, .trader-row > td { padding: 12px 12px; }
+  .trader-actions button { gap: 8px; min-width: 72px; padding: 12px; }
+  .position-row > th, .position-row > td { padding: 12px; }
+}

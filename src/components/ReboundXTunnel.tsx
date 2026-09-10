@@ -117,9 +117,12 @@ export function ReboundXTunnel() {
       const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
       const width = Math.max(1, Math.round(canvas.clientWidth * dpr));
       const height = Math.max(1, Math.round(canvas.clientHeight * dpr));
-      if (canvas.width === width && canvas.height === height) return;
-      canvas.width = width;
-      canvas.height = height;
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+      // Effect replay creates a fresh program, even when the canvas size is unchanged.
+      // Uniforms belong to that program and must always be initialized before drawing.
       gl.viewport(0, 0, width, height);
       gl.uniform2f(resolutionAt, width, height);
       draw();

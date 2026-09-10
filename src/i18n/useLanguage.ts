@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DICT, type Lang, type Strings } from './strings';
+import type { Lang } from './types';
 
 const STORAGE_KEY = 'perpdex.lang.v1';
 
@@ -15,17 +15,23 @@ function readLang(): Lang {
   return window.navigator.language?.toLowerCase().startsWith('ko') ? 'ko' : 'en';
 }
 
-export function useLanguage(): { lang: Lang; setLang(lang: Lang): void; t: Strings } {
-  const [lang, setLang] = useState<Lang>(readLang);
+/* `forced` serves English-only routes. They render in that language without overwriting the choice the
+   reader made elsewhere, so leaving TOKEN2049 returns them to the language they were reading in. */
+export function useLanguage(forced?: Lang): { lang: Lang; setLang(lang: Lang): void } {
+  const [preferred, setPreferred] = useState<Lang>(readLang);
+  const lang = forced ?? preferred;
 
   useEffect(() => {
     document.documentElement.lang = lang;
+  }, [lang]);
+
+  useEffect(() => {
     try {
-      window.localStorage.setItem(STORAGE_KEY, lang);
+      window.localStorage.setItem(STORAGE_KEY, preferred);
     } catch {
       /* storage blocked; the choice lasts for this session only. */
     }
-  }, [lang]);
+  }, [preferred]);
 
-  return { lang, setLang, t: DICT[lang] };
+  return { lang, setLang: setPreferred };
 }

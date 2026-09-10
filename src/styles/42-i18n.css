@@ -1,21 +1,21 @@
 /* Language toggle and Korean typography corrections. */
-.vote-header-end { align-items: center; display: flex; gap: 16px; }
+.market-header-end { align-items: center; display: flex; gap: 16px; }
 
-.lang-toggle { background: transparent; border: 1px solid rgba(248,247,247,.55); border-radius: 8px; color: #f8f7f7; cursor: pointer; flex: none; font: inherit; font-size: .8125rem; letter-spacing: .1em; min-height: 40px; padding: 0 28px; transition: background .2s ease, border-color .2s ease, transform .12s ease; }
+.lang-toggle { background: transparent; border: 1px solid rgba(248,247,247,.55); border-radius: 8px; color: #f8f7f7; cursor: pointer; flex: none; font: inherit; font-size: 12px; letter-spacing: .1em; min-height: 40px; padding: 0 28px; transition: background .2s ease, border-color .2s ease, transform .12s ease; }
 .lang-toggle:hover { background: rgba(248,247,247,.1); border-color: #f8f7f7; }
-.lang-toggle:active { transform: translateY(1px); }
-.lang-toggle:focus-visible { outline: 1px solid #f8f7f7; outline-offset: 2px; }
+.lang-toggle:active { transform: translateY(4px); }
+.lang-toggle:focus-visible { outline: 1px solid #f8f7f7; outline-offset: 4px; }
 
 /* Hangul has no spaces inside a word, so let it wrap on phrase boundaries. */
 :root[lang="ko"] { overflow-wrap: break-word; word-break: keep-all; }
 
 /* Latin display tracking is too tight for Hangul, label tracking too loose. */
 [lang="ko"] h1, [lang="ko"] h2 { letter-spacing: -.02em; }
-[lang="ko"] .eyebrow, [lang="ko"] .event-date, [lang="ko"] .market-bar dt, [lang="ko"] .chart-head h3, [lang="ko"] .market-activity h3, [lang="ko"] .market-positions h3, [lang="ko"] .market-rules h3, [lang="ko"] .leaderboard h3, [lang="ko"] .ticket-head strong, [lang="ko"] .ticket-qty, [lang="ko"] .ticket-directions button, [lang="ko"] .ticket-submit, [lang="ko"] .vote-countdown > p, [lang="ko"] .vote-header span { letter-spacing: .04em; }
+[lang="ko"] .eyebrow, [lang="ko"] .event-date, [lang="ko"] .market-bar dt, [lang="ko"] .chart-head h3, [lang="ko"] .market-positions h3, [lang="ko"] .market-rules h3, [lang="ko"] .leaderboard h3, [lang="ko"] .ticket-head strong, [lang="ko"] .ticket-qty, [lang="ko"] .ticket-directions button, [lang="ko"] .ticket-submit, [lang="ko"] .market-header span { letter-spacing: .04em; }
 
 @media (max-width: 700px) {
   .lang-toggle { min-height: 44px; padding: 0 24px; }
-  .vote-header-end { gap: 12px; }
+  .market-header-end { gap: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

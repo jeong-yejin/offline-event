@@ -5,14 +5,17 @@ import { revealStyle } from '../motion/reveal';
 
 type EventHeroProps = {
   event: EventContent;
+  /* An event that brings its own backdrop takes the rain's slot instead of stacking a second canvas on
+     top of it. Left out, the hero falls back to the rain every other event shares. */
+  background?: ReactNode;
   /* The call to action differs per event, so the panel that owns the hero supplies it. */
   children: ReactNode;
 };
 
-export function EventHero({ event, children }: EventHeroProps) {
+export function EventHero({ event, background, children }: EventHeroProps) {
   return (
     <section className="hero" data-event={event.key} aria-labelledby="hero-title">
-      <DigitalRain headColor="#D9FFD9" trailColor="#00E23E" density={56} trail={38} shuffleGlyphs="ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ0123456789" style={{ inset: 0, opacity: 1, pointerEvents: 'none', position: 'absolute', zIndex: 0 }} />
+      {background ?? <DigitalRain headColor="#D9FFD9" trailColor="#00E23E" density={56} trail={38} shuffleGlyphs="ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ0123456789" style={{ inset: 0, opacity: 1, pointerEvents: 'none', position: 'absolute', zIndex: 0 }} />}
       <div className="hero-content">
         <p className="eyebrow slideIn" data-motion-reveal style={revealStyle(250)}>{event.eyebrow}</p>
         <h1 id="hero-title"><span className="slideIn heading-reveal" data-motion-reveal style={revealStyle(520, 900)}>{event.title}</span></h1>

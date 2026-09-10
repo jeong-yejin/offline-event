@@ -1,0 +1,2 @@
+/* Legacy mobile rules for the shell; editorial mobile overrides follow later. */
+@media (max-width: 700px) { .market-header { padding: 20px; }.market-header span { font-size: 12px; }.market-feature { height: 112vw; min-height: 460px; }.market-content { padding: 80px 20px; }.market-intro p { font-size: 16px; }.market-brand-card { border-radius: 28px; margin: 0 20px 72px; padding: 40px 20px; }.market-brand-copy p { font-size: 16px; }.market-footer { align-items: flex-start; flex-direction: column; padding: 24px 20px; } }

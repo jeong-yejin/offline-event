@@ -1,0 +1,258 @@
+/* Prediction market board: status bar, chart, outcome book, order ticket, positions. */
+.market-page { --card: rgba(15,15,15,.7); --down: #fb2c36; --edge: rgba(255,255,255,.06); --up: #00d492; overflow: clip; }
+
+/* Every market panel is the same dark rounded card. The chart, ticket and leaderboard are shared with
+   TOKEN2049, so they take the chrome through .market-page rather than a class of their own. */
+.market-card, .market-page .market-chart, .market-page .order-ticket, .market-page .leaderboard { background: var(--card); border: 1px solid var(--edge); border-radius: 20px; padding: 20px; }
+.market-overview { display: grid; gap: 20px; margin: 0 0 20px; padding: 24px; }
+.market-state { align-items: center; background: rgba(0,188,125,.1); border: 1px solid rgba(0,188,125,.2); border-radius: 1000px; color: var(--up); display: inline-flex; font-size: 12px; gap: 8px; justify-self: start; letter-spacing: .14em; margin: 0; padding: 4px 12px; text-transform: uppercase; }
+.market-state i { background: currentcolor; border-radius: 50%; height: 8px; width: 8px; }
+.market-state[data-phase="ready"] { background: rgba(255,255,255,.05); border-color: var(--edge); color: rgba(248,247,247,.72); }
+.market-state[data-phase="settling"], .market-state[data-phase="ended"] { background: rgba(251,44,54,.1); border-color: rgba(251,44,54,.25); color: #ff6467; }
+
+/* The book as one bar: how much of the room is on the focused trader, and how much is against. */
+.market-prob { display: grid; gap: 12px; }
+.prob-bar { background: rgba(255,255,255,.05); border-radius: 1000px; display: flex; gap: 4px; height: 12px; overflow: clip; }
+.prob-bar span { transition: width .3s ease; }
+.prob-bar [data-side="yes"] { background: #00bc7d; }
+.prob-bar [data-side="no"] { background: var(--down); }
+.prob-legend { align-items: baseline; display: flex; font-size: 16px; justify-content: space-between; margin: 0; }
+.prob-legend [data-side="yes"] { color: var(--up); }
+.prob-legend [data-side="no"] { color: #ff6467; }
+.prob-legend em { color: rgba(248,247,247,.5); font-size: 12px; font-style: normal; letter-spacing: .12em; text-transform: uppercase; }
+
+/* The market's terms are six fixed facts, so they are a definition list rather than a paragraph:
+   a reader looking for the settlement number finds one row instead of the tail of a sentence.
+   It takes the column the intro paragraph held, bottom-aligned against the headline. */
+.market-spec { align-self: end; margin: 0; max-width: 560px; }
+.market-spec > div { border-top: 1px solid rgba(248,247,247,.14); display: grid; gap: 20px; grid-template-columns: 140px minmax(0, 1fr); padding: 16px 0; }
+.market-spec > div:last-child { border-bottom: 1px solid rgba(248,247,247,.14); }
+.market-spec dt { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .16em; line-height: 1.9; text-transform: uppercase; }
+.market-spec dd { color: rgba(248,247,247,.82); font-size: 16px; line-height: 1.5; margin: 0; text-wrap: pretty; }
+.market-bar { display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
+.market-bar > div { background: rgba(255,255,255,.03); border-radius: 16px; display: grid; gap: 8px; padding: 16px 16px; }
+.market-bar dt { color: rgba(248,247,247,.5); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.market-bar dd { font-size: 20px; letter-spacing: -.01em; margin: 0; }
+.market-place dd { color: var(--up); }
+.market-settled { background: rgba(0,188,125,.06); border: 1px solid rgba(0,188,125,.35); border-radius: 20px; margin: 0 0 20px; padding: 24px; }
+.market-settled h2 { font-size: 24px; letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.market-settled p { color: rgba(248,247,247,.72); font-size: 16px; line-height: 1.5; margin: 12px 0 0; text-wrap: pretty; }
+.market-layout { align-items: start; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr) 380px; }
+/* The single column is pinned to minmax(0, 1fr) so a card holding a wide table sizes to the layout
+   rather than to its own min-content. Without it the table pushes the track past the viewport and
+   .market-page's overflow clip hides the right-hand columns. */
+.market-main { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+.market-side { display: grid; gap: 20px; position: sticky; top: 24px; }
+
+/* Probability chart. */
+.market-chart { margin: 0; }
+.chart-head { align-items: start; display: flex; justify-content: space-between; margin-bottom: 24px; }
+.chart-title { display: grid; gap: 8px; }
+.chart-now { align-items: baseline; display: flex; gap: 12px; margin: 0; }
+.chart-now strong { font-size: 28px; font-weight: 400; letter-spacing: -.02em; }
+.chart-now em { font-size: 12px; font-style: normal; letter-spacing: .1em; text-transform: uppercase; }
+.chart-frame { display: grid; gap: 16px; grid-template-columns: 40px minmax(0, 1fr); }
+.chart-scale { color: rgba(248,247,247,.5); display: flex; flex-direction: column; font-size: 12px; justify-content: space-between; list-style: none; margin: 0; padding: 0; text-align: right; }
+/* The marker, the hover rule and the readout are HTML laid over the plot rather than shapes inside it.
+   The SVG is drawn with preserveAspectRatio="none", so it is stretched unevenly to fill the box and a
+   circle in there arrives as an ellipse. Percent offsets over this box land on the same coordinates. */
+/* min-width:0 because the plot carries an intrinsic 720px from its viewBox: without it the wrapper
+   reports that as its min-content and the grid track above sizes to it, pushing the chart under the
+   order ticket on narrow desktops. The bare <svg> used to be the grid item, so this never came up. */
+.chart-canvas { min-width: 0; position: relative; }
+.chart-plot { display: block; height: 260px; width: 100%; }
+/* Dashes carry the baseline without competing with eight lines drawn over them. non-scaling-stroke
+   keeps the gaps even, otherwise the horizontal stretch would smear them. */
+.chart-grid { stroke: rgba(248,247,247,.14); stroke-dasharray: 4 12; }
+.chart-line { opacity: .4; stroke-width: 1.2; transition: opacity .2s; }
+.chart-line[data-focus="true"] { opacity: 1; stroke-width: 3; }
+/* One hairline for the whole field now that every line is read at once, so the rule stays behind the
+   dots instead of competing with them. */
+.chart-cursor { background: rgba(248,247,247,.32); bottom: 0; pointer-events: none; position: absolute; top: 0; width: 1px; }
+.chart-dot { background: var(--seat); border: 2px solid #09090b; border-radius: 50%; height: 12px; pointer-events: none; position: absolute; transform: translate(-50%, -50%); width: 12px; }
+.chart-dot[data-focus="false"] { border-width: 1px; height: 8px; width: 8px; }
+/* Anchored beside the cursor, and flipped past the midpoint so it never leaves the plot. */
+.chart-tip { background: #18181b; border: 1px solid rgba(255,255,255,.08); border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,.5); padding: 12px; pointer-events: none; position: absolute; top: 12px; transform: translateX(12px); white-space: nowrap; }
+.chart-tip[data-side="end"] { transform: translateX(calc(-100% - 12px)); }
+.chart-tip p { color: rgba(248,247,247,.6); display: flex; font-size: 12px; gap: 12px; margin: 0 0 8px; }
+.chart-tip ul { display: grid; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.chart-tip li { align-items: center; color: rgba(248,247,247,.72); display: grid; font-size: 12px; gap: 12px; grid-template-columns: 8px minmax(0, 1fr) auto; }
+.chart-tip li[data-focus="true"] { color: #f8f7f7; }
+.chart-tip i { border-radius: 50%; height: 8px; width: 8px; }
+.chart-tip strong { font-size: 12px; font-weight: 600; }
+.chart-axis { color: rgba(248,247,247,.5); display: flex; font-size: 12px; justify-content: space-between; margin: 12px 0 0 56px; }
+
+/* The chips under the plot are its legend as much as its filter, so each one carries its seat colour
+   and the row wraps instead of scrolling. */
+.chart-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0 56px; }
+.chart-chips button { align-items: center; background: transparent; border: 1px solid rgba(255,255,255,.08); border-radius: 999px; color: rgba(248,247,247,.55); cursor: pointer; display: flex; font-size: 12px; gap: 8px; letter-spacing: .08em; min-height: 32px; padding: 6px 14px; text-transform: uppercase; }
+.chart-chips button[data-active="true"] { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.14); color: #f8f7f7; }
+.chart-chips i { background: var(--seat); border-radius: 50%; height: 8px; width: 8px; }
+
+/* The trader board: one row per binary market. Every probability sits in one column, so the
+   traders are read against each other instead of corner to corner. */
+/* A grid item defaults to min-width: auto, which would push the 520px table through the page
+   instead of scrolling it. */
+.trader-scroll { min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; position: relative; }
+.trader-table { border-collapse: collapse; min-width: 520px; width: 100%; }
+.trader-table thead th { color: rgba(248,247,247,.5); font-size: 12px; font-weight: 400; letter-spacing: .12em; padding: 0 16px 12px; text-align: right; text-transform: uppercase; white-space: nowrap; }
+.trader-table thead th:first-child { padding-left: 0; text-align: left; }
+.trader-table thead th:last-child { padding-right: 0; }
+.trader-row { border-top: 1px solid var(--edge); cursor: pointer; transition: background .2s ease; }
+.trader-row:hover { background: rgba(255,255,255,.03); }
+.trader-row[data-focus="true"] { background: rgba(0,188,125,.06); }
+.trader-row[data-status="stale"] { opacity: .72; }
+.trader-row > th, .trader-row > td { padding: 16px; vertical-align: middle; }
+.trader-row > th { font-weight: 400; padding-left: 0; text-align: left; }
+.trader-row > td { text-align: right; white-space: nowrap; }
+.trader-row > td:last-child { padding-right: 0; }
+.trader-name { align-items: center; background: none; border: 0; color: inherit; cursor: pointer; display: flex; font: inherit; gap: 12px; padding: 0; text-align: left; white-space: nowrap; }
+/* The exchange's symbol mark, at the size the seat letter used to hold, so every name starts at the
+   same x. The marks are drawn on their own dark disc, so no invert filter here. */
+.trader-logo { border-radius: 50%; flex: none; height: 28px; object-fit: cover; width: 28px; }
+.trader-id { display: grid; gap: 4px; }
+.trader-id strong { font-size: 16px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; }
+.trader-id small { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.trader-rank { background: rgba(255,255,255,.05); border-radius: 1000px; color: rgba(248,247,247,.72); font-size: 12px; padding: 4px 12px; }
+.trader-balance span { color: rgba(248,247,247,.55); font-size: 12px; }
+.trader-chance { min-width: 92px; }
+.trader-probability { display: block; font-size: 20px; letter-spacing: -.01em; }
+.trader-meter { background: rgba(255,255,255,.05); border-radius: 1000px; display: block; height: 4px; margin: 8px 0 0 auto; overflow: clip; width: 72px; }
+.trader-meter span { border-radius: 1000px; display: block; height: 100%; transition: width .3s ease; }
+.trader-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.trader-actions button { background: transparent; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; color: rgba(248,247,247,.72); cursor: pointer; display: flex; font-size: 12px; gap: 12px; justify-content: space-between; letter-spacing: .1em; min-height: 40px; min-width: 96px; padding: 12px 16px; text-transform: uppercase; }
+.trader-actions strong { font-weight: 400; }
+.trader-actions button:disabled { cursor: not-allowed; opacity: .35; }
+.trader-actions [data-side="yes"] { background: rgba(0,188,125,.1); border-color: rgba(0,188,125,.25); color: var(--up); }
+.trader-actions [data-side="no"] { background: rgba(251,44,54,.08); border-color: rgba(251,44,54,.22); color: #ff6467; }
+.trader-actions [data-side="yes"]:enabled:hover { background: rgba(0,153,102,.55); border-color: #00bc7d; }
+.trader-actions [data-side="no"]:enabled:hover { background: rgba(251,44,54,.2); border-color: var(--down); }
+.trader-feed { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.trader-feed[data-status="stale"] { color: var(--down, #e47467); }
+
+/* Resolution notes and positions. */
+.market-traders h3, .market-positions h3, .market-history h3, .market-rules h3, .chart-head h3, .leaderboard h3 { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .16em; margin: 0 0 16px; text-transform: uppercase; }
+.chart-head h3 { margin: 0; }
+.market-positions strong { font-weight: 400; }
+.market-positions em { font-style: normal; letter-spacing: .08em; text-transform: uppercase; }
+.market-positions p { color: rgba(248,247,247,.55); font-size: 16px; line-height: 1.5; margin: 0; }
+.rules-list { display: grid; gap: 28px; margin: 0; }
+.rules-list dt { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
+.rules-list dd { color: rgba(248,247,247,.55); font-size: 16px; line-height: 1.6; margin: 8px 0 0; max-width: 72ch; text-wrap: pretty; }
+/* The holdings read in the same table shape as the trader board above them, so cost, value, and the
+   close controls line up column to column instead of card to card. */
+.position-scroll { min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; }
+.position-table { border-collapse: collapse; min-width: 720px; width: 100%; }
+.position-table thead th { color: rgba(248,247,247,.5); font-size: 12px; font-weight: 400; letter-spacing: .12em; padding: 0 16px 12px; text-align: right; text-transform: uppercase; white-space: nowrap; }
+.position-table thead th:first-child { padding-left: 0; text-align: left; }
+.position-table thead th:last-child, .position-row > td:last-child { background: #101010; border-left: 1px solid var(--edge); padding-right: 0; position: sticky; right: 0; }
+.position-row { border-top: 1px solid var(--edge); }
+.position-row > th, .position-row > td { padding: 12px 16px; vertical-align: middle; }
+.position-row > th { padding-left: 0; text-align: left; white-space: nowrap; }
+.position-row > td { font-size: 12px; text-align: right; white-space: nowrap; }
+.position-row small { color: rgba(248,247,247,.55); font-size: 12px; }
+.position-id { align-items: baseline; display: flex; gap: 8px; }
+.position-id strong { font-size: 16px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; }
+.position-id em { font-size: 12px; font-style: normal; letter-spacing: .1em; text-transform: uppercase; }
+.position-id [data-side="yes"] { color: var(--up, #caff5d); }
+.position-id [data-side="no"] { color: #ff6467; }
+/* The closed rows sit in the 380px column beside the ticket, too narrow for the table shape above,
+   so each position stacks into three lines. The list scrolls on its own so a long run of cuts cannot
+   push the sticky column past the bottom of the viewport. */
+.closed-list { display: grid; gap: 12px; list-style: none; margin: 0; max-height: 320px; overflow-y: auto; overscroll-behavior-y: contain; padding: 0; }
+.closed-row { border-top: 1px solid var(--edge); display: grid; gap: 4px; padding: 12px 0 0; }
+.closed-row:first-child { border-top: 0; padding-top: 0; }
+.closed-row p { margin: 0; }
+.closed-who { align-items: baseline; display: flex; flex-wrap: wrap; gap: 8px; }
+.closed-who strong { font-size: 16px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; }
+.closed-who em { font-size: 12px; font-style: normal; letter-spacing: .1em; text-transform: uppercase; }
+.closed-who [data-side="yes"] { color: var(--up, #caff5d); }
+.closed-who [data-side="no"] { color: #ff6467; }
+.closed-who span { color: rgba(248,247,247,.5); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.closed-who time { color: rgba(248,247,247,.4); font-size: 12px; margin-left: auto; }
+.closed-trade { color: rgba(248,247,247,.8); display: flex; font-size: 12px; gap: 12px; justify-content: space-between; }
+.closed-trade b { font-weight: 400; }
+.closed-pnl { font-size: 12px; }
+.closed-pnl small { color: rgba(248,247,247,.55); font-size: 12px; margin-left: 8px; }
+.position-actions { align-items: center; display: flex; gap: 8px; justify-content: flex-end; }
+.position-actions input { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; color: #f8f7f7; font: inherit; font-size: 16px; min-height: 40px; padding: 8px 12px; text-align: right; width: 72px; }
+.position-actions button { background: transparent; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; color: rgba(248,247,247,.72); cursor: pointer; font-size: 12px; letter-spacing: .1em; min-height: 40px; padding: 8px 16px; text-transform: uppercase; white-space: nowrap; }
+.position-actions button:disabled { cursor: not-allowed; opacity: .35; }
+.position-actions button:enabled:hover { border-color: var(--down, #e47467); color: var(--down, #e47467); }
+.position-settled { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.positions-total { border-top: 1px solid rgba(248,247,247,.18); display: grid; gap: 12px; margin: 16px 0 0; padding-top: 16px; }
+.positions-total > div { display: flex; justify-content: space-between; }
+.positions-total dt { color: rgba(248,247,247,.55); font-size: 12px; }
+.positions-total dd { font-size: 16px; margin: 0; }
+.positions-total small { font-size: 12px; }
+[data-move="up"] { color: var(--up, #caff5d); }
+[data-move="down"] { color: var(--down, #e47467); }
+[data-move="flat"] { color: rgba(248,247,247,.5); }
+
+/* Order ticket. */
+.order-ticket { border: 1px solid rgba(248,247,247,.18); display: grid; gap: 16px; padding: 24px; }
+.ticket-title { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .16em; margin: 0; text-transform: uppercase; }
+/* The focused trader's numbers sit under the ticket, so the size being typed has its context. */
+.market-focus h3 { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .16em; margin: 0 0 16px; text-transform: uppercase; }
+.market-focus dl { display: grid; gap: 12px; margin: 0; }
+.market-focus dl > div { display: flex; justify-content: space-between; }
+.market-focus dt { color: rgba(248,247,247,.55); font-size: 12px; }
+.market-focus dd { font-size: 16px; font-variant-numeric: tabular-nums; margin: 0; }
+.market-focus dd span { color: rgba(248,247,247,.55); font-size: 12px; }
+.ticket-head { align-items: center; display: flex; gap: 16px; }
+.ticket-logo { border-radius: 50%; height: 24px; object-fit: cover; width: 24px; }
+.ticket-head strong { font-size: 12px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; }
+.ticket-directions, .ticket-sides { display: grid; gap: 8px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ticket-directions { background: rgba(255,255,255,.04); border-radius: 16px; gap: 4px; padding: 4px; }
+.ticket-directions button { background: transparent; border: 0; border-radius: 12px; color: rgba(248,247,247,.55); cursor: pointer; font-size: 12px; letter-spacing: .12em; padding: 12px; text-transform: uppercase; }
+.ticket-directions button[data-active="true"] { background: rgba(255,255,255,.08); color: #f8f7f7; }
+.ticket-sides button { align-items: center; background: transparent; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; color: rgba(248,247,247,.72); cursor: pointer; display: flex; justify-content: space-between; padding: 16px 16px; }
+.ticket-sides [data-side="yes"] { color: var(--up); }
+.ticket-sides [data-side="no"] { color: #ff6467; }
+.ticket-sides span { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.ticket-sides strong { font-size: 20px; font-weight: 400; letter-spacing: -.01em; }
+.ticket-sides [data-side="yes"][data-active="true"] { background: #096; border-color: #00bc7d; color: #f8f7f7; }
+.ticket-sides [data-side="no"][data-active="true"] { background: rgba(251,44,54,.22); border-color: var(--down); color: #f8f7f7; }
+.ticket-qty { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
+.ticket-input { display: grid; gap: 8px; }
+.ticket-stepper { align-items: center; display: grid; gap: 8px; grid-template-columns: auto minmax(0, 1fr) auto; }
+.ticket-stepper button { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; color: #f8f7f7; cursor: pointer; font-size: 20px; line-height: 1; padding: 12px 18px; }
+.ticket-stepper button:disabled { cursor: not-allowed; opacity: .35; }
+.ticket-presets { display: grid; gap: 8px; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.ticket-presets button { background: transparent; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; color: rgba(248,247,247,.72); cursor: pointer; font-size: 12px; min-width: 40px; padding: 8px 12px; }
+.ticket-presets button[data-active="true"] { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.16); color: #f8f7f7; }
+.ticket-presets button:disabled { cursor: not-allowed; opacity: .35; }
+.ticket-input input { appearance: textfield; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; color: #f8f7f7; font: inherit; font-size: 20px; padding: 12px 16px; width: 100%; }
+.ticket-input input::-webkit-inner-spin-button, .ticket-input input::-webkit-outer-spin-button { -webkit-appearance: none; appearance: none; }
+.ticket-summary { background: rgba(255,255,255,.03); border: 1px solid var(--edge); border-radius: 16px; display: grid; gap: 12px; margin: 0; padding: 16px 16px; }
+.ticket-summary > div:last-child { border-top: 1px solid var(--edge); padding-top: 12px; }
+.ticket-summary > div { display: flex; justify-content: space-between; }
+.ticket-summary dt { color: rgba(248,247,247,.55); font-size: 12px; }
+.ticket-summary dd { font-size: 16px; margin: 0; }
+.ticket-quote { border: 1px solid rgba(0,188,125,.45); border-radius: 16px; display: grid; gap: 12px; padding: 16px; }
+.ticket-quote[data-expired="true"] { border-color: var(--down); }
+.ticket-quote dl { display: grid; gap: 8px; margin: 0; }
+.ticket-quote dl > div { display: flex; justify-content: space-between; }
+.ticket-quote dt { color: rgba(248,247,247,.55); font-size: 12px; }
+.ticket-quote dd { font-size: 16px; margin: 0; }
+.quote-id { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .12em; margin: 0; text-transform: uppercase; }
+.quote-id code { color: rgba(248,247,247,.72); font: inherit; letter-spacing: .04em; }
+.quote-life { color: var(--up, #caff5d); font-size: 12px; margin: 0; }
+.ticket-quote[data-expired="true"] .quote-life { color: var(--down, #e47467); }
+.quote-actions { display: grid; gap: 8px; }
+.quote-cancel { background: transparent; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; color: rgba(248,247,247,.72); cursor: pointer; font-size: 12px; letter-spacing: .1em; min-height: 44px; padding: 12px; text-transform: uppercase; }
+.quote-cancel:hover { border-color: rgba(248,247,247,.5); color: #f8f7f7; }
+.ticket-submit { background: #096; border: 0; border-radius: 16px; color: #f8f7f7; cursor: pointer; font-size: 16px; letter-spacing: .12em; padding: 16px; text-transform: uppercase; }
+.ticket-submit[data-side="no"] { background: var(--down); }
+.ticket-submit:disabled { cursor: not-allowed; opacity: .35; }
+.ticket-notice { color: rgba(248,247,247,.55); font-size: 12px; line-height: 1.5; margin: 0; min-height: 20px; }
+/* Numeric columns hold their width while prices retick every second. */
+.market-bar dd, .chart-scale, .chart-axis, .chart-tip strong, .trader-balance, .trader-move, .trader-probability, .trader-rank, .trader-actions strong, .position-table td, .closed-trade, .closed-pnl, .positions-total dd, .ticket-quote dd, .ticket-sides strong, .ticket-input input, .ticket-summary dd { font-variant-numeric: tabular-nums; }
+
+/* Hover, press, and focus states for every market control. */
+.chart-chips button, .trader-actions button, .position-actions button, .ticket-directions button, .ticket-sides button, .ticket-presets button, .ticket-stepper button, .quote-cancel, .ticket-submit { transition: background .2s ease, border-color .2s ease, color .2s ease, opacity .2s ease, transform .12s ease; }
+.chart-chips button:not([data-active="true"]):hover, .ticket-directions button:not([data-active="true"]):hover, .ticket-sides button:not([data-active="true"]):hover { border-color: rgba(248,247,247,.5); color: #f8f7f7; }
+.ticket-presets button:enabled:hover, .ticket-stepper button:enabled:hover { background: rgba(255,255,255,.08); color: #f8f7f7; }
+.ticket-submit:enabled:hover { opacity: .86; }
+.chart-chips button:active, .ticket-directions button:active, .ticket-sides button:active, .ticket-presets button:enabled:active, .ticket-stepper button:enabled:active, .quote-cancel:active, .trader-actions button:enabled:active, .position-actions button:enabled:active, .ticket-submit:enabled:active { transform: translateY(4px); }
+.market-page :focus-visible { outline: 1px solid var(--up); outline-offset: 4px; }

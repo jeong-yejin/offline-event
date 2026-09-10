@@ -1,18 +1,19 @@
 /* Event switcher: the same three destinations on top of every event page. */
-.event-switcher { background: #000; border-bottom: 1px solid rgba(243,223,168,.16); padding: 88px 48px 0; position: relative; z-index: 2; }
-.event-switcher-list { display: flex; gap: 8px; list-style: none; margin: 0 auto; max-width: 1508px; overflow-x: auto; padding: 0; scrollbar-width: none; }
+/* One capsule holding the set, so the bar reads as a single control rather than three loose links. */
+.event-switcher { margin-inline: auto; min-width: 0; }
+.event-switcher-list { align-items: center; position: relative; background: rgba(248,247,247,.03); border: 1px solid rgba(248,247,247,.14); border-radius: 1000px; display: inline-flex; gap: 4px; list-style: none; margin: 0; max-width: 100%; overflow-x: auto; padding: 4px; scrollbar-width: none; }
 .event-switcher-list::-webkit-scrollbar { display: none; }
-.event-switcher-tab { border-bottom: 2px solid transparent; color: rgba(248,247,247,.56); display: block; font-family: 'Wanted Sans', system-ui, sans-serif; font-size: .9375rem; letter-spacing: .04em; padding: 16px 20px; text-decoration: none; transition: border-color .2s ease, color .2s ease; white-space: nowrap; }
-.event-switcher-tab:hover { color: #f8f2df; }
-.event-switcher-tab:focus-visible { outline: 1px solid #f3dfa8; outline-offset: -4px; }
+.event-switcher-tab { align-items: center; border-radius: 1000px; color: rgba(248,247,247,.56); display: flex; font-family: 'Wanted Sans', system-ui, sans-serif; font-size: 16px; gap: 12px; letter-spacing: .04em; padding: 12px 24px; text-decoration: none; transition: background-color .2s ease, color .2s ease; white-space: nowrap; }
+.event-switcher-icon { flex: none; height: 16px; width: 16px; }
+.event-switcher-tab:hover { background-color: rgba(248,247,247,.07); color: #f8f7f7; }
+.event-switcher-tab:focus-visible { outline: 1px solid #caff5d; outline-offset: -4px; }
 /* The page you are on stays lit so the bar reads as a location, not a menu. */
-.event-switcher-tab[aria-current="page"] { border-bottom-color: #f3dfa8; color: #f3dfa8; }
-
-@media (max-width: 1100px) {
-  .event-switcher { padding: 80px 32px 0; }
-}
+.event-switcher-tab[aria-current="page"] { background-color: rgba(202,255,93,.12); color: #caff5d; }
 
 @media (max-width: 700px) {
-  .event-switcher { padding: 76px 20px 0; }
-  .event-switcher-tab { font-size: .875rem; padding: 16px 12px; }
+  .event-switcher-tab { font-size: 16px; gap: 8px; padding: 12px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-switcher-tab { transition: none; }
 }

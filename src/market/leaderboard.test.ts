@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { REWARD_TOP, STARTING_POINT } from '../data/voteContent';
-import { OPEN_PRICES, type PriceMap } from './marketEngine';
-import { LEADERBOARD_LIMIT, OPERATOR_COUNT, createOperators, myPlace, rankTraders, visibleRanks } from './leaderboard';
+import { REWARD_TOP, STARTING_POINT } from '../data/perpDexMarketContent';
+import { PERP_DEX_IDS, OPEN_PRICES, type PriceMap } from './perpdexday/market';
+import { LEADERBOARD_LIMIT, OPERATOR_COUNT, createOperators, myPlace, rankTraders, visibleRanks, type Field } from './leaderboard';
+
+const FIELD: Field = { ids: PERP_DEX_IDS, openPrices: OPEN_PRICES, startingPoint: STARTING_POINT };
 
 const flatYou = { name: 'YOU', point: STARTING_POINT, holdings: [] };
 const brokeYou = { name: 'YOU', point: 0, holdings: [] };
@@ -9,21 +11,21 @@ const RALLY: PriceMap = { variational: 96, lighter: 2, aster: 2, extended: 2 };
 
 describe('leaderboard', () => {
   it('opens with every player level, so the board measures the market and not the handicap', () => {
-    createOperators().forEach((operator) => {
-      const rank = rankTraders([operator], OPEN_PRICES, flatYou).find((row) => !row.you);
+    createOperators(FIELD).forEach((operator) => {
+      const rank = rankTraders([operator], OPEN_PRICES, flatYou, STARTING_POINT).find((row) => !row.you);
       expect(Math.abs(rank?.pnl ?? Infinity)).toBeLessThan(STARTING_POINT * 0.2);
     });
   });
 
   it('reads return straight off the hundred points everyone started with', () => {
-    const ranks = rankTraders(createOperators(), RALLY, flatYou);
+    const ranks = rankTraders(createOperators(FIELD), RALLY, flatYou, STARTING_POINT);
 
     ranks.forEach((rank) => expect(rank.percent).toBeCloseTo(((rank.asset - STARTING_POINT) / STARTING_POINT) * 100, 6));
     expect(ranks.find((rank) => rank.you)?.pnl).toBe(0);
   });
 
   it('ranks by total asset, because that is what the reward list is drawn from', () => {
-    const ranks = rankTraders(createOperators(), RALLY, flatYou);
+    const ranks = rankTraders(createOperators(FIELD), RALLY, flatYou, STARTING_POINT);
 
     ranks.slice(1).forEach((rank, index) => expect(rank.asset).toBeLessThanOrEqual(ranks[index].asset));
     expect(ranks[0].place).toBe(1);
@@ -34,7 +36,7 @@ describe('leaderboard', () => {
   });
 
   it('keeps you on the board when you are last, because a rank you cannot find is useless', () => {
-    const ranks = rankTraders(createOperators(), OPEN_PRICES, brokeYou);
+    const ranks = rankTraders(createOperators(FIELD), OPEN_PRICES, brokeYou, STARTING_POINT);
     const visible = visibleRanks(ranks);
 
     expect(visible).toHaveLength(LEADERBOARD_LIMIT + 1);

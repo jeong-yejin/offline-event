@@ -1,0 +1,58 @@
+/* TOKEN2049 entry screens: team entry at /perps-day/teams and the Kalshi account at /perps-day/kalshi.
+   Both reuse the market header so every standalone TOKEN2049 screen shares one way back, and both lay
+   the rest out as the event page does: what this is on the left, what the reader has to do on the
+   right. The shell below is shared; each screen adds only its own blocks. */
+
+.t2049-teams-page, .t2049-kalshi-page { --t2049-rule: rgba(248,247,247,.18); --t2049-dim: #a7a7a7; --t2049-ink: #f8f7f7; --t2049-accent: #caff5d; background: #000; color: var(--t2049-ink); font-family: 'Inter', sans-serif; min-height: 100dvh; position: relative; }
+
+.t2049-teams-page .market-header, .t2049-kalshi-page .market-header { display: flex; justify-content: space-between; }
+.t2049-teams-page .market-header-end, .t2049-kalshi-page .market-header-end { align-items: center; display: flex; gap: 16px; }
+
+.teams-content { align-items: start; display: grid; gap: 64px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin: 0 auto; max-width: 1180px; padding: 160px 48px 120px; }
+
+/* The site-wide h1 rule keeps the home hero on one line; these titles are column-width, so they wrap. */
+.teams-intro h1 { font-size: clamp(32px, 3.4vw, 52px); letter-spacing: -.045em; line-height: 1.08; margin: 0; white-space: normal; }
+.teams-intro p { color: var(--t2049-dim); font-size: 16px; line-height: 1.6; margin: 24px 0 0; max-width: 46ch; }
+
+.teams-tiers { border-top: 1px solid var(--t2049-rule); margin: 40px 0 0; }
+.teams-tiers div { border-bottom: 1px solid var(--t2049-rule); display: flex; gap: 24px; justify-content: space-between; padding: 16px 0; }
+.teams-tiers dt { color: var(--t2049-ink); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+.teams-tiers dd { color: var(--t2049-dim); font-size: 14px; margin: 0; text-align: right; }
+
+.teams-form, .teams-done { border: 1px solid var(--t2049-rule); border-radius: 20px; padding: 32px; }
+
+.teams-slots { color: var(--t2049-accent); font-size: 13px; letter-spacing: .1em; margin: 0 0 28px; text-transform: uppercase; }
+
+.teams-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+.teams-field label { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+/* 16px keeps iOS from zooming the page when the field takes focus. */
+.teams-field input { background: rgba(255,255,255,.04); border: 1px solid var(--t2049-rule); border-radius: 8px; color: var(--t2049-ink); font: inherit; font-size: 16px; min-height: 48px; padding: 0 16px; transition: border-color .2s ease; width: 100%; }
+.teams-field input::placeholder { color: rgba(248,247,247,.32); }
+.teams-field input:hover { border-color: rgba(248,247,247,.4); }
+.teams-field input:focus-visible { border-color: var(--t2049-accent); outline: 1px solid var(--t2049-accent); outline-offset: 2px; }
+.teams-field input[aria-invalid='true'] { border-color: #fb2c36; }
+
+.teams-hint { color: var(--t2049-dim); font-size: 12px; margin: 0; }
+
+/* The paragraph holds its line whether or not there is a message, so submitting a bad code does not
+   push the button out from under the pointer. */
+.teams-error { color: #fb2c36; font-size: 13px; margin: 0 0 12px; min-height: 20px; }
+
+.teams-form .outline-button, .teams-done .outline-button { font-size: 16px; min-height: 52px; width: 100%; }
+
+.teams-note { border-top: 1px solid var(--t2049-rule); color: var(--t2049-dim); font-size: 13px; line-height: 1.6; margin: 28px 0 0; padding-top: 20px; }
+
+.teams-done h2 { font-size: 28px; letter-spacing: -.03em; margin: 0; }
+.teams-done > p { color: var(--t2049-dim); font-size: 15px; line-height: 1.6; margin: 16px 0 28px; }
+.teams-done dl div { border-top: 1px solid var(--t2049-rule); display: flex; gap: 24px; justify-content: space-between; padding: 16px 0; }
+.teams-done dt { color: var(--t2049-dim); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.teams-done dd { font-variant-numeric: tabular-nums; margin: 0; }
+
+.teams-roster { list-style: none; margin: 0 0 28px; padding: 0; }
+.teams-roster li { border-top: 1px solid var(--t2049-rule); display: flex; gap: 24px; justify-content: space-between; padding: 16px 0; }
+.teams-roster span { color: var(--t2049-dim); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+
+@media (max-width: 900px) {
+  .teams-content { gap: 40px; grid-template-columns: minmax(0, 1fr); padding: 112px 20px 80px; }
+  .teams-form, .teams-done { padding: 24px 20px; }
+}

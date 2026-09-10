@@ -1,30 +1,216 @@
-/* TOKEN2049 side event: intro, run of show, and the hand-off to the prediction market. */
-.t2049-intro { border-top: 1px solid rgba(248,247,247,.18); }
-.t2049-intro h2 { max-width: 900px; }
-.t2049-lede { color: rgba(248,247,247,.72); font-size: 1.125rem; line-height: 1.55; margin: 44px 0 0; max-width: 620px; }
-.t2049-facts { display: grid; gap: 0 32px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 96px 0 0; }
-.t2049-facts div { border-top: 1px solid rgba(248,247,247,.18); display: flex; flex-direction: column; gap: 16px; padding: 24px 0 0; }
-.t2049-facts dt { color: #a7a7a7; font-size: .8125rem; letter-spacing: .16em; text-transform: uppercase; }
-.t2049-facts dd { color: #f8f7f7; font-size: clamp(1.25rem, 2vw, 1.75rem); letter-spacing: -.02em; margin: 0; }
-.t2049-schedule { border-top: 1px solid rgba(248,247,247,.18); }
-#t2049-schedule-title { scroll-margin-top: 40px; }
-.t2049-note { color: #a7a7a7; font-size: .9375rem; margin: 28px 0 0; }
-.t2049-schedule .agenda-list { margin-top: 56px; }
-.t2049-market { border-top: 1px solid rgba(248,247,247,.18); }
-.t2049-market h2 { max-width: 900px; }
-.t2049-market-copy { color: rgba(248,247,247,.72); font-size: 1.125rem; line-height: 1.55; margin: 44px 0 48px; max-width: 560px; }
-.t2049-market-cta .arrow-icon { height: 18px; width: 18px; }
+/* PERPS DAY, /perps-day. The page reads as a rail of section headings on the left with the body
+   beside it, so the reader keeps the heading in view instead of losing it after the first screen. */
 
-@media (min-width: 701px) and (max-width: 1100px) {
-  .t2049-facts { column-gap: 24px; margin-top: 72px; }
-  .t2049-lede, .t2049-market-copy { font-size: 1rem; }
+.t2049-page { --t2049-rule: rgba(248,247,247,.18); --t2049-dim: #a7a7a7; --t2049-ink: #f8f7f7; --t2049-accent: #caff5d; --t2049-nav: 52px; }
+/* English-only route, so one face per job rather than one face per script. Inter reads the copy; Neue
+   Machina keeps the display lines and the chrome this event shares. h1, h2 and .footer-brand name Neue
+   Machina site-wide already, so only the clock and the header pieces are listed here. */
+.site-shell[data-event="perps-day"] { font-family: 'Inter', sans-serif; }
+.site-shell[data-event="perps-day"] :is(.brand-wordmark, .event-switcher-tab, .t2049-clock dd) { font-family: 'Neue Machina', sans-serif; }
+
+/* Hero, Figma 812:955. The Spline scene and the two scrims keep their rules at the foot of this file.
+   Only the type scale and the rhythm between the lines follow the design, which reads eyebrow, title,
+   copy and date 21px apart, then 48px down to the clock and 56px down to the buttons. */
+.hero[data-event="perps-day"] .hero-content { padding: 118px 24px 110px; }
+.hero[data-event="perps-day"] .eyebrow { font-size: 13px; line-height: 14px; margin: 0; }
+.hero[data-event="perps-day"] h1 { margin-top: 21px; max-width: 1080px; white-space: normal; }
+.hero[data-event="perps-day"] .hero-copy { font-size: 18px; margin: 21px 0 0; }
+.hero[data-event="perps-day"] .event-date { font-size: 17px; line-height: 18px; margin: 21px 0 0; }
+.t2049-clock { margin: 48px 0 0; }
+.t2049-clock-title { color: var(--t2049-dim); font-size: 13px; letter-spacing: .16em; line-height: 14px; margin: 0; text-transform: uppercase; }
+.t2049-clock dl { display: flex; gap: 32px; margin: 17px 0 0; }
+.t2049-clock div { display: flex; flex-direction: column; gap: 4px; }
+.t2049-clock dd { color: var(--t2049-ink); font-size: clamp(32px, 4vw, 48px); font-variant-numeric: tabular-nums; letter-spacing: -.03em; line-height: 1.04; margin: 0; }
+.t2049-clock dt { color: var(--t2049-dim); font-size: 12px; letter-spacing: .12em; line-height: 13px; text-transform: uppercase; }
+.t2049-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 56px; }
+/* Figma 812:985: the market sits in the pill and the team button beside it reads as plain text, so the
+   pair stops offering two doors of equal weight. A transparent border keeps both boxes 56px tall. */
+.t2049-hero-actions .outline-button { font-family: 'Neue Machina', sans-serif; font-size: 18px; }
+.t2049-hero-actions .hero-team-button { border-color: transparent; }
+.t2049-hero-actions .hero-market-button { border-radius: 34px; }
+.t2049-hero-actions .arrow-icon { height: 18px; width: 18px; }
+.t2049-hero-actions .hero-button { margin-top: 0; }
+
+/* Figma 812:954: section styling only. Header, hero and Spline retain their existing rules above. */
+.t2049-nav { --t2049-nav: 66px; background: rgba(0,0,0,.72); backdrop-filter: blur(14px); border-block: 1px solid var(--t2049-rule); position: sticky; top: 0; z-index: 20; }
+.t2049-nav ul { display: flex; gap: 32px; list-style: none; margin: 0 auto; max-width: 1440px; padding: 24px 48px; }
+.t2049-nav a { color: rgba(248,247,247,.6); display: block; font-size: 13px; letter-spacing: .14em; line-height: 16px; text-decoration: none; text-transform: uppercase; transition: color .2s ease; }
+.t2049-nav a:hover { color: var(--t2049-ink); }
+.t2049-nav a[aria-current] { color: var(--t2049-accent); }
+
+/* Columns follow each section's content. Nothing is positioned by page-height coordinates. */
+.t2049-section { border-top: 1px solid var(--t2049-rule); column-gap: 64px; display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); margin: 0 auto; max-width: 1440px; padding: 64px 48px; scroll-margin-top: 64px; }
+.t2049-head, .t2049-body { min-width: 0; }
+.t2049-head .eyebrow, .t2049-entry .eyebrow { color: var(--t2049-dim); font-size: 13px; font-weight: 400; letter-spacing: .16em; line-height: 14px; margin: 0 0 16px; }
+.t2049-head h2 { color: var(--t2049-ink); font-size: 37.44px; letter-spacing: -.045em; line-height: 40.44px; margin: 0; text-wrap: initial; }
+.t2049-title-line { display: block; }
+.t2049-lede { color: rgba(248,247,247,.72); font-size: 18px; line-height: 28.8px; margin: 0; text-wrap: pretty; }
+.t2049-head .t2049-lede { margin-top: 16px; }
+.t2049-section .outline-button { border: 1.5px solid white; border-radius: 34px; font-family: 'Neue Machina', sans-serif; font-size: 18px; gap: 12px; line-height: 22px; min-height: 56px; padding: 12px 32px; }
+.t2049-arrow { display: block; flex: none; height: 18px; width: 18px; }
+.t2049-section .outline-button:hover { background: rgba(248,247,247,.08); }
+.t2049-page :focus-visible { outline: 1px solid var(--t2049-accent); outline-offset: 4px; }
+.t2049-page .outline-button:active { transform: scale(.985); }
+
+/* Competition: heading and summary, one row of rounds, then three equal rule columns. */
+.t2049-format { border-top: 0; grid-template-columns: minmax(0, 508px) minmax(0, 1fr); row-gap: 24px; }
+.t2049-format .t2049-body { display: contents; }
+.t2049-format-summary { align-self: center; display: grid; gap: 16px; }
+.t2049-prize { color: var(--t2049-ink); font-size: 19px; line-height: 28.5px; margin: 0; }
+/* Rounds, Figma 815:48. Each round is one 290x64 badge, cyan for the two trading rounds and magenta
+   for the break between them. Badge and connector both shrink with the row, and the badge holds its
+   290:64 ratio so the artwork scales down instead of squashing. The row span is a custom property
+   because a flex-basis on the badge alone collapses to the text width once the list is content-sized.
+   The connector is a gradient rather than the exported SVG so it can stand up when the row stacks. */
+.t2049-ladder { align-items: center; display: flex; grid-column: 1 / -1; justify-content: center; list-style: none; margin: 0; padding: 24px 0; }
+.t2049-ladder li { align-items: center; display: flex; flex: 0 1 var(--t2049-round-span, 290px); min-width: 0; position: relative; }
+.t2049-ladder li:not(:last-child) { --t2049-round-span: 460px; }
+.t2049-ladder li[data-accent="cyan"] { --t2049-round-art: url(/assets/token2049/figma/imgRoundCyan.svg); --t2049-round-run: #5433ff, #20bdff 50%, #a5fecb; }
+.t2049-ladder li[data-accent="magenta"] { --t2049-round-art: url(/assets/token2049/figma/imgRoundMagenta.svg); --t2049-round-run: #8a00e6, #ff25bc; }
+.t2049-ladder li:not(:last-child)::after { background: linear-gradient(90deg, var(--t2049-round-run)); content: ''; flex: 0 1 170px; height: 2px; }
+.t2049-ladder strong { align-items: center; aspect-ratio: 290 / 64; background: var(--t2049-round-art) center / 100% 100% no-repeat; display: flex; flex: 0 1 290px; font-size: clamp(12px, 1.45vw, 20px); font-weight: 400; justify-content: center; letter-spacing: -.02em; line-height: 1.2; min-width: 0; white-space: nowrap; }
+.t2049-spec { display: grid; gap: 24px; grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding-top: 24px; }
+.t2049-spec > div { display: flex; flex-direction: column; gap: 32px; padding: 20px 0; }
+.t2049-spec dt { display: flex; flex-direction: column; gap: 12px; }
+.t2049-spec dt img { display: block; height: 36px; width: 36px; }
+.t2049-spec dt span { color: #e4e4e7; font-size: 13px; font-weight: 600; letter-spacing: .16em; line-height: 14px; text-transform: uppercase; }
+.t2049-spec dd { color: rgba(248,247,247,.72); font-size: 17px; line-height: 26.35px; margin: 0; }
+
+/* The field: two seats in each of four cards, with the open slot outlined in lime. */
+.t2049-field { grid-template-columns: minmax(0, 588px) minmax(0, 1fr); }
+.t2049-section .t2049-teams-cta { background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.2); font-family: 'Inter', sans-serif; font-weight: 500; margin-top: 56px; }
+.t2049-team-grid { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); list-style: none; margin: 0; padding: 0; }
+.t2049-team-grid > li { border: 1px solid var(--t2049-rule); border-radius: 16px; display: flex; flex-direction: column; gap: 24px; padding: 24px; }
+.t2049-team-grid strong { color: var(--t2049-dim); font-size: 24px; font-variant-numeric: tabular-nums; font-weight: 400; line-height: 25px; }
+.t2049-team-grid > li > span { color: rgba(248,247,247,.72); font-size: 13px; letter-spacing: .14em; line-height: 14px; margin-top: auto; text-transform: uppercase; }
+.t2049-team-grid [data-status="confirmed"] > span { color: var(--t2049-ink); }
+.t2049-team-grid [data-status="open"] { border-color: var(--t2049-accent); }
+.t2049-team-grid [data-status="open"] > span { color: var(--t2049-accent); }
+.t2049-team-seats { display: grid; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.t2049-team-seats li { border-top: 1px solid var(--t2049-rule); color: rgba(248,247,247,.72); font-size: 15px; letter-spacing: .04em; line-height: 25px; padding-top: 8px; }
+
+/* A small, responsive presentation surface for the three original pinned cards. */
+.t2049-kalshi { grid-template-columns: minmax(0, 448px) minmax(0, 1fr); }
+.t2049-predict-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 44px; }
+/* The reward address is a smaller ask than the prediction, so it sits under the filled CTA as a
+   text link rather than a second button of the same weight. */
+.t2049-kalshi-cta { align-items: center; background: none; border: 0; color: var(--t2049-ink); cursor: pointer; display: flex; font: inherit; font-size: 15px; gap: 10px; margin-top: 20px; min-height: 44px; padding: 0; text-decoration: underline; text-underline-offset: 6px; transition: opacity .2s ease; width: fit-content; }
+.t2049-kalshi-cta:hover { opacity: .68; }
+.t2049-kalshi .t2049-body { display: flex; justify-content: flex-end; }
+.t2049-prediction-board { aspect-ratio: 580 / 450; flex: none; max-width: 100%; position: relative; width: 580px; }
+.t2049-prediction-steps { list-style: none; margin: 0; padding: 0; }
+.t2049-prediction-steps li { --step-color: #e223c2; --step-tint: rgba(255,37,188,.04); --step-rule: rgba(255,37,188,.4); background-color: #0e0f11; background-image: linear-gradient(var(--step-tint),var(--step-tint)), linear-gradient(156deg,transparent 3%,#0e0f11 38%), url('/assets/token2049/figma/imgStepCard01.png'); background-size: auto,auto,12.6px 12.6px; border: .3px solid var(--step-rule); box-shadow: 0 12px 12px rgba(0,0,0,.04); display: flex; flex-direction: column; gap: 8px; padding: 26px 18px; position: absolute; width: 44.83%; }
+.t2049-prediction-steps li:nth-child(1) { left: 0; top: 0; transform: rotate(-4deg); }
+.t2049-prediction-steps li:nth-child(2) { --step-color: #1ee2ec; --step-tint: rgba(0,240,224,.04); --step-rule: rgba(0,240,224,.4); left: 52.59%; top: 21.59%; transform: rotate(6deg); }
+.t2049-prediction-steps li:nth-child(3) { --step-color: #8a2be2; --step-tint: rgba(138,43,226,.04); --step-rule: #8a2be2; left: 17.07%; top: 64.03%; transform: rotate(-3deg); }
+.t2049-step-number { color: var(--step-color); font-size: 32px; font-weight: 700; line-height: normal; }
+.t2049-prediction-steps p { color: #fff; font-size: 16px; font-weight: 500; line-height: normal; margin: 0; }
+.t2049-pin { height: 18px; left: calc(50% - 7px); position: absolute; top: -12px; width: 14px; }
+.t2049-step-line { height: 2px; position: absolute; transform-origin: 0 50%; }
+.t2049-step-line--first { left: 31.03%; top: 26.25%; transform: rotate(22deg); width: 43.1%; }
+.t2049-step-line--second { left: 78.28%; top: 44.83%; transform: rotate(156deg); width: 50%; }
+
+/* Venue details and the run of show share a row. */
+.t2049-venue { grid-template-columns: minmax(0, 442px) minmax(0, 1fr); }
+.t2049-venue-list { display: grid; margin: 16px 0 0; }
+.t2049-venue-list > div { align-items: baseline; border-top: 1px solid var(--t2049-rule); display: flex; gap: 32px; padding: 18px 0; }
+.t2049-venue-list dt { color: var(--t2049-dim); flex: none; font-size: 13px; letter-spacing: .16em; line-height: 14px; text-transform: uppercase; }
+.t2049-venue-list dd { color: var(--t2049-ink); font-size: 17px; line-height: 21px; margin: 0; }
+.t2049-block-title { color: var(--t2049-ink); font-size: 28px; letter-spacing: -.03em; line-height: 32px; margin: 32px 0 0; }
+.t2049-venue .agenda-list { display: block; margin-top: 32px; }
+.t2049-venue .agenda-row { align-items: start; display: grid; gap: 32px; grid-template-columns: 52px minmax(0, 1fr); padding: 20px 0; }
+.t2049-venue .agenda-row time { font-size: 17px; line-height: 24px; }
+.t2049-venue .agenda-row strong { font-family: 'Neue Machina', sans-serif; font-size: 22px; font-weight: 400; line-height: 24px; white-space: normal; }
+
+/* RSVP benefit strips above the inset, double-border team entry card. */
+.t2049-join { row-gap: 48px; }
+.t2049-points { list-style: none; margin: 32px 0 0; padding: 0; }
+.t2049-rsvp .t2049-points { display: grid; gap: 12px; }
+.t2049-rsvp .t2049-points li { background: rgba(255,255,255,.06); border-radius: 16px; color: var(--t2049-ink); font-size: 17px; line-height: 25px; padding: 16px 32px; }
+.t2049-entry-wrap { grid-column: 1 / -1; padding: 40px; }
+.t2049-entry { border: 1px solid rgba(255,255,255,.18); border-radius: 26px; padding: 8px; scroll-margin-top: 80px; }
+.t2049-entry-inner { align-items: center; background: rgba(18,18,18,.22); border: 1px solid rgba(255,255,255,.18); border-radius: 24px; display: grid; gap: 48px; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 36px 24px; }
+.t2049-entry .eyebrow { margin-bottom: 20px; }
+.t2049-entry .t2049-block-title { margin: 0; }
+.t2049-entry-copy { color: rgba(248,247,247,.72); font-size: 16px; line-height: 25px; margin: 24px 0 0; }
+.t2049-section .t2049-entry-cta { font-size: 14px; margin-top: 28px; min-height: 48px; }
+.t2049-entry-cta .t2049-arrow { height: 16px; width: 16px; }
+.t2049-entry-meta { margin: 24px 0 0; }
+.t2049-entry-meta > div { border-top: 1px solid var(--t2049-rule); display: grid; gap: 6px; padding-top: 16px; }
+.t2049-entry-meta dt { color: var(--t2049-dim); font-size: 12px; letter-spacing: .14em; line-height: 13px; text-transform: uppercase; }
+.t2049-entry-meta dd { font-size: 15px; line-height: 16px; margin: 0; }
+.t2049-subtitle { color: var(--t2049-dim); font-size: 13px; font-weight: 400; letter-spacing: .16em; line-height: 14px; margin: 0; text-transform: uppercase; }
+.t2049-entry .t2049-points { margin-top: 12px; }
+.t2049-entry .t2049-points li { border-top: 1px solid var(--t2049-rule); color: var(--t2049-ink); font-size: 15px; line-height: 23px; padding: 14px 0; }
+.t2049-marquee { display: flex; flex-wrap: wrap; gap: 11px 40px; justify-content: center; list-style: none; margin: 0; padding: 32px 64px; }
+.t2049-marquee li { color: var(--t2049-dim); font-size: 13px; font-weight: 600; letter-spacing: .14em; line-height: 14px; text-transform: uppercase; }
+
+@media (min-width: 701px) and (max-width: 1180px) {
+  .t2049-section { column-gap: 40px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding-inline: 32px; }
+  .t2049-head h2 { font-size: 32px; line-height: 36px; }
+  .t2049-nav ul { padding-inline: 32px; }
+  .t2049-lede { font-size: 16px; line-height: 26px; }
+  .t2049-prediction-board { align-self: center; }
+  .t2049-prediction-steps li { padding: 16px 12px; }
+  .t2049-step-number { font-size: 24px; }
+  .t2049-prediction-steps p { font-size: 12px; }
+  .t2049-entry-wrap { padding: 16px 0; }
+  .t2049-entry-inner { gap: 32px; }
 }
-
 @media (max-width: 700px) {
-  .t2049-facts { column-gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 56px; row-gap: 28px; }
-  .t2049-facts dt { font-size: .6875rem; }
-  .t2049-lede, .t2049-market-copy { font-size: .9375rem; margin-top: 28px; }
-  .t2049-market-copy { margin-bottom: 36px; }
-  .t2049-note { font-size: .8125rem; }
-  .t2049-schedule .agenda-list { margin-top: 36px; }
+  .t2049-section { grid-template-columns: minmax(0, 1fr); padding: 48px 20px; row-gap: 32px; }
+  .t2049-head h2 { font-size: 28px; line-height: 32px; }
+  .t2049-lede { font-size: 16px; line-height: 26px; }
+  .t2049-section .outline-button { font-size: 16px; max-width: 100%; }
+  .t2049-nav ul { gap: 20px; padding: 16px 20px; }
+  .t2049-nav a { font-size: 12px; line-height: 16px; }
+  .t2049-ladder { flex-direction: column; padding: 20px 0; }
+  .t2049-ladder li { flex: none; flex-direction: column; width: 100%; }
+  .t2049-ladder li:not(:last-child)::after { background-image: linear-gradient(180deg, var(--t2049-round-run)); flex: none; height: 24px; width: 2px; }
+  .t2049-ladder strong { flex: none; font-size: 16px; max-width: 290px; width: 100%; }
+  .t2049-spec { grid-template-columns: minmax(0, 1fr); padding-top: 0; }
+  .t2049-spec > div { gap: 16px; padding: 16px 0; }
+  .t2049-spec dd { font-size: 16px; line-height: 26px; }
+  .t2049-prize { font-size: 16px; line-height: 26px; }
+  .t2049-team-grid { gap: 12px; }
+  .t2049-team-grid > li { gap: 20px; padding: 16px; }
+  .t2049-team-grid > li > span { font-size: 11px; letter-spacing: .08em; }
+  .t2049-team-seats li { font-size: 14px; }
+  .t2049-section .t2049-teams-cta, .t2049-predict-actions { margin-top: 32px; }
+  .t2049-kalshi .t2049-body { padding: 16px 4px; }
+  .t2049-prediction-steps li { padding: 20px 12px; }
+  .t2049-step-number { font-size: 24px; }
+  .t2049-prediction-steps p { font-size: 12px; }
+  .t2049-venue-list > div { gap: 20px; }
+  .t2049-venue-list dd { font-size: 16px; }
+  .t2049-venue .agenda-row { gap: 20px; }
+  .t2049-venue .agenda-row strong { font-size: 18px; }
+  .t2049-entry-wrap { padding: 8px 0; }
+  .t2049-entry-inner { gap: 32px; grid-template-columns: minmax(0, 1fr); padding: 28px 20px; }
+  .t2049-rsvp .t2049-points li { font-size: 16px; padding: 16px 20px; }
+  .t2049-marquee { gap: 12px 24px; padding: 24px 20px; }
+  .t2049-marquee li { font-size: 12px; }
+  /* The design is drawn at 1440. On a phone the same rhythm reads as a hero the reader has to scroll
+     past before the first line, so only the frame around it shrinks. */
+  .hero[data-event="perps-day"] .hero-content { padding: 88px 24px 72px; }
+  .t2049-clock dl { gap: 20px; }
+  .t2049-clock-title { font-size: 12px; }
+  /* The two buttons no longer fit on one line, so the row that wraps stays under the centred
+     text instead of hanging off the left edge. */
+  .t2049-hero-actions { justify-content: center; margin-top: 40px; }
 }
+@media (prefers-reduced-motion: reduce) {
+  .t2049-nav a { transition: none; }
+  .t2049-page .outline-button:active { transform: none; }
+}
+
+/* The Spline scene takes the digital rain's slot behind this hero. `.hero > [aria-hidden='true']` already
+   stretches it to the edges and the reduced-motion rule already hides it, so only the stacking, the
+   pointer and the scrim are left to name here. It is decoration, so it stays out of hit testing and the
+   copy and buttons over it keep the pointer. */
+.hero-spline { pointer-events: none; position: absolute; z-index: 0; }
+.hero-spline > * { height: 100%; width: 100%; }
+/* The scene runs a slow cycle: a pink core sweeps through the middle of the frame, around the countdown row,
+   then fades to bare starfield. So the wash opens up in the middle and closes at the foot, where the numbers
+   and the buttons have to read whatever phase the scene is in. */
+.hero-spline::after { background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.28) 40%, rgba(0,0,0,.85)); content: ''; inset: 0; position: absolute; }
