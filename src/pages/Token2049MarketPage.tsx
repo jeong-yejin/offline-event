@@ -147,6 +147,9 @@ export function Token2049MarketPage({ onBack, lang, onLangChange }: Token2049Mar
 
               <section className="market-traders market-card" aria-labelledby="t2049-traders-title">
                 <h3 id="t2049-traders-title">{t.traderTableCaption}</h3>
+                {/* Standings move through a session, so the rows move with them and the board can be
+                    read top to bottom. A cut seat keeps the place its frozen balance earned, which is
+                    the rule the rank badge already follows. Equal balances hold the seat order. */}
                 <TraderTable onFocusSeat={focusSeat} onPick={pick} rows={T2049_TRADERS.map((candidate) => ({
                   balance: balances[candidate.id],
                   candidate,
@@ -159,7 +162,7 @@ export function Token2049MarketPage({ onBack, lang, onLangChange }: Token2049Mar
                   status: statusOf(state, candidate.id),
                   tradable: tradableSeat(candidate.id),
                   yesPrice: priceOf(prices, candidate.id, 'yes', direction),
-                }))} t={t} />
+                })).sort((a, b) => a.rank - b.rank)} t={t} />
               </section>
 
               <PositionsSection

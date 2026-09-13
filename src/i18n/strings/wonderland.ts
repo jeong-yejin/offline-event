@@ -46,7 +46,7 @@ export const wonderlandEn = {
   wonderlandMyReturn: 'Competition return (%)',
   wonderlandMyNotional: 'Executed notional (USDT)',
   wonderlandUnscored: 'Not scored',
-  wonderlandScoringNote: 'Net profit and return are ranked separately, each place is converted to points and added, and the highest total takes the final rank. Scores count only trades filled inside the competition window, and a seat with no executed notional is left without a return.',
+  wonderlandScoringNote: 'Net profit and return are ranked separately, each place is converted to points and added, and the highest total takes the final rank. Scores count only positions opened during the competition window: adding to a position held before the start does not count. Futures trading data only, and a seat with no executed notional is left without a return.',
 
   /* The board. */
   wonderlandRank: 'Rank',
@@ -97,7 +97,7 @@ export const wonderlandKo: typeof wonderlandEn = {
   wonderlandMyReturn: '대회 수익률 (%)',
   wonderlandMyNotional: '누적 체결금액 (USDT)',
   wonderlandUnscored: '미산정',
-  wonderlandScoringNote: '순이익과 수익률 순위를 각각 점수로 환산해 합산하며, 총점이 높은 순으로 최종 순위를 정합니다. 점수는 경기 시간 내 체결된 거래만 반영하며, 체결금액이 없는 참가자의 수익률은 산정하지 않습니다.',
+  wonderlandScoringNote: '순이익과 수익률 순위를 각각 점수로 환산해 합산하며, 총점이 높은 순으로 최종 순위를 정합니다. 점수는 대회 기간 중 새로 생긴 포지션만 반영합니다. 대회 시작 전부터 보유한 포지션에 추가 매매를 진행한 경우는 포함되지 않습니다. 선물 거래 데이터만 반영하며, 체결금액이 없는 참가자의 수익률은 산정하지 않습니다.',
 
   /* The board. */
   wonderlandRank: '순위',

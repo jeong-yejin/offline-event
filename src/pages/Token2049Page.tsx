@@ -14,7 +14,6 @@ type Token2049PageProps = {
   lang: Lang;
   onEnterKalshi(): void;
   onEnterMarket(): void;
-  onEnterTeams(): void;
 };
 
 /* TOKEN2049 ships in English only. The site-wide toggle still runs the shared chrome around it,
@@ -22,18 +21,18 @@ type Token2049PageProps = {
 
    The page answers five questions in order: how the competition works, who is in it, how to play
    along, where and when to turn up, and how to get in. One section per question. */
-export function Token2049Page({ event, onEnterKalshi, onEnterMarket, onEnterTeams }: Token2049PageProps) {
+export function Token2049Page({ event, onEnterKalshi, onEnterMarket }: Token2049PageProps) {
   const t = TOKEN2049_STRINGS.en;
 
   return (
     <div className="t2049-page">
-      <T2049Hero event={event} t={t} onEnterMarket={onEnterMarket} onEnterTeams={onEnterTeams} />
+      <T2049Hero event={event} t={t} onEnterMarket={onEnterMarket} />
       <T2049Nav t={t} />
       <T2049Format t={t} />
-      <T2049Field t={t} onEnterTeams={onEnterTeams} />
+      <T2049Field t={t} />
       <T2049Predict t={t} onEnterKalshi={onEnterKalshi} onEnterMarket={onEnterMarket} />
       <T2049Attend t={t} />
-      <T2049Join t={t} onEnterTeams={onEnterTeams} />
+      <T2049Join t={t} />
 
       <ul className="t2049-marquee">{t.t2049Marquee.map((item) => <li key={item}>{item}</li>)}</ul>
     </div>

@@ -42,9 +42,9 @@ const T2049_CASES: Record<string, number> = {
   ended: T2049_RUN_SECONDS + 60,
 };
 
-/* The Kalshi account screen and the team entry screen are their own routes rather than a position on
-   the clock, so the router reads these two names instead of the case maps. */
-export const PREVIEW_ROUTE_CASES: readonly string[] = ['kalshi', 'teams'];
+/* The Kalshi account screen is its own route rather than a position on the clock, so the router reads
+   this name instead of the case maps. */
+export const PREVIEW_ROUTE_CASES: readonly string[] = ['kalshi'];
 
 export const PREVIEW_CASES: readonly string[] =
   [...new Set([...Object.keys(PERP_DEX_CASES), ...Object.keys(T2049_CASES), ...PREVIEW_ROUTE_CASES])];

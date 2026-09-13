@@ -12,7 +12,6 @@ import { PerpDexDayMarketPage } from './pages/PerpDexDayMarketPage';
 import { Token2049KalshiPage } from './pages/Token2049KalshiPage';
 import { Token2049Page } from './pages/Token2049Page';
 import { Token2049MarketPage } from './pages/Token2049MarketPage';
-import { Token2049TeamsPage } from './pages/Token2049TeamsPage';
 import { WonderlandPage } from './pages/WonderlandPage';
 import { WonderlandBoardPage } from './pages/WonderlandBoardPage';
 import { useAppRoute } from './router/useAppRoute';
@@ -31,7 +30,7 @@ function App() {
   }
   /* TOKEN2049 runs in Singapore and ships English-only copy, so both of its routes render in English and
      drop the toggle. Leaving it up half-translated the shared chrome around an English page. */
-  const englishOnly = route === 'perps-day' || route === 't2049-market' || route === 't2049-teams' || route === 't2049-kalshi';
+  const englishOnly = route === 'perps-day' || route === 't2049-market' || route === 't2049-kalshi';
   const { lang, setLang } = useLanguage(englishOnly ? 'en' : undefined);
   const t = COMMON_STRINGS[lang];
   const metaStrings = TOKEN2049_STRINGS.en;
@@ -56,7 +55,6 @@ function App() {
   if (route === 't2049-kalshi') return <Token2049KalshiPage onBack={() => navigate('perps-day')} {...i18n} />;
   if (route === 'perp-dex-market') return <PerpDexDayMarketPage onBack={() => navigate('perp-dex-day')} {...i18n} />;
   if (route === 't2049-market') return <Token2049MarketPage onBack={() => navigate('perps-day')} {...i18n} />;
-  if (route === 't2049-teams') return <Token2049TeamsPage onBack={() => navigate('perps-day')} {...i18n} />;
   if (route === 'wonderland-board') return <WonderlandBoardPage onBack={() => navigate('reboundx-in-wonderland')} {...i18n} />;
 
   const event = route === 'home' ? null : localizeEvent(lang, EVENTS.find((item) => item.key === route) ?? EVENTS[0]);
@@ -66,7 +64,7 @@ function App() {
       {event === null ? <HubPage onNavigate={navigate} t={t} lang={lang} /> : null}
       {event?.key === 'perp-dex-day' ? <PerpDexDayPage event={event} lang={lang} onEnterMarket={() => enterMarket('perp-dex-market')} /> : null}
       {event?.key === 'reboundx-in-wonderland' ? <WonderlandPage lang={lang} onOpenBoard={() => navigate('wonderland-board')} /> : null}
-      {event?.key === 'perps-day' ? <Token2049Page event={event} lang={lang} onEnterKalshi={() => navigate('t2049-kalshi')} onEnterMarket={() => enterMarket('t2049-market')} onEnterTeams={() => navigate('t2049-teams')} /> : null}
+      {event?.key === 'perps-day' ? <Token2049Page event={event} lang={lang} onEnterKalshi={() => navigate('t2049-kalshi')} onEnterMarket={() => enterMarket('t2049-market')} /> : null}
     </SiteShell>
     {loginTarget && <GoogleLoginModal lang={lang} eventName={loginTarget === 'perp-dex-market' ? 'PERP-DEX DAY' : 'TOKEN2049 · PERPS DAY'}
       onClose={() => { setPendingMarket(null); if (protectedRoute) navigate(protectedRoute === 'perp-dex-market' ? 'perp-dex-day' : 'perps-day'); }}

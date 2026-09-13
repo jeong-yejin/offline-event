@@ -2,7 +2,7 @@ import { marketEn, marketKo } from './market';
 import { commonEn, commonKo } from './common';
 import type { LocalizedProps } from '../types';
 import type { Session } from '../../market/token2049/clock';
-import type { KalshiStatus, TeamTier } from '../../data/token2049Content';
+import type { KalshiStatus } from '../../data/token2049Content';
 
 /* The survival format carries four numbers the PERP-DEX DAY spec has no room for, so the row list
    takes one shape instead of eight positional arguments. */
@@ -35,7 +35,6 @@ const shared = {
 
   /* Hero and countdown. */
   t2049HeroCta: 'View Live Standings',
-  t2049HeroTeamCta: 'Enter Your Team',
   t2049CountdownTitle: 'Doors Open In',
   t2049CountdownDays: 'Days',
   t2049CountdownHours: 'Hours',
@@ -72,7 +71,6 @@ const shared = {
   t2049TeamsCopy: 'Each team sends two traders to compete under the same conditions. One team slot is still open.',
   t2049TeamConfirmed: 'Confirmed',
   t2049TeamSlotOpen: 'Team Slot Open',
-  t2049TeamsCta: 'Apply to Enter Your Team',
 
   /* Live standings and predictions. */
   t2049KalshiEyebrow: 'Live Standings & Predictions',
@@ -101,38 +99,6 @@ const shared = {
   t2049RsvpTitle: ['Save your spot', 'for October 5.'] as readonly string[],
   t2049RsvpCopy: 'RSVP now for free entry and receive your confirmation, venue details and door time before spots fill up.',
   t2049RsvpPoints: ['Predict the winner with your points as the odds change in real time.', 'Follow the live standings on the venue screen or your phone as the competition unfolds.', 'Meet traders, teams and builders from around the world throughout TOKEN2049 Week.'],
-
-  /* Team entry. */
-  t2049EntryEyebrow: 'Enter Your Team',
-  t2049EntrySlots: (slots: number): string => `${slots} team slot${slots === 1 ? '' : 's'} left.`,
-  t2049EntryCopy: 'Send two traders to compete live on stage with accounts and starting balances provided by us.',
-  t2049EntryDeadline: 'Application Deadline',
-  t2049Tba: 'To Be Announced',
-  t2049EntryReceives: 'What Your Team Receives',
-  t2049EntryPoints: ['Co-branded team presence across event assets', 'Two trader profiles featured on the stage screen and live leaderboard', 'Flights and accommodation for both traders'],
-  t2049EntryCta: 'Apply as a Team',
-
-  /* Team entry screen, /perps-day/teams. Entry closed before the event, so this page confirms a team
-     that was already chosen rather than collecting applications. */
-  t2049TeamsBack: 'Back to PERPS DAY',
-  t2049TeamsTag: 'TOKEN2049 / TEAM ENTRY',
-  t2049TeamsPageTitle: 'Confirm your team.',
-  t2049TeamsPageCopy: 'The four team slots go to exchanges selected in the Founding and Partner tiers. If your exchange holds a slot, confirm your two traders here. This is not an open application.',
-  t2049TeamsTierLabel: 'Selected tiers',
-  t2049TeamsTierName: (tier: TeamTier): string => (tier === 'founding' ? 'Founding' : 'Partner'),
-  t2049TeamsTierSeats: (exchanges: number, seats: number): string => `${exchanges} exchanges · ${seats} traders each`,
-  t2049TeamsFormLabel: 'Team confirmation',
-  t2049TeamsCodeLabel: 'Invitation code',
-  t2049TeamsCodeHint: 'Sent to your tier contact. Format TIER-XXXX-XXXX.',
-  t2049TeamsTraderLabel: (seat: number): string => `Trader ${String(seat).padStart(2, '0')}`,
-  t2049TeamsTraderHint: 'Full name as it should read on the stage screen.',
-  t2049TeamsSubmit: 'Confirm Team',
-  t2049TeamsErrorCode: 'Enter the invitation code as TIER-XXXX-XXXX.',
-  t2049TeamsErrorTrader: 'Enter a name for both traders.',
-  t2049TeamsDoneTitle: 'Team received.',
-  t2049TeamsDoneCopy: 'Your tier contact checks the invitation code and confirms both seats by email. Nothing else is needed from you now.',
-  t2049TeamsDoneCode: 'Invitation code',
-  t2049TeamsClosedNote: 'No invitation code? Slots are filled by tier only. Ask your ReboundX contact before the deadline.',
 
   /* Kalshi account screen, /perps-day/kalshi. It ships before the competition, so it has to read on its
      own to somebody who has not played yet. */

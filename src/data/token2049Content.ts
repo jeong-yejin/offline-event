@@ -22,25 +22,6 @@ export const TOKEN2049_TEAMS: readonly TeamStatus[] = ['confirmed', 'tbd', 'tbd'
 
 export const T2049_SEATS_PER_TEAM = T2049_SEATS / TOKEN2049_TEAMS.length;
 
-/* Team slots were sold by tier before the event, so nobody applies from the page. Both tiers send the
-   same two traders; the tier sets billing and stage billing order, not seat count. The array is indexed
-   by team, so tier and status line up with the same card. */
-export type TeamTier = 'founding' | 'partner';
-export const T2049_TEAM_TIERS: readonly TeamTier[] = ['founding', 'founding', 'partner', 'partner'];
-
-export const teamsInTier = (tier: TeamTier): number => T2049_TEAM_TIERS.filter((item) => item === tier).length;
-
-/* The code is checked by the tier contact after the form is sent, so the page only proves the shape.
-   Shipping the real codes in the bundle would hand every reader a team slot. */
-const INVITATION_CODE = /^TIER-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
-export const isInvitationCode = (code: string): boolean => INVITATION_CODE.test(code.trim().toUpperCase());
-
-/* The code is three groups of four, so the page places the hyphens itself. A reader who types the
-   run of characters and a reader who pastes a code with its own punctuation both land on the one
-   shape the check accepts, and neither is turned away over a separator. */
-export const formatInvitationCode = (value: string): string =>
-  (value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12).match(/.{1,4}/g) ?? []).join('-');
-
 /* Reward eligibility, /perps-day/kalshi. The competition never signs a reader in to Kalshi and never
    calls its API: it collects the address, and Kalshi checks the reward list against its own accounts
    once the final leaderboard is fixed. So the address never blocks entry, and until that check lands

@@ -44,7 +44,6 @@
 @import './styles/49-perp-dex-day.css';
 @import './styles/50-wonderland-type.css';
 
-/* TOKEN2049 entry screens. They sit after the pairs above, which name no selector these pages carry. */
-@import './styles/51-t2049-teams.css';
+/* TOKEN2049 Kalshi screen. It sits after the pairs above, which name no selector this page carries. */
 @import './styles/52-t2049-kalshi.css';
 @import './styles/53-hub-auth.css';

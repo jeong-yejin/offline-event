@@ -448,61 +448,13 @@ describe('PERP-DEX DAY interface', () => {
     expect(screen.queryByText(/this price holds for/i)).not.toBeInTheDocument();
   });
 
-  it('keeps the hero team entry and shows the Figma RSVP attendance details', () => {
+  it('shows the Figma RSVP attendance details', () => {
     renderAt('/perps-day');
-    const hero = document.querySelector('.hero') as HTMLElement;
-
-    expect(within(hero).getByRole('button', { name: /enter your team/i })).toBeInTheDocument();
 
     const rsvp = document.querySelector('.t2049-rsvp') as HTMLElement;
     expect(rsvp).toHaveTextContent(/confirmation, venue details and door time/i);
     expect(within(rsvp).getAllByRole('listitem')).toHaveLength(3);
     expect(within(rsvp).getByText(/predict the winner with your points/i)).toBeInTheDocument();
-  });
-
-  it('sends the team CTA to its own screen instead of scrolling the event page', async () => {
-    const user = userEvent.setup();
-    renderAt('/perps-day');
-    const hero = document.querySelector('.hero') as HTMLElement;
-
-    /* The tier contact hands the link out on its own, so team entry has to be somewhere a reader can
-       land directly rather than an anchor part-way down a page written for the audience. */
-    await user.click(within(hero).getByRole('button', { name: /enter your team/i }));
-
-    expect(window.location.pathname).toBe('/perps-day/teams');
-    expect(document.querySelector('.t2049-teams-page')).toBeInTheDocument();
-  });
-
-  it('turns a team away until the invitation code proves the tier picked them', async () => {
-    const user = userEvent.setup();
-    renderAt('/perps-day/teams');
-
-    /* Slots were sold by tier before the event. A page that accepts any name is an open application,
-       which is the thing this screen exists not to be. */
-    await user.type(screen.getByLabelText(/invitation code/i), 'LET ME IN');
-    await user.type(screen.getByLabelText(/trader 01/i), 'Ha-eun Seo');
-    await user.type(screen.getByLabelText(/trader 02/i), 'Marco Villalba');
-    await user.click(screen.getByRole('button', { name: /confirm team/i }));
-
-    expect(screen.getByRole('alert')).toHaveTextContent(/TIER-XXXX-XXXX/);
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
-  });
-
-  it('holds a confirmed team on screen so the exchange can check the two names it sent', async () => {
-    const user = userEvent.setup();
-    renderAt('/perps-day/teams');
-
-    await user.type(screen.getByLabelText(/invitation code/i), 'tier-9f2a-40kd');
-    await user.type(screen.getByLabelText(/trader 01/i), 'Ha-eun Seo');
-    await user.type(screen.getByLabelText(/trader 02/i), 'Marco Villalba');
-    await user.click(screen.getByRole('button', { name: /confirm team/i }));
-
-    /* Nothing is sent anywhere, so the receipt on screen is the only record the exchange gets of what
-       it typed. Losing a name here loses it for good. */
-    const done = screen.getByRole('status');
-    expect(done).toHaveTextContent('TIER-9F2A-40KD');
-    expect(done).toHaveTextContent('Ha-eun Seo');
-    expect(done).toHaveTextContent('Marco Villalba');
   });
 
   it('opens the Kalshi account screen on its own route, because it is promoted before the competition', async () => {
@@ -558,15 +510,14 @@ describe('PERP-DEX DAY interface', () => {
     expect(main).toHaveTextContent(/highest percentage return at the end of the final/i);
   });
 
-  it('counts the open team slots off the roster instead of hard-coding the headline', () => {
+  it('leaves the field grid as a line-up with no way to apply for a seat', () => {
     renderAt('/perps-day');
-    const entry = document.querySelector('.t2049-entry') as HTMLElement;
-    const open = document.querySelectorAll('.t2049-team-grid [data-status="open"]').length;
+    const field = document.querySelector('.t2049-team-grid') as HTMLElement;
 
-    /* One open slot reads "1 team slot left", not "1 team slots left", and the number has to move
-       with the roster rather than with a copy edit. */
-    expect(within(entry).getByRole('heading', { level: 2 })).toHaveTextContent(`${open} team slot${open === 1 ? '' : 's'} left.`);
-    expect(open).toBeGreaterThan(0);
+    /* Seats are filled by the tier contact off the site. A button anywhere on this page would offer a
+       door that goes nowhere. */
+    expect(within(field).getAllByRole('listitem').length).toBeGreaterThan(0);
+    expect(screen.queryByRole('button', { name: /team/i })).not.toBeInTheDocument();
   });
 
   it('gives PERPS DAY its own share card without rebranding the rest of the site', () => {

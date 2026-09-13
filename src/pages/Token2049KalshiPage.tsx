@@ -37,11 +37,10 @@ export function Token2049KalshiPage({ lang, onLangChange, onBack }: Token2049Kal
       </header>
 
       <main>
-        <section className="teams-content" aria-labelledby="t2049-kalshi-title">
-          {/* What the address is for on the left, the field on the right, the same way the team screen
-              splits its brief from its form. */}
-          <div className="teams-brief">
-            <div className="teams-intro">
+        <section className="kalshi-content" aria-labelledby="t2049-kalshi-title">
+          {/* What the address is for on the left, the field on the right. */}
+          <div className="kalshi-brief">
+            <div className="kalshi-intro">
               <h1 id="t2049-kalshi-title">{t.t2049KalshiPageTitle}</h1>
               <p>{t.t2049KalshiPageCopy}</p>
             </div>
@@ -55,7 +54,7 @@ export function Token2049KalshiPage({ lang, onLangChange, onBack }: Token2049Kal
           </div>
 
           {saved ? (
-            <div className="teams-done" role="status">
+            <div className="kalshi-done" role="status">
               <p className="kalshi-pill" data-status="PENDING">{t.t2049KalshiCurrent}: {t.t2049KalshiStatusName('PENDING')}</p>
               <h2>{t.t2049KalshiDoneTitle}</h2>
               <p>{t.t2049KalshiDoneCopy}</p>
@@ -63,8 +62,8 @@ export function Token2049KalshiPage({ lang, onLangChange, onBack }: Token2049Kal
               <button className="outline-button" type="button" onClick={() => { setDraft(saved); setSaved(''); }}>{t.t2049KalshiAgain}<ArrowIcon /></button>
             </div>
           ) : (
-            <form className="teams-form" onSubmit={submit} aria-label={t.t2049KalshiFormLabel} noValidate>
-              <div className="teams-field">
+            <form className="kalshi-form" onSubmit={submit} aria-label={t.t2049KalshiFormLabel} noValidate>
+              <div className="kalshi-field">
                 <label htmlFor="kalshi-email">{t.t2049KalshiEmailLabel}</label>
                 <input
                   aria-describedby="kalshi-email-hint"
@@ -78,13 +77,13 @@ export function Token2049KalshiPage({ lang, onLangChange, onBack }: Token2049Kal
                   type="email"
                   value={draft}
                 />
-                <p className="teams-hint" id="kalshi-email-hint">{t.t2049KalshiEmailHint}</p>
+                <p className="kalshi-hint" id="kalshi-email-hint">{t.t2049KalshiEmailHint}</p>
               </div>
 
-              <p className="teams-error" role="alert">{error}</p>
+              <p className="kalshi-error" role="alert">{error}</p>
 
               <button className="outline-button kalshi-submit" type="submit">{t.t2049KalshiSubmit}<ArrowIcon /></button>
-              <p className="teams-note">{t.t2049KalshiNote}</p>
+              <p className="kalshi-note">{t.t2049KalshiNote}</p>
             </form>
           )}
         </section>

@@ -10,16 +10,14 @@ type T2049HeroProps = {
   event: EventContent;
   t: Strings;
   onEnterMarket(): void;
-  onEnterTeams(): void;
 };
 
-export function T2049Hero({ event, t, onEnterMarket, onEnterTeams }: T2049HeroProps) {
+export function T2049Hero({ event, t, onEnterMarket }: T2049HeroProps) {
   return (
     <EventHero event={event} background={<HeroSplineBackground />}>
       <EventCountdown target={T2049_EVENT_DAY_AT} t={t} />
 
       <div className="t2049-hero-actions">
-        <button className="outline-button hero-button hero-team-button" type="button" onClick={onEnterTeams}>{t.t2049HeroTeamCta}</button>
         <button className="outline-button hero-button hero-market-button" type="button" onClick={onEnterMarket}>{t.t2049HeroCta}<ArrowIcon /></button>
       </div>
     </EventHero>

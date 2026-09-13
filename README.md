@@ -2,7 +2,7 @@
 
 ReboundX 행사 3개의 랜딩 페이지와 예측마켓 프론트엔드. React 18 + TypeScript + Vite.
 
-**서버가 없다.** 이 저장소에는 API도, DB도, 세션도 없다. 화면에 보이는 모든 숫자는 브라우저가 만든다. 로그인, 팀 초대 코드, 주문 체결, 리더보드, 정산이 전부 프론트엔드 시뮬레이션이다. 풀스택 개발자가 붙을 지점은 [해야 할 작업](#해야-할-작업)에 정리했다.
+**서버가 없다.** 이 저장소에는 API도, DB도, 세션도 없다. 화면에 보이는 모든 숫자는 브라우저가 만든다. 로그인, 주문 체결, 리더보드, 정산이 전부 프론트엔드 시뮬레이션이다. 풀스택 개발자가 붙을 지점은 [해야 할 작업](#해야-할-작업)에 정리했다.
 
 ---
 
@@ -49,7 +49,6 @@ Test Files  1 failed | 11 passed (12)
 | `/reboundx-in-wonderland/leaderboard` | WONDERLAND 실시간 순위 | 아니오 | ko / en |
 | `/perps-day` | PERPS DAY 랜딩 | 아니오 | **en 고정** |
 | `/perps-day/market` | PERPS DAY 서바이벌 마켓 | **예** | **en 고정** |
-| `/perps-day/teams` | 팀 참가 신청 | 아니오 | **en 고정** |
 | `/perps-day/kalshi` | Kalshi 주소 등록 | 아니오 | **en 고정** |
 | `/token2049-side-event/market` | 레거시. `replaceState`로 `/perps-day/market`으로 다시 쓴다 | 예 | en |
 
@@ -63,7 +62,7 @@ Test Files  1 failed | 11 passed (12)
 | --- | --- |
 | `/perp-dex-day/market?preview=` | `ready` `live` `settling` `ended` |
 | `/perps-day/market?preview=` | `ready` `session-a` `break` `session-c` `settling` `ended` |
-| `/?preview=` | `kalshi` `teams` (해당 화면으로 직행) |
+| `/?preview=` | `kalshi` (해당 화면으로 직행) |
 
 모르는 케이스 이름은 `console.warn` 찍고 무시한다. 프리뷰 값은 모듈 로드 시점에 한 번만 읽는다. 값을 바꾸면 새로고침해야 한다.
 
@@ -73,7 +72,7 @@ Test Files  1 failed | 11 passed (12)
 
 ## 해야 할 작업
 
-풀스택 개발자가 붙어야 하는 지점 7개. 항목마다 **지금 동작 / 없는 것 / 필요한 계약 / 파일 / 검증**으로 정리했다.
+풀스택 개발자가 붙어야 하는 지점 6개. 항목마다 **지금 동작 / 없는 것 / 필요한 계약 / 파일 / 검증**으로 정리했다.
 
 ### 1. 구글 로그인
 
@@ -108,41 +107,7 @@ credentials: include
 
 **검증.** `src/auth/GoogleLoginModal.test.tsx`, `src/auth/marketGate.test.tsx`.
 
-### 2. 팀 초대 코드 발급과 검증
-
-**지금 동작.** `/perps-day/teams`에서 코드 형식만 본다.
-
-```ts
-const INVITATION_CODE = /^TIER-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
-```
-
-입력하는 동안 자동으로 대문자 + 4자리씩 하이픈을 넣는다 (`formatInvitationCode`). 형식이 맞으면 통과. 트레이더 2명 이름이 다 채워졌는지 본다. 그러고 완료 화면을 그린다. **아무 곳에도 보내지 않는다.**
-
-**없는 것.** 발급, 저장, 소진 체크, 중복 신청 차단, 마감일. 진짜 코드는 번들에 없다. 의도적이다. 코드를 번들에 넣으면 페이지를 여는 모든 사람이 팀 슬롯을 얻는다.
-
-실제 운영은 이렇다. 좌석은 행사 전에 티어별로 팔렸다. 페이지에서 신규 신청을 받는 구조가 아니다. 코드는 폼 제출 뒤에 티어 담당자가 따로 확인한다.
-
-**좌석 구조.** 총 8석. 4팀 × 2석. 티어는 `founding`, `founding`, `partner`, `partner`. 팀 상태는 `confirmed`, `tbd`, `tbd`, `open`이라 화면에는 열린 슬롯 1개로 나온다.
-
-**필요한 계약.**
-
-```
-POST /api/teams/apply
-{ "code": "TIER-XXXX-XXXX", "traders": ["name", "name"] }
-
-200 { "team": "founding-2", "seats": 2, "status": "confirmed" }
-409 { "error": "CODE_ALREADY_USED" }
-404 { "error": "CODE_NOT_FOUND" }
-410 { "error": "DEADLINE_PASSED" }
-```
-
-코드는 서버에서만 만든다. 형식 정규식은 오타 걸러내는 용도로 프론트에 남겨두면 된다. 진짜 검증은 서버가 한다.
-
-**파일.** `src/pages/Token2049TeamsPage.tsx` (143줄), `src/data/token2049Content.ts` (`isInvitationCode`, `formatInvitationCode`, `TOKEN2049_TEAMS`, `T2049_TEAM_TIERS`).
-
-**마감일이 하드코딩된 `t.t2049Tba`다.** 정해지면 `src/i18n/strings/token2049.ts`를 고쳐야 한다.
-
-### 3. 예측마켓 주문과 체결
+### 2. 예측마켓 주문과 체결
 
 **지금 동작.** 전부 브라우저에서 돈다. 서버 주문서가 없다.
 
@@ -173,7 +138,7 @@ GET  /api/market/leaderboard -> [{ rank, handle, point, ... }]
 
 **검증.** `src/market/perpdexday/market.test.ts`, `src/market/token2049/market.test.ts`, `src/market/leaderboard.test.ts`, `src/market/performance.test.ts`.
 
-### 4. Kalshi 주소 검증
+### 3. Kalshi 주소 검증
 
 **지금 동작.** `/perps-day/kalshi`에서 이메일 형식만 본다.
 
@@ -194,7 +159,7 @@ GET  /api/kalshi/status              -> { status: "PENDING" | "VERIFIED" | "REJE
 
 **파일.** `src/pages/Token2049KalshiPage.tsx` (94줄), `src/data/token2049Content.ts` (`KalshiStatus`, `isEmailAddress`).
 
-### 5. WONDERLAND 실시간 순위 피드
+### 4. WONDERLAND 실시간 순위 피드
 
 **지금 동작.** 순위표가 시계의 순수 함수다 (`src/market/wonderlandBoard.ts`). 입력은 `Date.now()` 하나. 12석의 `drift`, `tempo`, `report` 상수로 손익을 계산한다.
 
@@ -214,7 +179,7 @@ GET /api/wonderland/board -> { phase, rows: [{ handle, equity, pnl, returnPct, r
 
 **검증.** `src/market/wonderlandBoard.test.ts`.
 
-### 6. 상금 지급
+### 5. 상금 지급
 
 **지금 동작.** 정산은 결과만 기록한다. 포인트를 지급하지 않는다.
 
@@ -226,7 +191,7 @@ PERP-DEX DAY: `settle()`이 승자와 payout을 기록하고 `point`는 건드�
 
 **파일.** `src/market/engine/settlement.ts`, `src/components/SettledBanner.tsx`.
 
-### 7. 세션 복구와 다중 기기
+### 6. 세션 복구와 다중 기기
 
 **지금 동작.** 로그인은 메모리, 마켓 런은 `localStorage`. 두 개가 서로 모른다. 새로고침하면 로그인은 사라지고 마켓 런은 남는다.
 
@@ -358,7 +323,6 @@ TOKEN2049 Singapore · 2026-10-05 00:00 SGT. **영어 전용.** 트레이더 8�
 | --- | --- |
 | `/perps-day` | `T2049Hero` (`EventCountdown` 포함) → `T2049Nav` → `T2049Format` → `T2049Field` → `T2049Predict` → `T2049Attend` → `T2049Join` |
 | `/perps-day/market` | `.market-header` → `.market-content` → `.market-overview` (국면 배지, 확률, 내 순위, `.market-cut-clock`) → 조건부 블록 (`.market-break` 휴식/정산, `.market-cut` 탈락 알림, `SettledBanner`) → `.market-layout` (좌: 좌석 표, 차트, 포지션, 리더보드, `RulesSection` / 우: `OrderTicket` + `.market-history`) → `.market-footer`. ASCII 히어로 (`.market-feature`) 없음 |
-| `/perps-day/teams` | 초대 코드 입력 → 트레이더 2명 이름 → 완료 화면 (코드 + 명단 + 뒤로) |
 | `/perps-day/kalshi` | 이메일 입력 → 완료 화면 (`PENDING` 배지 + 지급 안내 + 다시 입력) |
 
 #### 상태 케이스
@@ -390,10 +354,6 @@ TOKEN2049 Singapore · 2026-10-05 00:00 SGT. **영어 전용.** 트레이더 8�
 
 | 상황 | 결과 |
 | --- | --- |
-| 초대 코드 형식 오류 | `t.t2049TeamsErrorCode`. `aria-invalid`가 코드 입력에 붙는다 |
-| 트레이더 이름 빈칸 | `t.t2049TeamsErrorTrader`. 코드 검사를 먼저 통과해야 이 에러를 본다 |
-| 유효한 형식의 가짜 코드 | **통과한다.** 형식만 보기 때문. 서버 검증이 없다 |
-| 같은 코드 반복 제출 | 매번 통과. 소진 체크가 없다 |
 | Kalshi 이메일 형식 오류 | `t.t2049KalshiErrorEmail` |
 | Kalshi 제출 성공 | 항상 `PENDING`. `VERIFIED`와 `REJECTED`는 도달 불가 |
 | 탈락 좌석에 주문 | 리듀서가 거부 (`state.eliminated.includes(marketId)`) |
@@ -444,7 +404,7 @@ TOKEN2049 Singapore · 2026-10-05 00:00 SGT. **영어 전용.** 트레이더 8�
 
 **CSS 로드 순서.** `src/styles/NN-*.css`. 파일명 앞 숫자가 로드 순서다. Tailwind 없음. Framer Motion 없음. 플레인 CSS다.
 
-**영어 전용 라우트.** `perps-day`, `perps-day/market`, `perps-day/teams`, `perps-day/kalshi`. 언어 토글을 넣지 말 것. `App.tsx`의 `englishOnly` 플래그가 이 목록을 들고 있다.
+**영어 전용 라우트.** `perps-day`, `perps-day/market`, `perps-day/kalshi`. 언어 토글을 넣지 말 것. `App.tsx`의 `englishOnly` 플래그가 이 목록을 들고 있다.
 
 **발표자 사진 폴더.** `PerpDexDay/`는 매트릭스 그린 원본, `Wonderland/`는 투명 컷아웃. 처리 방식이 반대라서 섞으면 안 된다.
 
