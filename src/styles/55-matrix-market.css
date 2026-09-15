@@ -14,10 +14,8 @@
 /* The rain is a fixed canvas behind the whole board, so the page has to let it through and has to
    own the stacking context that puts it at the back. isolation alone does that: it opens a stacking
    context without making the page a containing block, which would move every absolute inside it.
-   The hero gives up its black for the same reason, so the rain runs from the top of the page to the
-   foot without a seam where the hero ends. */
-.matrix-market, .matrix-market .market-feature { background: transparent; }
-.matrix-market { isolation: isolate; }
+   Nothing stands above the content any more, so the rain is what the page opens on. */
+.matrix-market { background: transparent; isolation: isolate; }
 
 /* Chrome text in dim phosphor, values left white. This is the split that makes it read as a
    terminal: the machine's labels are green, the numbers it reports are not. Dim measures 5.6:1 on

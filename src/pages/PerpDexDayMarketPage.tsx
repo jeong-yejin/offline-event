@@ -3,7 +3,7 @@ import { ArrowIcon } from '../components/ArrowIcon';
 import { ChanceBar } from '../components/ChanceBar';
 import { BackLink } from '../components/BackLink';
 import { LangToggle } from '../components/LangToggle';
-import { ASCII_D60_HERO, ASCII_LOG_LEET, AsciiArt } from '../components/AsciiArt';
+import { ASCII_LOG_LEET, AsciiArt } from '../components/AsciiArt';
 import DigitalRain from '../components/DigitalRain';
 import { Leaderboard } from '../components/Leaderboard';
 import { MarketLeaderboardPage } from './MarketLeaderboardPage';
@@ -83,8 +83,10 @@ export function PerpDexDayMarketPage({ view, onBack, onOpenLeaderboard, lang, on
   return (
     <div className="market-page matrix-market">
       {/* The rain is the board's ground rather than a panel inside it: one fixed canvas that every
-          section scrolls over, dimmed far enough that the tables reading on top of it stay legible. */}
-      {prefersStill() ? null : <DigitalRain density={56} headColor="#D9FFD9" shuffleGlyphs={MATRIX_GLYPHS} style={{ inset: 0, opacity: .26, pointerEvents: 'none', position: 'fixed', zIndex: -1 }} trail={38} trailColor="#00E23E" />}
+          section scrolls over, and with the hero gone it is what the page opens on.
+          .14 rather than .26. A ground the tables have to be read against is a ground that is
+          competing with them, and this page is read rather than looked at. */}
+      {prefersStill() ? null : <DigitalRain density={56} headColor="#D9FFD9" shuffleGlyphs={MATRIX_GLYPHS} style={{ inset: 0, opacity: .14, pointerEvents: 'none', position: 'fixed', zIndex: -1 }} trail={38} trailColor="#00E23E" />}
 
       <header className="market-header">
         <BackLink className="market-back" label={t.marketBack} onClick={onBack} />
@@ -92,10 +94,6 @@ export function PerpDexDayMarketPage({ view, onBack, onOpenLeaderboard, lang, on
       </header>
 
       <main>
-        <section className="market-feature">
-          <AsciiArt className="market-hero-art" recipe={ASCII_D60_HERO} />
-        </section>
-
         <section className="market-content" aria-labelledby="market-title">
           <div className="market-intro">
             <h1 id="market-title">{t.marketTitle}</h1>
