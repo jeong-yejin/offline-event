@@ -20,8 +20,8 @@ export type T2049Spec = {
 // English-only page copy is shared by both dictionaries.
 const shared = {
   /* Document metadata. */
-  t2049MetaTitle: 'PERPS DAY — Eight Traders. Four Teams. The Best Trader Wins.',
-  t2049MetaDescription: 'Eight traders from four teams compete live in Singapore on October 5, 2026. Everyone starts with an equal balance, and one trader is eliminated every 7 minutes 30 seconds in the semifinal. Free entry with RSVP.',
+  t2049MetaTitle: 'PERPS DAY — Eight Traders. The Best Trader Wins.',
+  t2049MetaDescription: 'Eight traders compete live in Singapore on October 5, 2026. Everyone starts with an equal balance, and one trader is eliminated every 7 minutes 30 seconds in the semifinal. Free entry with RSVP.',
   t2049OgDescription: 'October 5, 2026 · Singapore. Eight traders compete on live accounts with an equal starting balance. One elimination every 7 minutes 30 seconds. Limited capacity. RSVP required.',
   t2049OgImageAlt: 'PERPS DAY by ReboundX and Kalshi · October 5, 2026 · Singapore',
   t2049TwitterDescription: 'October 5, 2026 · Singapore. Eight traders compete live with an equal starting balance. One elimination every 7 minutes 30 seconds.',
@@ -34,7 +34,17 @@ const shared = {
   t2049NavRsvp: 'RSVP',
 
   /* Hero and countdown. */
-  t2049HeroCta: 'View Live Standings',
+  t2049HeroCta: 'Join Pulse',
+  /* The strip along the foot of the hero. Six lines, because the loop reads as a loop only once it is
+     long enough that a reader does not see the same phrase twice in a glance. */
+  t2049HeroMarquee: [
+    'LIVE TRADING ON STAGE',
+    'LIVE ELIMINATIONS',
+    'REBOUNDX \u00d7 KALSHI',
+    'FOLLOW THE PULSE',
+    'PREDICT THE OUTCOME',
+    'ONE TRADER TAKES THE WIN',
+  ] as readonly string[],
   t2049CountdownTitle: 'Doors Open In',
   t2049CountdownDays: 'Days',
   t2049CountdownHours: 'Hours',
@@ -43,7 +53,7 @@ const shared = {
 
   /* Competition format. */
   t2049Eyebrow: 'Competition Format',
-  t2049Title: ['One trader drops', 'every 7 minutes 30 seconds.'] as readonly string[],
+  t2049Title: ['One trader drops', 'every 7 minutes 30 seconds'] as readonly string[],
   t2049Copy: 'Eight traders compete on equal live accounts, with four advancing to the final based on percentage return.',
   t2049LadderLabel: 'Competition rounds',
   t2049Semifinal: 'Semifinal',
@@ -54,7 +64,7 @@ const shared = {
   t2049FinalDetail: '30 Minutes · 4 Finalists → 1 Winner',
   t2049SpecLabel: 'Competition rules',
   t2049SpecElimination: 'Elimination',
-  t2049SpecEliminationCopy: 'Eliminations are individual, not team-based. Both traders from the same team may advance, or both may be eliminated.',
+  t2049SpecEliminationCopy: 'Every trader enters on their own. At each cut the lowest percentage return on the floor leaves, and no seat is protected.',
   t2049SpecRanking: 'Ranking',
   t2049SpecRankingCopy: 'Rankings are based on percentage return. Everyone starts with the same balance, so performance alone determines the leaderboard.',
   t2049SpecBalance: 'Starting Balance',
@@ -63,19 +73,16 @@ const shared = {
 
   /* Traders. */
   t2049LiveEyebrow: 'Meet the Traders',
-  t2049LiveTitle: ['Eight traders from four teams', 'compete live.'] as readonly string[],
+  t2049LiveTitle: ['Eight traders', 'compete live'] as readonly string[],
   t2049TraderSlot: (seat: number): string => `Trader ${String(seat).padStart(2, '0')}`,
   t2049Tbd: 'To Be Revealed',
 
-  /* Teams. */
-  t2049TeamsCopy: 'Each team sends two traders to compete under the same conditions. One team slot is still open.',
-  t2049TeamConfirmed: 'Confirmed',
-  t2049TeamSlotOpen: 'Team Slot Open',
+  t2049TradersCopy: 'Every trader competes individually under the same conditions. The full line-up is announced the week of the event.',
 
-  /* Live standings and predictions. */
-  t2049KalshiEyebrow: 'Live Standings & Predictions',
-  t2049KalshiTitle: ['Track the standings', 'and predict the winner.'] as readonly string[],
-  t2049KalshiCopy: 'Follow the live leaderboard and trade YES or NO on the trader you think will win.',
+  /* Live standings and Pulse. */
+  t2049KalshiEyebrow: 'Live Standings & Pulse',
+  t2049KalshiTitle: ['Track the standings', 'and predict the winner'] as readonly string[],
+  t2049KalshiCopy: 'Pulse is the prediction game the audience plays. Follow the live leaderboard and trade YES or NO on the trader you think will win.',
   t2049KalshiPoints: [
     'Start with 100 points',
     'Trade YES or NO on any trader',
@@ -87,6 +94,16 @@ const shared = {
   t2049VenueTitle: ['Token2049', 'Live in Singapore'] as readonly string[],
   t2049VenueCopy: 'Join ReboundX and Kalshi for a live trading competition during TOKEN2049 Week. Capacity is limited, and entry is available to confirmed guests only.',
   t2049VenueLabel: 'Date and venue details',
+  t2049AgendaNote: 'Exact timings for the live trading competition and the filming can shift with operations on the night.',
+
+  /* Pulse is the audience prediction game. Kalshi runs the market behind it, so the rules sit under the
+     run of show where a reader decides whether they can play. */
+  t2049PulseTitle: 'Pulse rules',
+  t2049PulseRules: [
+    'Guests who registered online beforehand can play Pulse too.',
+    'A QR code is shown at the venue on the day for anyone attending in person who wants to join Pulse.',
+    'Rewards follow the Pulse standings. Only guests attending in person are eligible.',
+  ],
   t2049VenueDate: 'Date',
   t2049DateValue: 'Monday, October 5, 2026',
   t2049VenuePlace: 'Venue',
@@ -96,9 +113,9 @@ const shared = {
 
   /* RSVP. */
   t2049RsvpEyebrow: 'RSVP',
-  t2049RsvpTitle: ['Save your spot', 'for October 5.'] as readonly string[],
+  t2049RsvpTitle: ['Save your spot', 'for October 5'] as readonly string[],
   t2049RsvpCopy: 'RSVP now for free entry and receive your confirmation, venue details and door time before spots fill up.',
-  t2049RsvpPoints: ['Predict the winner with your points as the odds change in real time.', 'Follow the live standings on the venue screen or your phone as the competition unfolds.', 'Meet traders, teams and builders from around the world throughout TOKEN2049 Week.'],
+  t2049RsvpPoints: ['Play Pulse and predict the winner with your points as the odds change in real time.', 'Follow the live standings on the venue screen or your phone as the competition unfolds.', 'Meet traders and builders from around the world throughout TOKEN2049 Week.'],
 
   /* Kalshi account screen, /perps-day/kalshi. It ships before the competition, so it has to read on its
      own to somebody who has not played yet. */
@@ -131,17 +148,35 @@ const shared = {
   t2049KalshiDoneCopy: 'Your status stays Pending until the competition closes. Kalshi checks the address once the final leaderboard is fixed, and the result shows here.',
   t2049KalshiDoneEmail: 'Kalshi account email',
   t2049KalshiAgain: 'Change Address',
+  /* The way on from the done screen. A reader who got here through the gate came to open the board,
+     so the board is the primary action and changing the address is the second thought. */
+  t2049KalshiToMarket: 'Back to Pulse',
   t2049KalshiNote: 'We never ask for a Kalshi password and never sign in on your behalf. The address is used to confirm reward eligibility after the competition, nothing else.',
   t2049KalshiCta: 'Add Your Kalshi Account',
 
-  /* Prediction CTA and marquee. */
-  t2049MarketCta: 'Predict the Winner',
-  t2049Marquee: ['8 Traders', '4 Teams', 'The Best Trader Wins', 'October 5 · Singapore'],
+  /* The gate that stands in front of Pulse for a reader with no Kalshi account. It states the reason
+     rather than the rule, because the reader did just sign in and is entitled to know why that was
+     not enough. */
+  t2049GateTitle: 'Pulse runs on your Kalshi account.',
+  t2049GateCopy: 'Rewards settle in Kalshi markets, so Pulse opens for Kalshi account holders only. Add the address you signed up to Kalshi with and the board opens.',
+  t2049GateCta: 'Verify Kalshi Account',
+  t2049GateBack: 'Back to PERPS DAY',
 
-  /* Survival market. */
+  /* Prediction CTA and marquee. */
+  t2049MarketCta: 'Join Pulse',
+
+  /* Pulse, the survival market the audience plays. The tag names the game rather than the format,
+     because that is the name the run of show and the venue QR code use. */
   t2049MarketBack: 'Back to PERPS DAY',
-  t2049MarketTag: 'TOKEN2049 / SURVIVAL MARKET',
-  t2049MarketHeading: 'Choose the four traders you think will survive.',
+  t2049MarketTag: 'TOKEN2049 / PULSE',
+  /* Overrides the shared board label: on this event the market a reader goes back to has a name. */
+  boardBack: 'Back to Pulse',
+  /* Kalshi pays the rewards, so the board names it where a reader can act on it rather than only in
+     the rules further down. Its brand green is this page's main colour, so the mark and the palette
+     are the same move. */
+  t2049MarketKalshiTitle: 'Rewards by Kalshi',
+  t2049MarketKalshiFooter: 'Prediction rewards by Kalshi',
+  t2049MarketHeading: 'Read the pulse and predict who survives.',
   t2049MarketSpec: ({ seats, sessionMinutes, breakMinutes, finalMinutes, point, payout, cutSeconds, finalists }: T2049Spec) => [
     { term: 'Markets', detail: `One perpetual DEX per trader, ${seats} seats` },
     { term: 'Trading Time', detail: `${sessionMinutes} minutes, a ${breakMinutes} minute break, then ${finalMinutes} more` },

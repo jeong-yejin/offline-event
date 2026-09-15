@@ -4,6 +4,7 @@ import { ClosedPositionList } from '../components/ClosedPositionList';
 import { BackLink } from '../components/BackLink';
 import { LangToggle } from '../components/LangToggle';
 import { Leaderboard } from '../components/Leaderboard';
+import { MarketLeaderboardPage } from './MarketLeaderboardPage';
 import { MarketChart } from '../components/MarketChart';
 import { OrderTicket } from '../components/OrderTicket';
 import { PositionsSection } from '../components/PositionsSection';
@@ -40,7 +41,16 @@ import {
 import { elapsedOf, isClosed, secondsLeftOf, sessionOf, statusOf, useMarket } from '../market/token2049/useMarket';
 
 type Token2049MarketPageProps = Omit<I18nProps, 't'> & {
+  /* The full board is a route of its own, but it ranks the run this page is holding. Rendering it
+     from inside this component is what keeps the competition alive across the navigation: the
+     balances walk a random path that is never persisted, so a board mounted beside this page would
+     reopen the market and report a different rank for the same player. */
+  view: 'market' | 'leaderboard';
   onBack(): void;
+  onOpenLeaderboard(): void;
+  /* True while the Kalshi gate is up over this page. The board still renders under it: it is what the
+     gate is arguing for, and a reader who cannot see it has no reason to go and fill the form. */
+  locked: boolean;
 };
 
 const traderOf = (id: MarketId) => T2049_TRADERS.find((trader) => trader.id === id) ?? T2049_TRADERS[0];
@@ -54,7 +64,7 @@ const URGENT_SECONDS = 60;
 
 /* TOKEN2049 ships in English only. The toggle stays so the language choice carries back to the rest
    of the site, but every string on this page comes from the English dictionary. */
-export function Token2049MarketPage({ onBack, lang, onLangChange }: Token2049MarketPageProps) {
+export function Token2049MarketPage({ view, onBack, onOpenLeaderboard, lang, onLangChange, locked }: Token2049MarketPageProps) {
   const t = TOKEN2049_STRINGS.en;
   const { state, fill } = useMarket();
   const [operators] = useState(() => createOperators(T2049_FIELD));
@@ -72,6 +82,20 @@ export function Token2049MarketPage({ onBack, lang, onLangChange }: Token2049Mar
   const asset = totalAsset(point, holdings, prices);
   const ranks = useMemo(() => rankTraders(operators, prices, { name: 'YOU', point, holdings }, T2049_STARTING_POINT), [operators, prices, point, holdings]);
   const place = myPlace(ranks);
+
+  if (view === 'leaderboard') return <MarketLeaderboardPage
+    brand="TOKEN2049"
+    className={locked ? 't2049-market-page t2049-locked' : 't2049-market-page'}
+    final={session === 'ended'}
+    lang={lang}
+    onBack={onBack}
+    onLangChange={onLangChange}
+    ranks={ranks}
+    rewardTop={T2049_REWARD_TOP}
+    t={t}
+    tag={t.t2049MarketTag}
+  />;
+
   const cutIn = nextEliminationAt(elapsedOf(state));
   const cutLeft = cutIn === null ? null : Math.max(0, Math.round(cutIn - elapsedOf(state)));
 
@@ -83,7 +107,7 @@ export function Token2049MarketPage({ onBack, lang, onLangChange }: Token2049Mar
   const focusNo = priceOf(prices, focusId, 'no', direction);
 
   return (
-    <div className="market-page t2049-market-page">
+    <div className={locked ? 'market-page t2049-market-page t2049-locked' : 'market-page t2049-market-page'}>
       <header className="market-header">
         <BackLink className="market-back" label={t.t2049MarketBack} onClick={onBack} />
         <div className="market-header-end"><span>{t.t2049MarketTag}</span><LangToggle lang={lang} onChange={onLangChange} t={t} /></div>
@@ -177,7 +201,7 @@ export function Token2049MarketPage({ onBack, lang, onLangChange }: Token2049Mar
                 startingPoint={T2049_STARTING_POINT}
               />
 
-              <Leaderboard t={t} ranks={ranks} final={session === 'ended'} />
+              <Leaderboard t={t} ranks={ranks} final={session === 'ended'} onViewAll={onOpenLeaderboard} />
 
               <RulesSection t={t} rows={[
                 { term: t.t2049RulesEliminationLabel, detail: t.t2049RulesElimination },
@@ -185,6 +209,17 @@ export function Token2049MarketPage({ onBack, lang, onLangChange }: Token2049Mar
                 { term: t.rulesRewardLabel, detail: t.rulesReward(T2049_REWARD_TOP, T2049_REWARD_FIRST_USDT) },
                 { term: t.rulesPointsLabel, detail: t.rulesDisclaimer },
               ]} />
+
+              {/* Kalshi settles the rewards this board plays for, so its mark sits with the rules
+                  rather than in the chrome. No action here: every reader who can see this board has
+                  already passed the Kalshi gate, so an add-account button would ask twice. */}
+              <section className="t2049-kalshi-card market-card" aria-labelledby="t2049-kalshi-card-title">
+                <img alt="" aria-hidden="true" height="44" src="/assets/sponsors/symbol/kalshi.svg" width="44" />
+                <div>
+                  <h3 id="t2049-kalshi-card-title">{t.t2049MarketKalshiTitle}</h3>
+                  <p>{t.t2049KalshiPayoutNote}</p>
+                </div>
+              </section>
             </div>
 
             <aside className="market-side">
@@ -232,7 +267,11 @@ export function Token2049MarketPage({ onBack, lang, onLangChange }: Token2049Mar
         </section>
       </main>
 
-      <footer className="market-footer"><span>TOKEN2049</span><span>{t.footerRights}</span></footer>
+      <footer className="market-footer">
+        <span>TOKEN2049</span>
+        <p className="t2049-kalshi-mark"><img alt="" aria-hidden="true" height="20" src="/assets/sponsors/symbol/kalshi.svg" width="20" />{t.t2049MarketKalshiFooter}</p>
+        <span>{t.footerRights}</span>
+      </footer>
     </div>
   );
 }

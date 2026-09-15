@@ -1,4 +1,5 @@
 import { memo, useEffect, useState } from 'react';
+import { ArrowIcon } from './ArrowIcon';
 import type { Strings } from '../i18n/strings/market';
 import { formatPercent, formatPoint, formatSigned, moveOf } from '../market/format';
 import { visibleRanks, type Rank } from '../market/leaderboard';
@@ -36,14 +37,21 @@ type LeaderboardProps = {
   t: Strings;
   ranks: readonly Rank[];
   final: boolean;
+  /* Ten rows of a field of dozens. The way to the rest belongs next to the cut-off rather than under
+     it, so the reader sees there is more before they read to the bottom and stop. Null where the
+     whole field is already on screen. */
+  onViewAll?: (() => void) | null;
 };
 
-export const Leaderboard = memo(function Leaderboard({ t, ranks, final }: LeaderboardProps) {
+export const Leaderboard = memo(function Leaderboard({ t, ranks, final, onViewAll = null }: LeaderboardProps) {
   const rows = visibleRanks(ranks);
 
   return (
     <section className="leaderboard" aria-labelledby="leaderboard-title">
-      <h3 id="leaderboard-title">{final ? t.leaderFinalTitle : t.leaderTitle}</h3>
+      <div className="leaderboard-head">
+        <h3 id="leaderboard-title">{final ? t.leaderFinalTitle : t.leaderTitle}</h3>
+        {onViewAll && <button className="leaderboard-all" type="button" onClick={onViewAll}>{t.leaderViewAll(ranks.length)}<ArrowIcon /></button>}
+      </div>
       <table aria-label={t.leaderLabel}>
         <caption className="visually-hidden">{final ? t.leaderFinalCaption : t.leaderCaption}</caption>
         <thead>

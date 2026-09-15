@@ -271,9 +271,10 @@ describe('PERP-DEX DAY interface', () => {
 
     /* The venue rows above own the address. Here the timetable has to keep 19:30 pointing at the
        market, because that row is the only thing telling a reader when the button matters. */
-    expect(screen.getByText('19:30').closest('.agenda-row')).toHaveTextContent('Audience Betting for Winner');
+    expect(screen.getByText('19:30').closest('.agenda-row')).toHaveTextContent(/Pulse/);
 
-    await user.click(screen.getByRole('button', { name: /predict the winner/i }));
+    /* The hero offers the same label, so this scopes to the betting slot the test is about. */
+    await user.click(within(document.querySelector('.t2049-predict-actions') as HTMLElement).getByRole('button', { name: /join pulse/i }));
     await passLoginGate(user);
 
     expect(document.querySelector('.t2049-market-page')).toBeInTheDocument();
@@ -341,6 +342,43 @@ describe('PERP-DEX DAY interface', () => {
     expect(within(bar).getByText('Available point').nextElementSibling).toHaveTextContent('100 pt');
     expect(within(bar).getByText('Total asset').nextElementSibling).toHaveTextContent('100 pt');
     expect(within(bar).getByText('My rank').nextElementSibling).not.toBeEmptyDOMElement();
+  });
+
+  it('takes the ten-row board to the whole field, because the reward line sits below the tenth row', async () => {
+    const user = await openMarket('/perp-dex-day/market');
+
+    /* Ten rows of fifty-eight. A player ranked 40th is rewarded and cannot tell from this board. */
+    expect(document.querySelectorAll('.market-main .leaderboard tbody tr')).toHaveLength(10);
+
+    await user.click(screen.getByRole('button', { name: /view all 58/i }));
+
+    expect(window.location.pathname).toBe('/perp-dex-day/market/leaderboard');
+    expect(document.querySelectorAll('.board-table tbody tr:not(.board-cut)')).toHaveLength(58);
+    expect(document.querySelector('.board-cut')).toHaveTextContent('Reward line: rank 50');
+  });
+
+  it('keeps the market running while the full board is open, so a position survives the trip', async () => {
+    const user = await openMarket('/perp-dex-day/market');
+
+    const traders = screen.getAllByRole('row').filter((row) => row.classList.contains('trader-row'));
+    await user.click(within(traders[1]).getByRole('button', { name: /^yes/i }));
+    const quantity = screen.getByLabelText('Quantity');
+    await user.clear(quantity);
+    await user.type(quantity, '2');
+    await user.click(screen.getByRole('button', { name: /request buy quote/i }));
+    await user.click(screen.getByRole('button', { name: /^confirm buy$/i }));
+    expect(document.querySelectorAll('.position-row')).toHaveLength(1);
+
+    /* The balances are a random walk that is never written down. A board mounted beside this page
+       would reopen the market at its starting balances and rank the same player somewhere else, so
+       the board is a view of this page and the run has to be here when the reader comes back. */
+    await user.click(screen.getByRole('button', { name: /view all 58/i }));
+    await user.click(screen.getByRole('button', { name: /back to the market/i }));
+
+    expect(window.location.pathname).toBe('/perp-dex-day/market');
+    expect(document.querySelectorAll('.position-row')).toHaveLength(1);
+    const bar = document.querySelector('.market-bar') as HTMLElement;
+    expect(within(bar).getByText('Available point').nextElementSibling).not.toHaveTextContent('100 pt');
   });
 
   it('opens all four traders level, because they start on the same margin balance', async () => {
@@ -512,12 +550,34 @@ describe('PERP-DEX DAY interface', () => {
 
   it('leaves the field grid as a line-up with no way to apply for a seat', () => {
     renderAt('/perps-day');
-    const field = document.querySelector('.t2049-team-grid') as HTMLElement;
+    const field = document.querySelector('.t2049-trader-grid') as HTMLElement;
 
     /* Seats are filled by the tier contact off the site. A button anywhere on this page would offer a
        door that goes nowhere. */
-    expect(within(field).getAllByRole('listitem').length).toBeGreaterThan(0);
-    expect(screen.queryByRole('button', { name: /team/i })).not.toBeInTheDocument();
+    expect(within(field).getAllByRole('listitem')).toHaveLength(8);
+    expect(screen.queryByRole('button', { name: /seat|apply/i })).not.toBeInTheDocument();
+
+    /* Traders enter individually now. Any team framing left on the page is copy that was reverted. */
+    expect(screen.getByRole('main')).not.toHaveTextContent(/\bteams?\b/i);
+  });
+
+  it('carries the TOKEN2049 body on the reveal system without flattening the rotated step cards', async () => {
+    renderAt('/perps-day');
+    await waitFor(() => expect(screen.getByLabelText(/motion enabled/i)).toHaveAttribute('data-motion-ready', 'true'));
+    const revealed = (selector: string) => document.querySelectorAll(`${selector}[data-motion-reveal]`).length;
+
+    /* The page used to reveal its eyebrows and headings only, so the body landed at full opacity and
+       read as a static document sitting under an animated masthead. */
+    expect(revealed('.t2049-ladder li')).toBe(3);
+    expect(revealed('.t2049-trader-grid > li')).toBe(8);
+    expect(revealed('.t2049-venue .agenda-row')).toBe(10);
+    expect(revealed('.t2049-pulse-rules li')).toBe(3);
+
+    /* The step cards sit at rotate(-4deg), rotate(6deg) and rotate(-3deg). slideIn ends at
+       translateY(0), which replaces the whole transform, so the board reveals as one piece and the
+       cards stay off the system. Putting them on it flattens the layout. */
+    expect(revealed('.t2049-prediction-board')).toBe(1);
+    expect(revealed('.t2049-prediction-steps li')).toBe(0);
   });
 
   it('gives PERPS DAY its own share card without rebranding the rest of the site', () => {

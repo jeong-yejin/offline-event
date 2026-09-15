@@ -21,6 +21,7 @@ npm test           # vitest run
 ```
 VITE_GOOGLE_CLIENT_ID=          # 비우면 로그인 모달이 껍데기 버튼으로 떨어진다
 VITE_GOOGLE_AUTH_ENDPOINT=      # 비우면 구글 로그인은 되지만 검증을 건너뛴다
+VITE_KALSHI_VERIFIED=           # true면 Kalshi 게이트를 건너뛴다. 데모가 보드에서 바로 시작할 때만
 ```
 
 `VITE_` 변수는 번들에 그대로 박힌다. client secret을 넣으면 안 된다.
@@ -29,10 +30,10 @@ VITE_GOOGLE_AUTH_ENDPOINT=      # 비우면 구글 로그인은 되지만 검증
 
 ```
 Test Files  1 failed | 11 passed (12)
-     Tests  6 failed | 116 passed (122)
+     Tests  7 failed | 121 passed (128)
 ```
 
-실패 6건은 전부 `src/ui.test.tsx`다. `HubPage`를 회전 쇼케이스로 다시 만들면서 테스트가 따라오지 못했다. 테스트는 여전히 허브에 `<a>` 링크 3개와 `.reboundx-hero`가 있다고 기대하는데, 지금 허브 레일은 `<button aria-pressed>`이고 `/`에는 `.reboundx-hero`가 없다. 제품 버그가 아니다. 테스트를 새 DOM에 맞춰 고쳐야 한다.
+실패 7건은 전부 `src/ui.test.tsx`의 허브 테스트다. `HubPage`를 회전 쇼케이스로 다시 만들면서 테스트가 따라오지 못했다. 테스트는 여전히 허브에 `<a>` 링크 3개와 `.reboundx-hero`가 있다고 기대하는데, 지금 허브 레일은 `<button aria-pressed>`이고 `/`에는 `.reboundx-hero`가 없다. 제품 버그가 아니다. 테스트를 새 DOM에 맞춰 고쳐야 한다.
 
 ---
 
@@ -45,14 +46,20 @@ Test Files  1 failed | 11 passed (12)
 | `/` | 허브 (행사 3개 회전 쇼케이스) | 아니오 | ko / en |
 | `/perp-dex-day` | PERP-DEX DAY 랜딩 | 아니오 | ko / en |
 | `/perp-dex-day/market` | PERP-DEX DAY 예측마켓 | **예** | ko / en |
+| `/perp-dex-day/market/leaderboard` | 전체 참가자 58명 순위. 마켓 페이지의 한 뷰다 | **예** | ko / en |
 | `/reboundx-in-wonderland` | WONDERLAND 랜딩 (배포 번들) | 아니오 | ko / en |
 | `/reboundx-in-wonderland/leaderboard` | WONDERLAND 실시간 순위 | 아니오 | ko / en |
 | `/perps-day` | PERPS DAY 랜딩 | 아니오 | **en 고정** |
-| `/perps-day/market` | PERPS DAY 서바이벌 마켓 | **예** | **en 고정** |
+| `/perps-day/market` | PERPS DAY 서바이벌 마켓 | **예** + Kalshi 계정 | **en 고정** |
+| `/perps-day/market/leaderboard` | 전체 참가자 58명 순위. 마켓 페이지의 한 뷰다 | **예** + Kalshi 계정 | **en 고정** |
 | `/perps-day/kalshi` | Kalshi 주소 등록 | 아니오 | **en 고정** |
 | `/token2049-side-event/market` | 레거시. `replaceState`로 `/perps-day/market`으로 다시 쓴다 | 예 | en |
 
+TOKEN2049 마켓 두 경로만 게이트가 둘이다. 로그인 뒤에도 Kalshi 계정이 없으면 보드가 블러 처리되고 안내 모달이 `/perps-day/kalshi`로 보낸다. 해야 할 작업 3번 참고.
+
 모르는 slug는 허브로 떨어진다. 404 화면이 따로 없다.
+
+`…/market/leaderboard`는 별도 페이지 컴포넌트가 아니라 마켓 페이지가 `view='leaderboard'`로 그리는 화면이다. 잔고와 가격은 저장되지 않는 랜덤 워크라서 (`StoredAccount`에 `balances`·`prices`가 없다) 형제 라우트로 마운트하면 마켓이 시작가로 다시 열리고 같은 사람의 순위가 달라진다. `src/App.tsx`에서 두 경로가 같은 위치에서 같은 컴포넌트를 반환하므로 React가 같은 인스턴스로 이어 붙이고 런이 유지된다. 레거시 alias는 없다.
 
 ### `?preview=` 로 상태 화면 열기
 
@@ -138,15 +145,32 @@ GET  /api/market/leaderboard -> [{ rank, handle, point, ... }]
 
 **검증.** `src/market/perpdexday/market.test.ts`, `src/market/token2049/market.test.ts`, `src/market/leaderboard.test.ts`, `src/market/performance.test.ts`.
 
-### 3. Kalshi 주소 검증
+### 3. Kalshi 주소 검증과 Pulse 게이트
 
-**지금 동작.** `/perps-day/kalshi`에서 이메일 형식만 본다.
+**지금 동작 (1) 주소 입력.** `/perps-day/kalshi`에서 이메일 형식만 본다.
 
 ```ts
 const EMAIL_ADDRESS = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 ```
 
 통과하면 완료 화면에 `PENDING` 배지를 띄운다. **하드코딩이다.** 상태 타입에는 4개가 있는데 (`NOT_SUBMITTED` `PENDING` `VERIFIED` `REJECTED`) `PENDING` 말고는 화면에 도달할 방법이 없다. 아무 곳에도 보내지 않는다.
+
+**지금 동작 (2) Pulse 게이트.** TOKEN2049 예측마켓은 두 번 막힌다. 구글 로그인은 "누구냐"를 묻고, Kalshi 계정은 "Kalshi가 이 사람에게 지급할 수 있느냐"를 묻는다. 상금이 Kalshi 마켓에서 정산되니까 Kalshi 계정이 없는 사람에게는 보드가 무의미하다.
+
+Kalshi 계정 없는 사용자가 `/perps-day/market` 또는 `/perps-day/market/leaderboard`에 들어가면 보드는 그대로 렌더되고 `filter: blur(6px)` + `pointer-events: none`이 걸린다 (`.t2049-locked`). 그 위에 안내 모달이 뜨고, 버튼이 `/perps-day/kalshi`로 보낸다.
+
+**의도된 껍데기다.** 구글 로그인과 같은 성격이다. 사용자가 요청한 상태다. 버그로 신고하거나 되돌리지 말 것.
+
+| 판정 | 근거 |
+| --- | --- |
+| `VITE_KALSHI_VERIFIED=true` | 무조건 통과. 게이트를 건너뛰는 데모용 스위치 |
+| 그 외 | `localStorage['reboundx.kalshi.address']`에 값이 있으면 통과 |
+
+`/perps-day/kalshi`에서 저장에 성공하면 그 키에 주소가 들어가고, 완료 화면의 `Back to Pulse`가 보드로 돌려보낸다. 그래서 게이트 → 폼 → 보드가 한 바퀴 걸어진다. **검증이 아니다.** 아무 주소나 통과하고, 사이트 데이터를 지우면 다시 잠긴다. devtools 한 줄로 열린다.
+
+`App.tsx`는 이 판정을 state로 들고 있지 않고 렌더마다 읽는다. 주소를 저장하고 보드로 돌아오면 그 시점에 열린다.
+
+**없는 것.** 서버 판정. `GET /api/kalshi/status`가 없어서 `VERIFIED`/`REJECTED`가 화면에 닿지 못한다. 게이트가 봐야 하는 값은 `VERIFIED`인데, 지금은 "주소를 적었다"를 대신 본다. 둘은 다른 상태다.
 
 **필요한 계약.**
 
@@ -155,9 +179,15 @@ POST /api/kalshi/link      { email }  -> { status: "PENDING" }
 GET  /api/kalshi/status              -> { status: "PENDING" | "VERIFIED" | "REJECTED", reason? }
 ```
 
-`VERIFIED`와 `REJECTED`를 그릴 때 `REJECTED`에 이유 문구가 필요하다. 지금은 카피가 없다.
+교체 지점은 `src/auth/kalshiAccount.ts`의 `hasKalshiAccount()` 하나다. `GET /api/kalshi/status`를 호출해서 `status === "VERIFIED"`일 때만 통과시키면 된다. 비동기가 되니까 `App.tsx`에 로딩 상태가 하나 필요하다. 그동안 보드를 열어두면 안 된다.
 
-**파일.** `src/pages/Token2049KalshiPage.tsx` (94줄), `src/data/token2049Content.ts` (`KalshiStatus`, `isEmailAddress`).
+`VERIFIED`와 `REJECTED`를 그릴 때 `REJECTED`에 이유 문구가 필요하다. 지금은 카피가 없다. 게이트 모달에도 `REJECTED` 문구가 없다.
+
+**프론트 게이트는 인가가 아니다.** 주문 API를 만들 때 Kalshi 계정 보유 여부를 서버에서 다시 확인해야 한다.
+
+**파일.** `src/auth/kalshiAccount.ts` (껍데기 판정), `src/auth/KalshiAccountModal.tsx` (안내 모달), `src/App.tsx` (게이트 배선), `src/pages/Token2049KalshiPage.tsx` (주소 저장), `src/pages/Token2049MarketPage.tsx` (`locked` prop), `src/styles/47-t2049-market.css` (`.t2049-locked`), `src/styles/53-hub-auth.css` (`.kalshi-gate`), `src/data/token2049Content.ts` (`KalshiStatus`, `isEmailAddress`), `.env.example`.
+
+**검증.** `src/auth/marketGate.test.tsx`.
 
 ### 4. WONDERLAND 실시간 순위 피드
 

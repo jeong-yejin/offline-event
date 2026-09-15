@@ -33,8 +33,6 @@ export function Token2049Page({ event, onEnterKalshi, onEnterMarket }: Token2049
       <T2049Predict t={t} onEnterKalshi={onEnterKalshi} onEnterMarket={onEnterMarket} />
       <T2049Attend t={t} />
       <T2049Join t={t} />
-
-      <ul className="t2049-marquee">{t.t2049Marquee.map((item) => <li key={item}>{item}</li>)}</ul>
     </div>
   );
 }

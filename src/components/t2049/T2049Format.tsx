@@ -1,13 +1,14 @@
 import { T2049Section } from './T2049Section';
+import { revealStyle } from '../../motion/reveal';
 import type { Strings } from '../../i18n/strings/token2049';
 
 const RULE_ICONS = ['imgGroup', 'imgGroup1', 'imgGroup2'];
 
 export function T2049Format({ t }: { t: Strings }) {
   const ladder = [
-    { round: t.t2049Semifinal, detail: t.t2049SemifinalDetail, accent: 'cyan' },
-    { round: t.t2049Intermission, detail: t.t2049IntermissionDetail, accent: 'magenta' },
-    { round: t.t2049Final, detail: t.t2049FinalDetail, accent: 'cyan' },
+    { round: t.t2049Semifinal, detail: t.t2049SemifinalDetail, accent: 'green' },
+    { round: t.t2049Intermission, detail: t.t2049IntermissionDetail, accent: 'violet' },
+    { round: t.t2049Final, detail: t.t2049FinalDetail, accent: 'lime' },
   ];
   const rules = [
     [t.t2049SpecElimination, t.t2049SpecEliminationCopy],
@@ -17,16 +18,16 @@ export function T2049Format({ t }: { t: Strings }) {
   return (
     <T2049Section id="competition" name="format" eyebrow={t.t2049Eyebrow} title={t.t2049Title}>
       <div className="t2049-format-summary">
-        <p className="t2049-lede">{t.t2049Copy}</p>
-        <p className="t2049-prize">{t.t2049SpecPrizeCopy}</p>
+        <p className="t2049-lede slideIn" data-motion-reveal style={revealStyle(120)}>{t.t2049Copy}</p>
+        <p className="t2049-prize slideIn" data-motion-reveal style={revealStyle(200)}>{t.t2049SpecPrizeCopy}</p>
       </div>
       <ol className="t2049-ladder" aria-label={t.t2049LadderLabel}>
-        {ladder.map(({ round, detail, accent }) => <li key={round} data-accent={accent}>
+        {ladder.map(({ round, detail, accent }, index) => <li className="slideIn" data-motion-reveal key={round} data-accent={accent} style={revealStyle(160 + index * 120)}>
           <strong>{round}</strong><span className="visually-hidden">{detail}</span>
         </li>)}
       </ol>
       <dl className="t2049-spec" aria-label={t.t2049SpecLabel}>
-        {rules.map(([term, copy], index) => <div key={term}>
+        {rules.map(([term, copy], index) => <div className="slideIn" data-motion-reveal key={term} style={revealStyle(160 + index * 80)}>
           <dt><img src={`/assets/token2049/figma/${RULE_ICONS[index]}.svg`} width="36" height="36" alt="" aria-hidden="true" /><span>{term}</span></dt>
           <dd>{copy}</dd>
         </div>)}

@@ -56,6 +56,19 @@ export const marketEn = {
   leaderPnl: 'P&L',
   leaderReturn: 'Return',
   leaderYou: 'YOU',
+  /* The board on the market page is the top ten. Rewards run far deeper than that, so the whole field
+     has a page of its own and the ten-row board is the way in. */
+  leaderViewAll: (count: number) => `View all ${count}`,
+
+  /* Full leaderboard page. */
+  boardTitle: 'Full leaderboard',
+  boardFinalTitle: 'Final leaderboard',
+  boardBack: 'Back to the market',
+  boardCaption: (count: number, top: number) => `All ${count} players in this competition, ranked by total asset and updating with the market. Ranks 1 to ${top} are rewarded.`,
+  boardFinalCaption: (count: number, top: number) => `All ${count} players at the close. This order is locked, and ranks 1 to ${top} are rewarded.`,
+  boardPlayers: 'Players',
+  boardJump: 'Jump to my row',
+  boardCut: (top: number) => `Reward line: rank ${top}`,
 
   /* Resolution rules. */
   rulesTitle: 'Resolution',
@@ -163,6 +176,17 @@ export const marketKo: typeof marketEn = {
   leaderPnl: '손익',
   leaderReturn: '수익률',
   leaderYou: '나',
+  leaderViewAll: (count) => `전체 ${count}명 보기`,
+
+  /* Full leaderboard page. */
+  boardTitle: '전체 리더보드',
+  boardFinalTitle: '최종 리더보드',
+  boardBack: '마켓으로 돌아가기',
+  boardCaption: (count, top) => `이번 대회에 참여한 ${count}명 전원이며 총 자산 순으로 마켓과 함께 갱신돼요. 1위부터 ${top}위까지 리워드를 받아요.`,
+  boardFinalCaption: (count, top) => `종료 시점의 참가자 ${count}명 전원이에요. 이 순위는 고정되고 1위부터 ${top}위까지 리워드를 받아요.`,
+  boardPlayers: '참가자',
+  boardJump: '내 순위로 이동',
+  boardCut: (top) => `리워드 기준선: ${top}위`,
 
   /* Resolution rules. */
   rulesTitle: '정산 규칙',

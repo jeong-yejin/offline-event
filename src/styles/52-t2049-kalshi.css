@@ -2,7 +2,7 @@
    so it reuses the market header for the way back and lays the rest out as the event page does: what
    this is on the left, what the reader has to do on the right. */
 
-.t2049-kalshi-page { --t2049-rule: rgba(248,247,247,.18); --t2049-dim: #a7a7a7; --t2049-ink: #f8f7f7; --t2049-accent: #caff5d; background: #000; color: var(--t2049-ink); font-family: 'Inter', sans-serif; min-height: 100dvh; position: relative; }
+.t2049-kalshi-page { --t2049-rule: rgba(248,247,247,.18); --t2049-dim: #a7a7a7; --t2049-ink: #f8f7f7; --t2049-accent: #00dd94; --t2049-accent-2: #caff5d; background: #000; color: var(--t2049-ink); font-family: 'Inter', sans-serif; min-height: 100dvh; position: relative; }
 
 .t2049-kalshi-page .market-header { display: flex; justify-content: space-between; }
 .t2049-kalshi-page .market-header-end { align-items: center; display: flex; gap: 16px; }
@@ -40,6 +40,14 @@
 .kalshi-done dt { color: var(--t2049-dim); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
 .kalshi-done dd { font-variant-numeric: tabular-nums; margin: 0; }
 
+/* Two ways on, stacked so neither is a target the thumb can miss. Pulse is the reason most readers
+   are on this screen at all, so it takes the solid fill and changing the address keeps the outline. */
+.kalshi-done-actions { display: grid; gap: 12px; margin-top: 24px; }
+.kalshi-done-go { align-items: center; background: var(--t2049-accent); border: 0; border-radius: 8px; color: #04150d; cursor: pointer; display: flex; font: inherit; font-size: 16px; gap: 8px; justify-content: center; min-height: 52px; transition: background-color .2s ease; }
+.kalshi-done-go:hover { background: #00c383; }
+.kalshi-done-go .arrow-icon { height: 14px; transition: transform .2s ease; width: 14px; }
+.kalshi-done-go:hover .arrow-icon { transform: translate(3px, -3px); }
+
 /* Five stops on one line so the reader can see where the address is used and where it stops being
    ours to answer for. The rule is drawn on the marker, not on the item, so it never overruns the
    last step. */
@@ -55,13 +63,13 @@
 
 .kalshi-pill { align-items: center; border: 1px solid var(--t2049-rule); border-radius: 999px; display: inline-flex; font-size: 12px; letter-spacing: .1em; margin: 0 0 28px; padding: 6px 14px; text-transform: uppercase; }
 .kalshi-pill[data-status="NOT_SUBMITTED"] { color: var(--t2049-dim); }
-.kalshi-pill[data-status="PENDING"] { border-color: rgba(202,255,93,.4); color: var(--t2049-accent); }
-.kalshi-pill[data-status="VERIFIED"] { background: rgba(202,255,93,.12); border-color: var(--t2049-accent); color: var(--t2049-accent); }
+.kalshi-pill[data-status="PENDING"] { border-color: rgba(0,221,148,.4); color: var(--t2049-accent); }
+.kalshi-pill[data-status="VERIFIED"] { background: rgba(0,221,148,.12); border-color: var(--t2049-accent); color: var(--t2049-accent); }
 .kalshi-pill[data-status="REJECTED"] { border-color: rgba(251,44,54,.5); color: #fb2c36; }
 
 /* Saving the address is the only thing this screen asks for, so it is filled where every other button
    on the TOKEN2049 screens is outlined. Off-black on this green measures 11:1, past AAA. */
-.kalshi-submit { background: #00dd94; border-color: #00dd94; color: #0a0a0a; }
+.kalshi-submit { background: var(--t2049-accent); border-color: var(--t2049-accent); color: #0a0a0a; }
 .kalshi-submit:hover { background: #00c383; border-color: #00c383; }
 
 @media (max-width: 900px) {

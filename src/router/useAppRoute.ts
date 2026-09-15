@@ -3,7 +3,7 @@ import { EVENTS, type EventKey } from '../data/eventContent';
 import { previewName } from './preview';
 
 /* Each event is its own page, so the hub at '/' only introduces them. */
-export type AppRoute = 'home' | 'perp-dex-market' | 't2049-market' | 't2049-kalshi' | 'wonderland-board' | EventKey;
+export type AppRoute = 'home' | 'perp-dex-market' | 'perp-dex-leaderboard' | 't2049-market' | 't2049-leaderboard' | 't2049-kalshi' | 'wonderland-board' | EventKey;
 
 const EVENT_KEYS: readonly string[] = EVENTS.map((event) => event.key);
 
@@ -20,6 +20,11 @@ const LEGACY_T2049_MARKET_PATH = 'token2049-side-event/market';
    route rather than a step inside the market page. */
 const T2049_KALSHI_PATH = 'perps-day/kalshi';
 
+/* Each market shows the top ten on its own board. The whole field lives one level under the market it
+   belongs to, so the address says which competition the standings are from. */
+const PERP_DEX_LEADERBOARD_PATH = `${PERP_DEX_MARKET_PATH}/leaderboard`;
+const T2049_LEADERBOARD_PATH = `${T2049_MARKET_PATH}/leaderboard`;
+
 /* Same rule for the Wonderland board: it is that night's leaderboard, not a second hub page. */
 const WONDERLAND_BOARD_PATH = 'reboundx-in-wonderland/leaderboard';
 
@@ -34,6 +39,8 @@ function detectRoute(): AppRoute {
   const preview = previewName();
   if (preview !== null && preview in PREVIEW_ROUTES) return PREVIEW_ROUTES[preview];
   const slug = currentSlug();
+  if (slug === PERP_DEX_LEADERBOARD_PATH) return 'perp-dex-leaderboard';
+  if (slug === T2049_LEADERBOARD_PATH) return 't2049-leaderboard';
   if (slug === PERP_DEX_MARKET_PATH) return 'perp-dex-market';
   if (slug === T2049_MARKET_PATH || slug === LEGACY_T2049_MARKET_PATH) return 't2049-market';
   if (slug === T2049_KALSHI_PATH) return 't2049-kalshi';
@@ -45,7 +52,9 @@ function detectRoute(): AppRoute {
 export function routePath(route: AppRoute) {
   if (route === 'home') return '/';
   if (route === 'perp-dex-market') return `/${PERP_DEX_MARKET_PATH}`;
+  if (route === 'perp-dex-leaderboard') return `/${PERP_DEX_LEADERBOARD_PATH}`;
   if (route === 't2049-market') return `/${T2049_MARKET_PATH}`;
+  if (route === 't2049-leaderboard') return `/${T2049_LEADERBOARD_PATH}`;
   if (route === 't2049-kalshi') return `/${T2049_KALSHI_PATH}`;
   return route === 'wonderland-board' ? `/${WONDERLAND_BOARD_PATH}` : `/${route}`;
 }

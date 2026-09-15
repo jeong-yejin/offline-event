@@ -4,7 +4,9 @@ import { ChanceBar } from '../components/ChanceBar';
 import { BackLink } from '../components/BackLink';
 import { LangToggle } from '../components/LangToggle';
 import { ASCII_D60_HERO, ASCII_LOG_LEET, AsciiArt } from '../components/AsciiArt';
+import DigitalRain from '../components/DigitalRain';
 import { Leaderboard } from '../components/Leaderboard';
+import { MarketLeaderboardPage } from './MarketLeaderboardPage';
 import { MarketChart } from '../components/MarketChart';
 import { OrderTicket } from '../components/OrderTicket';
 import { PositionsSection } from '../components/PositionsSection';
@@ -20,7 +22,11 @@ import { useOrderDesk } from '../market/useOrderDesk';
 import { phaseOf, secondsLeftOf, statusOf, useMarket } from '../market/perpdexday/useMarket';
 
 type PerpDexDayMarketPageProps = Omit<I18nProps, 't'> & {
+  /* See Token2049MarketPage: the full board renders from inside the page that owns the run, because
+     the balances it ranks are a random walk that is never persisted. */
+  view: 'market' | 'leaderboard';
   onBack(): void;
+  onOpenLeaderboard(): void;
 };
 
 const traderOf = (id: MarketId) => PERP_DEX_TRADERS.find((candidate) => candidate.id === id) ?? PERP_DEX_TRADERS[0];
@@ -29,7 +35,15 @@ const traderOf = (id: MarketId) => PERP_DEX_TRADERS.find((candidate) => candidat
    prices at undefined and every rank reads NaN. */
 const PERP_DEX_FIELD: Field = { ids: PERP_DEX_IDS, openPrices: OPEN_PRICES, startingPoint: STARTING_POINT };
 
-export function PerpDexDayMarketPage({ onBack, lang, onLangChange }: PerpDexDayMarketPageProps) {
+/* The katakana set the PERP-DEX DAY hero and the leaderboard scramble already fall through, so the
+   market page reads as the same rain rather than a second effect that happens to be green. */
+const MATRIX_GLYPHS = 'ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ0123456789';
+
+/* A canvas loop has no poster to hold on, so reduced motion drops the rain and leaves the board on
+   the plain black it already sits on. */
+const prefersStill = () => typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+export function PerpDexDayMarketPage({ view, onBack, onOpenLeaderboard, lang, onLangChange }: PerpDexDayMarketPageProps) {
   const t = PERPDEXDAY_STRINGS[lang];
   const { state, fill } = useMarket();
   const [operators] = useState(() => createOperators(PERP_DEX_FIELD));
@@ -47,13 +61,31 @@ export function PerpDexDayMarketPage({ onBack, lang, onLangChange }: PerpDexDayM
   const asset = totalAsset(point, holdings, prices);
   const ranks = useMemo(() => rankTraders(operators, prices, { name: 'YOU', point, holdings }, STARTING_POINT), [operators, prices, point, holdings]);
   const place = myPlace(ranks);
+
+  if (view === 'leaderboard') return <MarketLeaderboardPage
+    brand="PERP-DEX DAY"
+    className="matrix-market"
+    final={phase === 'ended'}
+    lang={lang}
+    onBack={onBack}
+    onLangChange={onLangChange}
+    ranks={ranks}
+    rewardTop={REWARD_TOP}
+    t={t}
+    tag={t.marketTag}
+  />;
+
   /* The overview bar and the sidebar card both read the trader the ticket is pointed at. */
   const chance = chanceOf(prices, focusId);
   const focusYes = priceOf(prices, focusId, 'yes', direction);
   const focusNo = priceOf(prices, focusId, 'no', direction);
 
   return (
-    <div className="market-page">
+    <div className="market-page matrix-market">
+      {/* The rain is the board's ground rather than a panel inside it: one fixed canvas that every
+          section scrolls over, dimmed far enough that the tables reading on top of it stay legible. */}
+      {prefersStill() ? null : <DigitalRain density={56} headColor="#D9FFD9" shuffleGlyphs={MATRIX_GLYPHS} style={{ inset: 0, opacity: .26, pointerEvents: 'none', position: 'fixed', zIndex: -1 }} trail={38} trailColor="#00E23E" />}
+
       <header className="market-header">
         <BackLink className="market-back" label={t.marketBack} onClick={onBack} />
         <div className="market-header-end"><span>{t.marketTag}</span><LangToggle lang={lang} onChange={onLangChange} t={t} /></div>
@@ -127,7 +159,7 @@ export function PerpDexDayMarketPage({ onBack, lang, onLangChange }: PerpDexDayM
                 startingPoint={STARTING_POINT}
               />
 
-              <Leaderboard t={t} ranks={ranks} final={phase === 'ended'} />
+              <Leaderboard t={t} ranks={ranks} final={phase === 'ended'} onViewAll={onOpenLeaderboard} />
 
               <RulesSection t={t} rows={[
                 { term: t.rulesWinnerLabel, detail: t.rulesResolve(SETTLEMENT_PRICE) },

@@ -1,8 +1,8 @@
 import type { MarketTrader } from '../market/engine';
 
-/* Eight seats open the TOKEN2049 competition, two per team, so the four teams read down the list in
-   pairs. Real nicknames land the week of the event; the seat letter stands in until they do, and the
-   team's exchange mark stands where a portrait would. */
+/* Eight seats open the TOKEN2049 competition, one trader each. Real nicknames land the week of the
+   event; the seat letter stands in until they do, and the mark of the exchange the seat trades on
+   stands where a portrait would. */
 export const T2049_TRADERS: readonly MarketTrader[] = [
   { id: 'seat-a', trader: 'Trader A', exchange: 'Variational', logo: 'symbol/variational.svg', color: '#caff5d' },
   { id: 'seat-b', trader: 'Trader B', exchange: 'Variational', logo: 'symbol/variational.svg', color: '#5dd0ff' },

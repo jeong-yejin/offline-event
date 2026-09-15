@@ -10,9 +10,12 @@ type EventHeroProps = {
   background?: ReactNode;
   /* The call to action differs per event, so the panel that owns the hero supplies it. */
   children: ReactNode;
+  /* A band across the foot of the hero, outside the centred column. Left out, the hero ends at its
+     own edge the way every event but TOKEN2049 does. */
+  footer?: ReactNode;
 };
 
-export function EventHero({ event, background, children }: EventHeroProps) {
+export function EventHero({ event, background, children, footer }: EventHeroProps) {
   return (
     <section className="hero" data-event={event.key} aria-labelledby="hero-title">
       {background ?? <DigitalRain headColor="#D9FFD9" trailColor="#00E23E" density={56} trail={38} shuffleGlyphs="ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ0123456789" style={{ inset: 0, opacity: 1, pointerEvents: 'none', position: 'absolute', zIndex: 0 }} />}
@@ -23,6 +26,7 @@ export function EventHero({ event, background, children }: EventHeroProps) {
         <p className="event-date slideIn" data-motion-reveal style={revealStyle(1840)}>{event.date}</p>
         {children}
       </div>
+      {footer}
     </section>
   );
 }

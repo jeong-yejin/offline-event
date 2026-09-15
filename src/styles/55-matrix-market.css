@@ -1,0 +1,60 @@
+/* PERP-DEX DAY prediction market, dressed as the film's terminal. The event hero already runs the
+   digital rain; this carries it through the board itself: phosphor chrome, CRT lines, a cursor
+   before every section name. The page class scopes every rule here, so the TOKEN2049 board next
+   door keeps its own colours. */
+
+/* Four tokens carry the redesign. Every shared card, table, chart and ticket rule already reads
+   them, so the whole board recolours without one shared selector being edited.
+   --card is neutral rather than green: the rain behind the page is the green now, and a green card
+   over a green ground leaves the numbers nothing to sit on.
+   --down stays red on purpose: a board that is green everywhere loses the only colour that marks a
+   loss, and this page exists to show people whether they are up or down. */
+.matrix-market { --card: rgba(6,6,6,.82); --edge: rgba(0,226,62,.18); --mx-dim: rgba(0,226,62,.68); --up: #00e23e; }
+
+/* The rain is a fixed canvas behind the whole board, so the page has to let it through and has to
+   own the stacking context that puts it at the back. isolation alone does that: it opens a stacking
+   context without making the page a containing block, which would move every absolute inside it.
+   The hero gives up its black for the same reason, so the rain runs from the top of the page to the
+   foot without a seam where the hero ends. */
+.matrix-market, .matrix-market .market-feature { background: transparent; }
+.matrix-market { isolation: isolate; }
+
+/* Chrome text in dim phosphor, values left white. This is the split that makes it read as a
+   terminal: the machine's labels are green, the numbers it reports are not. Dim measures 5.6:1 on
+   this ground, past AA for the 12px caps it lands on. */
+.matrix-market :is(.market-header span, .market-spec dt, .market-bar dt, .trader-table thead th, .position-table thead th, .leaderboard th, .board-table thead th, .rules-list dt, .ticket-summary dt, .ticket-quote dt, .positions-total dt, .chart-axis, .chart-scale) { color: var(--mx-dim); }
+
+/* A cursor before each section name. A block rather than a '>' glyph, so no screen reader announces
+   punctuation that is not in the copy. */
+.matrix-market :is(.market-traders, .market-positions, .market-history, .market-rules, .market-focus, .leaderboard, .chart-head) h3::before { background: var(--up); content: ''; display: inline-block; height: .85em; margin-right: 10px; vertical-align: -.06em; width: 7px; }
+
+/* Phosphor bloom, kept to the three things that report state. Spreading it over the whole page is
+   what makes a green theme look like a filter instead of a screen. */
+.matrix-market .market-intro h1 { text-shadow: 0 0 28px rgba(0,226,62,.26); }
+.matrix-market .market-state { text-shadow: 0 0 12px rgba(0,226,62,.5); }
+.matrix-market .market-place dd { text-shadow: 0 0 12px rgba(0,226,62,.45); }
+
+/* The live dot is the only thing on the board that breathes, so it stays a signal. Opacity only, so
+   it never leaves the compositor. Paused in 14-reduced-motion.css. */
+.matrix-market .market-state[data-phase="live"] i { animation: mx-pulse 1.6s ease-in-out infinite; }
+@keyframes mx-pulse { 50% { opacity: .25; } }
+
+/* A board that reranks every second holds its columns still. */
+.matrix-market :is(.market-bar dd, .trader-table td, .position-table td, .ticket-quote dd, .positions-total dd) { font-variant-numeric: tabular-nums; }
+
+/* The greens the shared shell writes as literals, moved onto this palette. Each names the state it
+   replaces, so the ready and ended pills keep the colours that mean those. */
+.matrix-market .market-state[data-phase="live"] { background: rgba(0,226,62,.1); border-color: rgba(0,226,62,.28); }
+.matrix-market .market-settled { background: rgba(0,226,62,.06); border-color: rgba(0,226,62,.35); }
+.matrix-market .trader-row[data-focus="true"] { background: rgba(0,226,62,.07); }
+.matrix-market .trader-actions [data-side="yes"] { background: rgba(0,226,62,.1); border-color: rgba(0,226,62,.28); }
+.matrix-market .ticket-quote { border-color: rgba(0,226,62,.45); }
+.matrix-market .board-jump:hover { background: rgba(0,226,62,.1); border-color: rgba(0,226,62,.35); }
+
+/* Your own row on both boards, and the rank decoding into place, take the page green instead of the
+   site lime they inherit. */
+.matrix-market .leaderboard tr[data-you="true"] td { background: rgba(0,226,62,.07); }
+.matrix-market .leaderboard tr[data-you="true"] .leader-name span,
+.matrix-market .leader-place [data-scramble="true"] { color: var(--up); }
+.matrix-market .leaderboard tr[data-you="true"] td:first-child { box-shadow: inset 2px 0 0 var(--up); }
+.matrix-market .leader-name em { border-color: rgba(0,226,62,.45); color: var(--up); }

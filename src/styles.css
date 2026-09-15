@@ -47,3 +47,9 @@
 /* TOKEN2049 Kalshi screen. It sits after the pairs above, which name no selector this page carries. */
 @import './styles/52-t2049-kalshi.css';
 @import './styles/53-hub-auth.css';
+
+/* Full leaderboard, one route under each market. Last, so it can adjust the market chrome it reuses. */
+@import './styles/54-market-leaderboard.css';
+/* PERP-DEX DAY market and board, dressed as the film's terminal. Last of the market sheets, because
+   it recolours chrome every one of them sets. */
+@import './styles/55-matrix-market.css';

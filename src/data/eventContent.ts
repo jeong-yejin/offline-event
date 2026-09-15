@@ -28,7 +28,7 @@ export const EVENTS: readonly EventContent[] = [
   },
   {
     key: 'perps-day',
-    label: 'TOKEN2049 SIDE EVENT',
+    label: 'TOKEN2049 PERPS DAY',
     eyebrow: 'ASIA TRADING COMPETITION',
     title: 'PERPS DAY',
     copy: 'Predict and trade on which of the eight traders will take the win.',

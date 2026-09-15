@@ -1,0 +1,40 @@
+/* Full leaderboard: the whole field of a market, on a route of its own. */
+
+/* The ten-row board on the market page names the way to the rest, next to the heading rather than
+   under the last row, so the reader sees there is more before they stop reading. */
+.leaderboard-head { align-items: baseline; display: flex; gap: 16px; justify-content: space-between; margin: 0 0 16px; }
+.leaderboard-head h3 { margin: 0; }
+.leaderboard-all { align-items: center; background: none; border: 0; color: rgba(248,247,247,.72); cursor: pointer; display: inline-flex; font: inherit; font-size: 12px; gap: 8px; letter-spacing: .08em; min-height: 44px; padding: 0; transition: color .2s ease; }
+.leaderboard-all:hover { color: var(--up); }
+.leaderboard-all .arrow-icon { height: 14px; transition: transform .2s ease; width: 14px; }
+.leaderboard-all:hover .arrow-icon { transform: translate(3px, -3px); }
+
+/* The board has no chart or marquee to clip, and the table header below is sticky: overflow: clip on
+   .market-page would keep it inside a box the page never scrolls. */
+.board-page { overflow: visible; }
+/* No hero here, so the content starts where a reader expects a table rather than a headline. */
+.board-page .market-content { display: grid; gap: 20px; padding: 96px 48px 80px; }
+
+.board-intro { margin: 0 0 4px; }
+.board-intro h1 { font-size: clamp(32px, 4vw, 48px); letter-spacing: -.04em; line-height: 1.1; margin: 0; }
+.board-intro p { color: rgba(248,247,247,.72); font-size: 16px; line-height: 1.5; margin: 12px 0 0; max-width: 62ch; text-wrap: pretty; }
+
+/* Your own four numbers stay on screen while the field scrolls past underneath. */
+.board-summary { align-items: end; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr) auto; }
+.board-jump { background: rgba(255,255,255,.03); border: 1px solid var(--edge); border-radius: 1000px; color: #f8f7f7; cursor: pointer; font: inherit; font-size: 12px; letter-spacing: .12em; min-height: 44px; padding: 0 20px; text-transform: uppercase; transition: background-color .2s ease, border-color .2s ease; }
+.board-jump:hover { background: rgba(0,212,146,.1); border-color: rgba(0,212,146,.35); }
+
+/* Dozens of rows, so the column names stay put. The background is the card colour flattened against
+   the page, because rows have to pass behind it rather than through it. */
+.board-table thead th { background: #0a0a0a; box-shadow: inset 0 -1px 0 rgba(248,247,247,.18); padding: 16px 0 12px; position: sticky; top: 0; z-index: 1; }
+.board-table tbody tr:focus-visible { outline-offset: -2px; }
+
+/* Rewards run to rank 50 of 58, which is the fact the ten-row board cannot show. The line says so in
+   words: a border alone would leave the cut-off to colour. */
+.board-cut td { color: var(--up); font-size: 12px; letter-spacing: .16em; padding: 16px 0 12px; text-transform: uppercase; }
+
+@media (max-width: 700px) {
+  .board-page .market-content { padding: 72px 20px 56px; }
+  .board-summary { grid-template-columns: minmax(0, 1fr); }
+  .board-jump { justify-self: stretch; }
+}

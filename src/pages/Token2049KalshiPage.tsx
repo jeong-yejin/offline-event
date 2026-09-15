@@ -3,17 +3,21 @@ import { ArrowIcon } from '../components/ArrowIcon';
 import { BackLink } from '../components/BackLink';
 import { LangToggle } from '../components/LangToggle';
 import { isEmailAddress } from '../data/token2049Content';
+import { saveKalshiAddress } from '../auth/kalshiAccount';
 import { TOKEN2049_STRINGS, type I18nProps } from '../i18n/strings/token2049';
 
 type Token2049KalshiPageProps = Omit<I18nProps, 't'> & {
   onBack(): void;
+  /* Most readers reach this screen from the gate over Pulse, so the done state has to lead back there
+     rather than dropping them on the landing page to find the market a second time. */
+  onOpenMarket(): void;
 };
 
 /* Reward eligibility, collected before the competition so the page can be promoted on its own. Nothing
    here signs the reader in to Kalshi: the address is stated, and Kalshi checks it against its own
    accounts after the final leaderboard is fixed. Saving therefore moves the reader to PENDING and no
    further, because VERIFIED and REJECTED are Kalshi's answers to give. */
-export function Token2049KalshiPage({ lang, onLangChange, onBack }: Token2049KalshiPageProps) {
+export function Token2049KalshiPage({ lang, onLangChange, onBack, onOpenMarket }: Token2049KalshiPageProps) {
   const t = TOKEN2049_STRINGS.en;
   const [draft, setDraft] = useState('');
   const [error, setError] = useState('');
@@ -26,7 +30,11 @@ export function Token2049KalshiPage({ lang, onLangChange, onBack }: Token2049Kal
       return;
     }
     setError('');
-    setSaved(draft.trim());
+    const address = draft.trim();
+    /* The gate over Pulse reads this back. Nothing is verified by saving it, so the board opens on a
+       stated address rather than a checked one, which is the whole of the stand-in. */
+    saveKalshiAddress(address);
+    setSaved(address);
   }
 
   return (
@@ -59,7 +67,10 @@ export function Token2049KalshiPage({ lang, onLangChange, onBack }: Token2049Kal
               <h2>{t.t2049KalshiDoneTitle}</h2>
               <p>{t.t2049KalshiDoneCopy}</p>
               <dl><div><dt>{t.t2049KalshiDoneEmail}</dt><dd>{saved}</dd></div></dl>
-              <button className="outline-button" type="button" onClick={() => { setDraft(saved); setSaved(''); }}>{t.t2049KalshiAgain}<ArrowIcon /></button>
+              <div className="kalshi-done-actions">
+                <button className="kalshi-done-go" type="button" onClick={onOpenMarket}>{t.t2049KalshiToMarket}<ArrowIcon /></button>
+                <button className="outline-button" type="button" onClick={() => { setDraft(saved); setSaved(''); }}>{t.t2049KalshiAgain}<ArrowIcon /></button>
+              </div>
             </div>
           ) : (
             <form className="kalshi-form" onSubmit={submit} aria-label={t.t2049KalshiFormLabel} noValidate>

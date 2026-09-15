@@ -5,7 +5,7 @@
 /* This page sits outside the site shell, so it names the TOKEN2049 pair itself. Inter reads the copy;
    headings keep the site-wide 'Neue Machina', 'Wanted Sans' chain, whose Hangul fallback never
    fires on an English-only page. */
-.t2049-market-page { font-family: 'Inter', sans-serif; }
+.t2049-market-page { --t2049-accent: #00dd94; --t2049-accent-2: #caff5d; font-family: 'Inter', sans-serif; }
 
 /* Every section label on the page was set at .55 alpha and 11px. Both move up together. */
 .t2049-market-page .market-bar dt,
@@ -51,14 +51,67 @@
 /* ---- the seat board ---------------------------------------------------------------------- */
 /* Only this event cuts seats, so only its cards carry a standing. */
 .trader-state { border: 1px solid currentcolor; color: rgba(248,247,247,.55); font-size: 12px; justify-self: start; letter-spacing: .12em; margin: 0; padding: 4px 8px; text-transform: uppercase; }
-.trader-state[data-state="finalist"] { color: #caff5d; }
-.trader-state[data-state="winner"] { color: #00bc7d; }
+.trader-state[data-state="finalist"] { color: var(--t2049-accent-2); }
+.trader-state[data-state="winner"] { color: var(--t2049-accent); }
 .trader-state[data-state="eliminated"] { color: #ff6467; }
 .trader-row[data-state="eliminated"] { opacity: .45; }
-.trader-row[data-state="winner"] { background: rgba(0,188,125,.08); }
+.trader-row[data-state="winner"] { background: rgba(0,221,148,.08); }
 
 
 /* ---- the order ticket --------------------------------------------------------------------- */
 /* The ticket names a seat instead of a sponsor, so the head stacks rather than sitting inline. */
 .t2049-market-page .ticket-head div { display: flex; flex-direction: column; gap: 4px; }
 .t2049-market-page .ticket-head span { color: rgba(248,247,247,.6); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+
+
+/* ---- the Kalshi green --------------------------------------------------------------------- */
+/* Kalshi settles this event's rewards and its symbol file is filled #00DD94, so the board takes that
+   exact green as its main colour: the mark and the page read as one brand rather than a logo
+   dropped onto a green screen. Overriding the shared token is the whole recolour. It reaches the
+   live pill, the YES side, the probability bar, the focus ring and every positive move at once,
+   without a shared rule being touched. */
+.t2049-market-page { --up: var(--t2049-accent); }
+
+/* The same green where the shared shell writes it as a literal. Each rule names the phase or state
+   it replaces, so the ready, break, settling and ended pills keep the colours that mean those. */
+.t2049-market-page .market-state[data-phase="sessionA"],
+.t2049-market-page .market-state[data-phase="sessionC"] { background: rgba(0,221,148,.1); border-color: rgba(0,221,148,.25); }
+.t2049-market-page .market-settled { background: rgba(0,221,148,.06); border-color: rgba(0,221,148,.35); }
+.t2049-market-page .trader-row[data-focus="true"] { background: rgba(0,221,148,.07); }
+.t2049-market-page .trader-actions [data-side="yes"] { background: rgba(0,221,148,.1); border-color: rgba(0,221,148,.28); }
+.t2049-market-page .ticket-quote { border-color: rgba(0,221,148,.45); }
+.t2049-market-page .board-jump:hover { background: rgba(0,221,148,.1); border-color: rgba(0,221,148,.35); }
+
+
+/* ---- the secondary, #CAFF5D ----------------------------------------------------------------- */
+/* The second colour marks one thing: you. Your rank in the overview bar, your row on both boards,
+   and the seats still standing at the end. Spending it anywhere else turns it into decoration and
+   the reader stops reading it as a signal. */
+.t2049-market-page .market-place dd { color: var(--t2049-accent-2); }
+.t2049-market-page .leaderboard tr[data-you="true"] .leader-name span,
+.t2049-market-page .leader-place [data-scramble="true"] { color: var(--t2049-accent-2); }
+.t2049-market-page .leaderboard tr[data-you="true"] td:first-child { box-shadow: inset 2px 0 0 var(--t2049-accent-2); }
+
+
+/* ---- Kalshi on the page --------------------------------------------------------------------- */
+/* Rewards are paid to Kalshi accounts, which is a fact the board otherwise leaves to the rules. The
+   card sits at the end of the main column so the mark carries information rather than sponsorship.
+   It asks for nothing: the Kalshi account is collected by the gate in front of this page, and every
+   reader who gets this far already has one. */
+.t2049-kalshi-card { align-items: center; display: grid; gap: 8px 20px; grid-template-columns: auto minmax(0, 1fr); }
+.t2049-kalshi-card img { border-radius: 10px; display: block; }
+.t2049-kalshi-card h3 { font-size: 20px; letter-spacing: -.01em; margin: 0; }
+.t2049-kalshi-card p { color: rgba(248,247,247,.7); font-size: 16px; line-height: 1.5; margin: 6px 0 0; text-wrap: pretty; }
+/* There is no Kalshi wordmark in the repo, so the footer sets the name as page text beside the
+   official symbol instead of drawing a lettermark that is not theirs. */
+.t2049-kalshi-mark { align-items: center; color: rgba(248,247,247,.68); display: flex; font-size: 12px; gap: 10px; letter-spacing: .08em; margin: 0; text-transform: uppercase; }
+.t2049-kalshi-mark img { border-radius: 5px; display: block; }
+
+/* ---- Held behind the Kalshi gate ------------------------------------------------------------- */
+/* The board stays on screen under the gate, blurred past reading. Six pixels leaves the shape of a
+   live market legible and takes every number off it, which is the point: the reader should want in
+   and not be able to trade from out here.
+   The dialog is a sibling of this page rather than a child, so this filter cannot reach it. Keeping
+   it outside is what makes the blur safe; a filter on an ancestor would drag a fixed child with it.
+   showModal() makes everything outside the dialog inert, so this only has to stop the pointer. */
+.t2049-locked { filter: blur(6px); pointer-events: none; user-select: none; }
