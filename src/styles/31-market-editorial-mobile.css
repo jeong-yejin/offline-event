@@ -1,8 +1,7 @@
-/* Final market mobile layout: overrides both the home and the legacy mobile rules. */
+/* Market shell at phone width. */
 @media (max-width: 700px) {
   .market-header { left: 20px; padding: 10px 0; right: 20px; }
   .market-header span { font-size: 12px; }
-  .market-feature { height: 760px; }
   .market-content { padding: 92px 20px; }
   .market-intro { display: block; margin-bottom: 56px; }
   .market-intro h1, .market-brand-copy h2 { font-size: clamp(44px, 12vw, 64px); }

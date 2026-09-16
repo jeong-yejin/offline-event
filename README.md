@@ -304,7 +304,7 @@ CSS를 고쳤으면 중괄호 균형을 세어 확인한다. 현재 `SiteFooter-
 
 번들 안에서 클래스 modifier는 템플릿 보간으로 만든다 (`card__index card__index--${u}`). 그래서 `grep`으로 `card__index--red`를 찾으면 0건이 나온다. 셀렉터가 죽은 게 아니다.
 
-Wonderland 발표자 사진은 `public/assets/speakers/Wonderland/`. 800×800 RGBA 투명 컷아웃 (Variational-Justin만 1000×944). 크림색 카드에 올린다. 파일명에 공백과 한글이 있어서 (`Base - 권혁재.webp`) 번들 안에서는 퍼센트 인코딩 경로를 써야 한다.
+Wonderland 발표자 사진은 `public/assets/speakers/Wonderland/`. 800×800 RGBA 투명 컷아웃 (Variational-Justin만 1000×944). 크림색 카드에 올린다. 파일명은 `{팀명}-{연사 이름}.webp`. 사람 이름에 공백이 있으면 (`OKX-Lennix Lai.webp`) 번들 안에서는 퍼센트 인코딩 경로를 써야 한다.
 
 한글 폰트는 Zen Serif다. Wonderland의 한글은 Zen Serif가 정답이고 나머지는 Wanted Sans.
 
@@ -315,7 +315,7 @@ Wonderland 발표자 사진은 `public/assets/speakers/Wonderland/`. 800×800 RG
 | `/reboundx-in-wonderland` | 배포 번들. 히어로, 라인업 덱 (카드 4열), 거래소 섹션, 푸터 |
 | `/reboundx-in-wonderland/leaderboard` | `src/pages/WonderlandBoardPage.tsx`. 대시보드 → 헤드 → 채점 기준 → (조건부) 피드 경고 → 순위표 → 각주 |
 
-라인업 덱은 컨테이너 쿼리를 쓴다. `.card-slot`에 `container-type: inline-size`, 카드 안 글자 크기는 `cqw` 단위. 4열 (1200px 초과) → 3열 (1200px 이하) → 2열 (1024px 이하) → 1열 (720px 이하). **이 3개 폭에서 실제 렌더를 육안 확인하지 않았다.**
+라인업 덱은 컨테이너 쿼리를 쓴다. `.card-slot`에 `container-type: inline-size`, 카드 안 글자 크기는 `cqw` 단위. 4열 (1200px 초과) → 3열 (1200px 이하) → 2열 (1024px 이하) → 1열 (720px 이하). 카드 6장 기준으로 1440 / 1100 / 1024 / 760 / 500px 렌더를 확인했다. 3열은 3+3, 2열은 2+2+2, 1열은 6행으로 떨어진다. **4열만 4+2가 되어 둘째 줄 오른쪽 2칸이 빈다.**
 
 순위표는 1초 간격 `setInterval`. 12석, 시작 자본 10000, 히트 30분, 정산 120초. 내 핸들은 `KNAVE`.
 

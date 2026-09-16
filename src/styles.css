@@ -13,9 +13,7 @@
 @import './styles/14-reduced-motion.css';
 @import './styles/15-shiny-cta.css';
 
-/* Market pages: the shared shell, legacy rules first so the editorial overrides win. */
-@import './styles/20-market-legacy.css';
-@import './styles/21-market-legacy-mobile.css';
+/* Market pages: the shared editorial shell. */
 @import './styles/30-market-editorial.css';
 @import './styles/31-market-editorial-mobile.css';
 @import './styles/40-market.css';
