@@ -16,13 +16,20 @@
 .board-page .market-content { display: grid; gap: 20px; padding: 96px 48px 80px; }
 
 .board-intro { margin: 0 0 4px; }
+/* A settled board says so next to its name. The heading and the caption read the same either way, so
+   without the badge the only cue is the locked-ranks note under the last row. */
+.board-heading { align-items: center; display: flex; flex-wrap: wrap; gap: 16px; }
 .board-intro h1 { font-size: clamp(32px, 4vw, 48px); letter-spacing: -.04em; line-height: 1.1; margin: 0; }
-.board-intro p { color: rgba(248,247,247,.72); font-size: 16px; line-height: 1.5; margin: 12px 0 0; max-width: 62ch; text-wrap: pretty; }
+/* Direct child only: the settled badge in the heading row above is a <p> too. */
+.board-intro > p { color: rgba(248,247,247,.72); font-size: 16px; line-height: 1.5; margin: 12px 0 0; max-width: 62ch; text-wrap: pretty; }
 
-/* Your own four numbers stay on screen while the field scrolls past underneath. */
-.board-summary { align-items: end; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr) auto; }
+/* Your own four numbers stay on screen while the field scrolls past underneath. The row itself is
+   shaped in 40-market.css, which every market bar shares. */
+.board-summary { align-items: center; display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr) auto; padding: 24px 28px; }
 .board-jump { background: rgba(255,255,255,.03); border: 1px solid var(--edge); border-radius: 1000px; color: #f8f7f7; cursor: pointer; font: inherit; font-size: 12px; letter-spacing: .12em; min-height: 44px; padding: 0 20px; text-transform: uppercase; transition: background-color .2s ease, border-color .2s ease; }
 .board-jump:hover { background: rgba(0,212,146,.1); border-color: rgba(0,212,146,.35); }
+/* Every other button on a market page answers a press by dropping 4px. This one was the exception. */
+.board-jump:active { transform: translateY(4px); }
 
 /* Dozens of rows, so the column names stay put. The background is the card colour flattened against
    the page, because rows have to pass behind it rather than through it. */
@@ -33,8 +40,23 @@
    words: a border alone would leave the cut-off to colour. */
 .board-cut td { color: var(--up); font-size: 12px; letter-spacing: .16em; padding: 16px 0 12px; text-transform: uppercase; }
 
+/* Four tracked-out labels, four numbers and a button need about 1100px of row, the same width at
+   which the market layout stops fitting side by side. Under it the button takes its own line, which
+   is what keeps "Total asset" and "1,284 pt" on one line each instead of breaking in half. */
+@media (max-width: 1100px) {
+  .board-summary { gap: 20px; grid-template-columns: minmax(0, 1fr); padding: 24px; }
+  /* The button keeps its own width on its own line here. Stretched to the full card it reads as a
+     banner, and it is a shortcut, not the point of the card. */
+  .board-jump { justify-self: start; }
+}
+
 @media (max-width: 700px) {
   .board-page .market-content { padding: 72px 20px 56px; }
-  .board-summary { grid-template-columns: minmax(0, 1fr); }
+  .board-summary { padding: 20px; }
+  /* A phone has no room to spare beside it, and a full-width target is easier to hit with a thumb. */
   .board-jump { justify-self: stretch; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board-jump:active { transform: none; }
 }

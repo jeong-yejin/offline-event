@@ -6,7 +6,7 @@ export type AgendaItem = readonly [time: string, title: string, type?: string];
 
 export const SPONSORS: readonly Sponsor[] = [
   ['Variational', 'variational.svg'], ['Lighter', 'lighter.svg'], ['Aster', 'aster.svg'], ['Extended', 'extended.svg'],
-  ['MetaMask', 'metamask.svg'],
+  ['MetaMask', 'metamask.svg'],['gte', 'gte.svg']
 ];
 
 export const SPEAKERS: readonly Speaker[] = [
@@ -18,10 +18,11 @@ export const SPEAKERS: readonly Speaker[] = [
 
 export const AGENDA: readonly AgendaItem[] = [
   ['16:00', 'Check in/Booth open'],
-  ['17:30 - 17:45', 'ReboundX Pitch'],
+  ['17:30 - 17:45', 'ReboundX Opening'],
   ['17:45 - 18:45', 'The Alpha Talk (debate)'],
-  ['18:45 - 18:55', 'Live trading competition winner prediction betting'],
-  ['19:00 - 19:30', 'Trading Competition'],
-  ['19:45 - 20:00', 'Raffle'],
-  ['20:00 -', 'Networking'],
+  ['18:45 -', 'Meet the Traders & Winner Prediction Opens'],
+  ['19:00 - 19:30', 'Live Trading Competition'],
+  ['19:30', 'Prediction Closes & Winner Announcement'],
+  ['20:00 -', 'Raffle'],
+  ['20:30 -', 'Networking'],
 ];

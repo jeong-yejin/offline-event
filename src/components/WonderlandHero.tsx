@@ -1,3 +1,4 @@
+import { ArrowIcon } from './ArrowIcon';
 import { ReboundXTunnel } from './ReboundXTunnel';
 import type { Strings } from '../i18n/strings/wonderland';
 
@@ -5,7 +6,7 @@ import type { Strings } from '../i18n/strings/wonderland';
 const TERMINAL_URL = 'https://reboundx.net/en/terminal-exchange/BINANCE/perp/BTCUSDT';
 
 /* Opens the Wonderland tab under the page hero, so its heading needs an id of its own. */
-export function WonderlandHero({ t }: { t: Strings }) {
+export function WonderlandHero({ t, onOpenBoard }: { t: Strings; onOpenBoard(): void }) {
   return (
     <section className="reboundx-hero reboundx-hero--wonderland" aria-labelledby="wonderland-hero-title">
       <ReboundXTunnel />
@@ -20,10 +21,16 @@ export function WonderlandHero({ t }: { t: Strings }) {
           <div><dt>VENUE</dt><dd>SJ KUNSTHALLE</dd><dd>SEOUL</dd></div>
           <div><dt>DOORS</dt><dd>16:00</dd><dd>TILL 21:00</dd></div>
         </dl>
-        <a className="wonder-ticket" href={TERMINAL_URL} target="_blank" rel="noopener noreferrer">
-          <span className="wonder-ticket__label">Drink Me!</span>
-          <span className="wonder-ticket__sub">Open &rarr;</span>
-        </a>
+        {/* The ticket keeps the weight and stays on the right, where the hero already ends. The board
+            sits to its left as the quieter of the two doors, so the standings are on offer in the hero
+            instead of only in the line under the embed. */}
+        <div className="wonder-hero-actions">
+          <button className="outline-button wonder-cta" type="button" onClick={onOpenBoard}>{t.wonderlandCta}<ArrowIcon /></button>
+          <a className="wonder-ticket" href={TERMINAL_URL} target="_blank" rel="noopener noreferrer">
+            <span className="wonder-ticket__label">Drink Me!</span>
+            <span className="wonder-ticket__sub">Open &rarr;</span>
+          </a>
+        </div>
       </div>
     </section>
   );

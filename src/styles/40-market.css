@@ -29,10 +29,17 @@
 .market-spec > div:last-child { border-bottom: 1px solid rgba(248,247,247,.14); }
 .market-spec dt { color: rgba(248,247,247,.55); font-size: 12px; letter-spacing: .16em; line-height: 1.9; text-transform: uppercase; }
 .market-spec dd { color: rgba(248,247,247,.82); font-size: 16px; line-height: 1.5; margin: 0; text-wrap: pretty; }
-.market-bar { display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
-.market-bar > div { background: rgba(255,255,255,.03); border-radius: 16px; display: grid; gap: 8px; padding: 16px 16px; }
+/* The card around these numbers is already a frame, so the tinted tiles they used to sit in were a
+   second frame around the same facts. The tiles are gone, and a hairline between the columns does the
+   separating they did. With nothing behind them the numbers carry the row, so they take a step up the
+   scale and sit closer to the label they answer. */
+.market-bar { display: grid; gap: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
+.market-bar > div { display: grid; gap: 6px; padding: 0 24px; }
+.market-bar > div + div { border-left: 1px solid rgba(248,247,247,.12); }
+.market-bar > div:first-child { padding-left: 0; }
+.market-bar > div:last-child { padding-right: 0; }
 .market-bar dt { color: rgba(248,247,247,.5); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
-.market-bar dd { font-size: 20px; letter-spacing: -.01em; margin: 0; }
+.market-bar dd { font-size: 24px; letter-spacing: -.01em; margin: 0; }
 .market-place dd { color: var(--up); }
 .market-settled { background: rgba(0,188,125,.06); border: 1px solid rgba(0,188,125,.35); border-radius: 20px; margin: 0 0 20px; padding: 24px; }
 .market-settled h2 { font-size: 24px; letter-spacing: -.03em; margin: 0; text-wrap: balance; }

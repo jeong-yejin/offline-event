@@ -11,6 +11,11 @@
 .wonder-ticket:active { transform: translateY(0); }
 .wonder-ticket__label { color: #1a1220; font-family: 'Hellcats BV', 'Zen Serif', serif; font-size: 32px; font-weight: 400; letter-spacing: .02em; line-height: 1.3333; }
 .wonder-ticket__sub { color: #6b5b44; font-family: 'Zen Serif', serif; font-size: 16px; letter-spacing: .03em; line-height: 1.4; text-transform: uppercase; }
+/* One row for both doors. The row takes over the ticket's own top margin so the two sit on the same
+   centre line rather than the ticket hanging 28px below the button. It wraps rather than shrinks: at
+   phone width the ticket's 32px label has no room to give, so the pair stacks instead. */
+.wonder-hero-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 28px; }
+.wonder-hero-actions .wonder-ticket { margin-top: 0; }
 .wonder-board-link { display: flex; justify-content: center; margin: 0; padding: 40px 20px 64px; }
 
 .wonder-page { background: #0a0509; color: #f4efe6; display: flex; flex-direction: column; font-family: 'Zen Serif', serif; min-height: 100vh; }

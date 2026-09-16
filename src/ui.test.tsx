@@ -55,53 +55,63 @@ describe('PERP-DEX DAY interface', () => {
     expect(screen.getByText('Choose the red pill and enter the Matrix')).toBeInTheDocument();
   });
 
-  it('lists every event as a link on the hub, so the first screen only offers a choice', () => {
+  it('names every event on the hub rail, so the first screen only offers a choice', async () => {
+    const user = userEvent.setup();
     renderAt('/');
 
     const picker = screen.getByRole('navigation', { name: /event selection/i });
-    expect(within(picker).getAllByRole('link')).toHaveLength(3);
-    expect(within(picker).getByRole('link', { name: 'PERP-DEX DAY' })).toHaveAttribute('href', '/perp-dex-day');
-    expect(screen.queryByText('Live trading competition winner prediction betting')).not.toBeInTheDocument();
+    const choices = within(picker).getAllByRole('button');
+    expect(choices).toHaveLength(3);
+    expect(choices.map((choice) => choice.textContent)).toEqual(['01PERP-DEX DAY', '02REBOUNDX IN WONDERLAND', '03TOKEN2049 PERPS DAY']);
+    /* Nothing is picked until the visitor picks it, so the hub offers no way into an event page yet. */
+    expect(screen.queryByRole('link', { name: /explore event/i })).not.toBeInTheDocument();
+
+    await user.click(choices[0]);
+
+    expect(screen.getByRole('link', { name: /explore event/i })).toHaveAttribute('href', '/perp-dex-day');
   });
 
   it('leaves the hub for the picked event page and finds a way back', async () => {
     const user = userEvent.setup();
     renderAt('/');
 
-    await user.click(screen.getByRole('link', { name: 'REBOUNDX IN WONDERLAND' }));
+    await user.click(screen.getByRole('button', { name: /REBOUNDX IN WONDERLAND/ }));
+    await user.click(screen.getByRole('link', { name: /explore event/i }));
 
     expect(window.location.pathname).toBe('/reboundx-in-wonderland');
     const wonderland = screen.getByRole('region', { name: 'REBOUNDX IN WONDERLAND' });
     expect(wonderland).toContainElement(screen.getByTitle('ReboundX in Wonderland event page'));
-    expect(screen.getByTitle('ReboundX in Wonderland event page')).toHaveAttribute('src', '/reboundx/index.html?content=1');
-    /* The hub hero stays on '/', so an event page carries only its own. */
+    /* content=1 drops the bundle's own chrome so the page keeps one header, and lang carries the
+       visitor's choice across the frame boundary. */
+    expect(screen.getByTitle('ReboundX in Wonderland event page')).toHaveAttribute('src', '/reboundx/index.html?content=1&lang=en');
+    /* The hub stays on '/', so an event page carries one hero and it is that event's. */
     expect(document.querySelectorAll('.reboundx-hero')).toHaveLength(1);
     expect(within(wonderland).getByRole('img', { name: 'ReboundX in Wonderland' })).toBeInTheDocument();
     expect(screen.queryByText('Live trading competition winner prediction betting')).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole('link', { name: /go to reboundx home/i }));
+    await user.click(screen.getByRole('link', { name: /go to reboundx events home/i }));
 
     expect(window.location.pathname).toBe('/');
-    expect(screen.getByRole('link', { name: 'PERP-DEX DAY' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /PERP-DEX DAY/ })).toBeInTheDocument();
   });
 
   it('gives the hub its own hero and each event page the hero for that event', () => {
     renderAt('/');
-    expect(document.querySelector('.reboundx-hero--page')).toBeInTheDocument();
+    expect(document.querySelector('.hub-showcase')).toBeInTheDocument();
     expect(document.querySelector('.hero')).toBeNull();
 
     cleanup();
     renderAt('/perp-dex-day');
-    expect(document.querySelector('.reboundx-hero--page')).toBeNull();
+    expect(document.querySelector('.hub-showcase')).toBeNull();
     expect(document.querySelector('.hero')).toHaveAttribute('data-event', 'perp-dex-day');
   });
 
   it('puts the event picker inside the hub hero, so the first screen is where an event is chosen', () => {
     renderAt('/');
 
-    const pageHero = document.querySelector('.reboundx-hero') as HTMLElement;
-    expect(within(pageHero).getByRole('navigation', { name: /event selection/i })).toBeInTheDocument();
-    expect(within(pageHero).getAllByRole('link')).toHaveLength(3);
+    const hubHero = document.querySelector('.hub-showcase') as HTMLElement;
+    expect(within(hubHero).getByRole('navigation', { name: /event selection/i })).toBeInTheDocument();
+    expect(within(hubHero).getAllByRole('button')).toHaveLength(3);
   });
 
   it('takes a picked event to its own page instead of scrolling the hub', async () => {
@@ -109,7 +119,8 @@ describe('PERP-DEX DAY interface', () => {
     const scrolled = vi.spyOn(Element.prototype, 'scrollIntoView');
     renderAt('/');
 
-    await user.click(screen.getByRole('link', { name: 'TOKEN2049 SIDE EVENT' }));
+    await user.click(screen.getByRole('button', { name: /TOKEN2049 PERPS DAY/ }));
+    await user.click(screen.getByRole('link', { name: /explore event/i }));
 
     expect(window.location.pathname).toBe('/perps-day');
     expect(document.querySelector('.hero')).toHaveAttribute('data-event', 'perps-day');
@@ -135,19 +146,19 @@ describe('PERP-DEX DAY interface', () => {
     /* Marking the current page is what separates navigation from a tab bar. */
     expect(within(switcher).getByRole('link', { current: 'page' })).toHaveTextContent('PERP-DEX DAY');
 
-    await user.click(within(switcher).getByRole('link', { name: 'TOKEN2049 SIDE EVENT' }));
+    await user.click(within(switcher).getByRole('link', { name: 'TOKEN2049 PERPS DAY' }));
 
     expect(window.location.pathname).toBe('/perps-day');
     expect(document.querySelector('.hero')).toHaveAttribute('data-event', 'perps-day');
     const moved = screen.getByRole('navigation', { name: 'Event selection' });
-    expect(within(moved).getByRole('link', { current: 'page' })).toHaveTextContent('TOKEN2049 SIDE EVENT');
+    expect(within(moved).getByRole('link', { current: 'page' })).toHaveTextContent('TOKEN2049 PERPS DAY');
   });
 
   it('keeps one event\'s date out of the hub hero, which introduces all three', () => {
     renderAt('/');
-    const pageHero = document.querySelector('.reboundx-hero') as HTMLElement;
-    expect(within(pageHero).getByText(/PERP-DEX DAY, REBOUNDX DAY and TOKEN2049/)).toBeInTheDocument();
-    expect(within(pageHero).queryByText('SJ KUNSTHALLE')).toBeNull();
+    const hubHero = document.querySelector('.hub-showcase') as HTMLElement;
+    expect(within(hubHero).getByText(/PERP-DEX DAY, REBOUNDX DAY and TOKEN2049/)).toBeInTheDocument();
+    expect(within(hubHero).queryByText('SJ KUNSTHALLE')).toBeNull();
 
     cleanup();
     renderAt('/reboundx-in-wonderland');
@@ -178,16 +189,17 @@ describe('PERP-DEX DAY interface', () => {
     }
   });
 
-  it('keeps the leaderboard reachable after the hero CTA became the terminal door', async () => {
+  it('offers the board beside the hero door, so the standings are not only under the embed', async () => {
     const user = userEvent.setup();
     renderAt('/reboundx-in-wonderland');
 
     const hero = document.querySelector('.reboundx-hero') as HTMLElement;
+    const underEmbed = document.querySelector('.wonder-board-link') as HTMLElement;
     expect(within(hero).getByRole('link', { name: /drink me/i }))
       .toHaveAttribute('href', 'https://reboundx.net/en/terminal-exchange/BINANCE/perp/BTCUSDT');
-    expect(within(hero).queryByRole('button', { name: /leaderboard/i })).toBeNull();
+    expect(within(underEmbed).getByRole('button', { name: /leaderboard/i })).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /leaderboard/i }));
+    await user.click(within(hero).getByRole('button', { name: /leaderboard/i }));
     expect(window.location.pathname).toBe('/reboundx-in-wonderland/leaderboard');
   });
 
@@ -284,9 +296,9 @@ describe('PERP-DEX DAY interface', () => {
   it('keeps every timetable time and title as a single text run', () => {
     renderAt('/perp-dex-day');
 
-    expect(document.querySelectorAll('.agenda-row time')).toHaveLength(7);
+    expect(document.querySelectorAll('.agenda-row time')).toHaveLength(8);
     expect(within(document.querySelector('.agenda-list') as HTMLElement).getByText('16:00')).toBeInTheDocument();
-    expect(screen.getByText('Live trading competition winner prediction betting')).toBeInTheDocument();
+    expect(screen.getByText('Meet the Traders & Winner Prediction Opens')).toBeInTheDocument();
     expect(screen.getByText('Networking')).toBeInTheDocument();
   });
 

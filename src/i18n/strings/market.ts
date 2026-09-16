@@ -60,12 +60,12 @@ export const marketEn = {
      has a page of its own and the ten-row board is the way in. */
   leaderViewAll: (count: number) => `View all ${count}`,
 
-  /* Full leaderboard page. */
-  boardTitle: 'Full leaderboard',
-  boardFinalTitle: 'Final leaderboard',
+  /* The whole field, on a route of its own. The heading and the caption read the same open or settled;
+     a badge beside the heading is what says the ranks have stopped moving. */
+  boardTitle: 'Leaderboard',
+  boardSettled: 'Settled',
   boardBack: 'Back to the market',
-  boardCaption: (count: number, top: number) => `All ${count} players in this competition, ranked by total asset and updating with the market. Ranks 1 to ${top} are rewarded.`,
-  boardFinalCaption: (count: number, top: number) => `All ${count} players at the close. This order is locked, and ranks 1 to ${top} are rewarded.`,
+  boardCaption: (top: number) => `Follow the live leaderboard, ranked by total assets and updated with every market move, with rewards for the top ${top}.`,
   boardPlayers: 'Players',
   boardJump: 'Jump to my row',
   boardCut: (top: number) => `Reward line: rank ${top}`,
@@ -178,12 +178,10 @@ export const marketKo: typeof marketEn = {
   leaderYou: '나',
   leaderViewAll: (count) => `전체 ${count}명 보기`,
 
-  /* Full leaderboard page. */
-  boardTitle: '전체 리더보드',
-  boardFinalTitle: '최종 리더보드',
+  boardTitle: '리더보드',
+  boardSettled: '순위 확정',
   boardBack: '마켓으로 돌아가기',
-  boardCaption: (count, top) => `이번 대회에 참여한 ${count}명 전원이며 총 자산 순으로 마켓과 함께 갱신돼요. 1위부터 ${top}위까지 리워드를 받아요.`,
-  boardFinalCaption: (count, top) => `종료 시점의 참가자 ${count}명 전원이에요. 이 순위는 고정되고 1위부터 ${top}위까지 리워드를 받아요.`,
+  boardCaption: (top) => `실시간 리더보드를 확인해 보세요. 총 자산 순으로 정렬되고 마켓이 움직일 때마다 갱신되며, 상위 ${top}위까지 리워드를 받아요.`,
   boardPlayers: '참가자',
   boardJump: '내 순위로 이동',
   boardCut: (top) => `리워드 기준선: ${top}위`,

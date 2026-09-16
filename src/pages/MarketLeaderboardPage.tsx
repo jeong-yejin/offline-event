@@ -54,8 +54,11 @@ export function MarketLeaderboardPage({ t, lang, onLangChange, brand, tag, class
       <main>
         <section className="market-content" aria-labelledby="board-title">
           <div className="board-intro">
-            <h1 id="board-title">{final ? t.boardFinalTitle : t.boardTitle}</h1>
-            <p>{(final ? t.boardFinalCaption : t.boardCaption)(ranks.length, rewardTop)}</p>
+            <div className="board-heading">
+              <h1 id="board-title">{t.boardTitle}</h1>
+              {final ? <p className="market-state" data-phase="ended"><i aria-hidden="true" />{t.boardSettled}</p> : null}
+            </div>
+            <p>{t.boardCaption(rewardTop)}</p>
           </div>
 
           <article className="market-card board-summary">

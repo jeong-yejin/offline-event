@@ -15,7 +15,12 @@
 @media (max-width: 700px) {
   .market-spec { margin-top: 28px; }
   .market-overview { gap: 16px; padding: 20px; }
-  .market-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Two columns here, so the hairline belongs to the right-hand cell only and the row gap does the
+     rest. The odd-numbered siblings open each row. */
+  .market-bar { gap: 24px 0; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .market-bar > div { padding: 0 20px; }
+  .market-bar > div:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .market-bar > div:nth-child(even) { padding-right: 0; }
   .market-bar dd { font-size: 20px; }
   .market-settled { margin-bottom: 20px; padding: 20px; }
   .market-settled h2 { font-size: 20px; }

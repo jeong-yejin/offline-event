@@ -105,7 +105,7 @@ export function WonderlandPage({ lang, onOpenBoard }: WonderlandPageProps) {
   return (
     <section className="reboundx-panel" aria-label="REBOUNDX IN WONDERLAND">
       <h2 className="visually-hidden">{t.reboundxPanelTitle}</h2>
-      <WonderlandHero t={t} />
+      <WonderlandHero t={t} onOpenBoard={onOpenBoard} />
       <div className="reboundx-frame-wrap">
         {state === 'loading' ? <div className="frame-skeleton" role="status" aria-label={t.reboundxLoading}>{SKELETON_ROWS.map((row) => <span key={row} />)}</div> : null}
         {state === 'failed' ? <div className="frame-error"><p>{t.reboundxFailed}</p><a className="outline-button" href={src} target="_blank" rel="noopener noreferrer">{t.reboundxFailedCta}<ArrowIcon /></a></div> : null}

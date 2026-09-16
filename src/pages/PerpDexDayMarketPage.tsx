@@ -86,7 +86,7 @@ export function PerpDexDayMarketPage({ view, onBack, onOpenLeaderboard, lang, on
           section scrolls over, and with the hero gone it is what the page opens on.
           .14 rather than .26. A ground the tables have to be read against is a ground that is
           competing with them, and this page is read rather than looked at. */}
-      {prefersStill() ? null : <DigitalRain density={56} headColor="#D9FFD9" shuffleGlyphs={MATRIX_GLYPHS} style={{ inset: 0, opacity: .14, pointerEvents: 'none', position: 'fixed', zIndex: -1 }} trail={38} trailColor="#00E23E" />}
+      {prefersStill() ? null : <DigitalRain density={30} headColor="#D9FFD9" shuffleGlyphs={MATRIX_GLYPHS} style={{ inset: 0, opacity: .14, pointerEvents: 'none', position: 'fixed', zIndex: -1 }} trail={38} trailColor="#00E23E" />}
 
       <header className="market-header">
         <BackLink className="market-back" label={t.marketBack} onClick={onBack} />
