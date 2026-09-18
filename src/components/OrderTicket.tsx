@@ -25,14 +25,17 @@ type OrderTicketProps = {
   now: number;
   quote: OrderQuote | null;
   notice: string;
+  /* A phone docks the ticket to the bottom edge. Collapsed, it shows the seat and its two prices. */
+  expanded: boolean;
   onSideChange(side: Side): void;
   onDirectionChange(direction: Direction): void;
   onRequestQuote(quantity: number, direction: Direction): void;
   onConfirm(): void;
   onCancel(): void;
+  onExpandedChange(expanded: boolean): void;
 };
 
-export function OrderTicket({ t, candidate, prices, side, direction, point, holdings, tradable, closedHint, status, now, quote, notice, onSideChange, onDirectionChange, onRequestQuote, onConfirm, onCancel }: OrderTicketProps) {
+export function OrderTicket({ t, candidate, prices, side, direction, point, holdings, tradable, closedHint, status, now, quote, notice, expanded, onSideChange, onDirectionChange, onRequestQuote, onConfirm, onCancel, onExpandedChange }: OrderTicketProps) {
   const [draft, setDraft] = useState('1');
   const [error, setError] = useState('');
 
@@ -83,7 +86,7 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
   }
 
   return (
-    <form className="order-ticket" onSubmit={submit} aria-label={t.ticketLabel}>
+    <form className="order-ticket" data-expanded={expanded ? 'true' : 'false'} onSubmit={submit} aria-label={t.ticketLabel}>
       <h3 className="ticket-title">{t.ticketLabel}</h3>
 
       {/* The logo already reads "Variational", so the exchange name only earns a line on the seats
@@ -91,6 +94,10 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
       <header className="ticket-head">
         {candidate.logo ? <img alt={candidate.exchange} className="ticket-logo" src={`/assets/sponsors/${candidate.logo}`} /> : null}
         <div><strong>{candidate.trader}</strong>{candidate.logo ? null : <span>{candidate.exchange}</span>}</div>
+        {/* Only the docked ticket on a phone shows this. The sidebar ticket is always whole. */}
+        <button aria-expanded={expanded} aria-label={t.ticketLabel} className="ticket-toggle" onClick={() => onExpandedChange(!expanded)} type="button">
+          <svg aria-hidden="true" fill="none" viewBox="0 0 16 16"><path d="M4 10 8 6l4 4" stroke="currentColor" strokeLinecap="square" strokeWidth="1.4" /></svg>
+        </button>
       </header>
 
       <div className="ticket-directions" role="group" aria-label={t.directionGroup}>

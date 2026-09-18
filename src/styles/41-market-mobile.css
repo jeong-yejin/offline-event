@@ -1,4 +1,4 @@
-/* Prediction market responsive states: stack the ticket, then trim the tables. */
+/* Prediction market responsive states: stack the ticket, then trim the tables and dock the ticket. */
 @media (max-width: 1100px) {
   .market-layout { display: block; }
   .market-side { margin-top: 20px; position: static; }
@@ -25,7 +25,7 @@
   .market-settled { margin-bottom: 20px; padding: 20px; }
   .market-settled h2 { font-size: 20px; }
   .market-main { gap: 16px; }
-  .market-card, .market-page .market-chart, .market-page .order-ticket, .market-page .leaderboard { padding: 20px; }
+  .market-card, .market-page .market-chart, .market-page .leaderboard { padding: 20px; }
   .chart-frame { gap: 12px; grid-template-columns: 32px minmax(0, 1fr); }
   .chart-plot { height: 200px; }
   .chart-axis, .chart-chips { margin-left: 44px; }
@@ -40,4 +40,16 @@
   .trader-row > th, .trader-row > td { padding: 12px 12px; }
   .trader-actions button { gap: 8px; min-width: 72px; padding: 12px; }
   .position-row > th, .position-row > td { padding: 12px; }
+  /* By this width the ticket sits under every table, 3,000px down the page. It docks to the bottom
+     edge instead, collapsed to the seat and its two prices. A price or the toggle expands it. The
+     page keeps room for the collapsed ticket, so the footer can scroll clear of it. */
+  .market-page:has(.order-ticket) { padding-bottom: calc(140px + env(safe-area-inset-bottom)); }
+  /* Rows scroll under the docked ticket, so the translucent card fill sits on the page's black. */
+  .market-page .order-ticket { background: linear-gradient(var(--card), var(--card)), #000; border-radius: 20px 20px 0 0; border-width: 1px 0 0; box-shadow: 0 -16px 32px rgba(0,0,0,.6); inset: auto 0 0; max-height: 85dvh; overflow-y: auto; overscroll-behavior: contain; padding: 16px 20px calc(16px + env(safe-area-inset-bottom)); position: fixed; z-index: 10; }
+  .order-ticket[data-expanded="false"] > :not(.ticket-head, .ticket-sides) { display: none; }
+  .ticket-toggle { background: transparent; border: 0; color: rgba(248,247,247,.72); cursor: pointer; display: grid; height: 24px; margin-left: auto; padding: 0; place-items: center; position: relative; width: 24px; }
+  /* 24px drawn, 44px under the thumb. */
+  .ticket-toggle::before { content: ''; inset: -10px; position: absolute; }
+  .ticket-toggle svg { height: 16px; width: 16px; }
+  .order-ticket[data-expanded="true"] .ticket-toggle svg { transform: rotate(180deg); }
 }

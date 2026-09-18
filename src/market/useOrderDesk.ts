@@ -13,13 +13,17 @@ type OrderDeskOptions = {
 };
 
 /* The order desk both competitions trade through: which market the ticket points at, which way it
-   is pointed, the one quote outstanding, and the last thing the desk said. */
+   is pointed, the one quote outstanding, the last thing the desk said, and whether a phone shows the
+   whole ticket. */
 export function useOrderDesk({ initialId, prices, fill, describeFill }: OrderDeskOptions) {
   const [focusId, setFocusId] = useState<MarketId>(initialId);
   const [side, setSide] = useState<Side>('yes');
   const [direction, setDirection] = useState<Direction>('buy');
   const [pending, setPending] = useState<OrderQuote | null>(null);
   const [notice, setNotice] = useState('');
+  /* A phone docks the ticket to the bottom edge, collapsed to the seat and its two prices. Picking a
+     side or asking for a quote anywhere on the page expands it, because that tap starts an order. */
+  const [ticketExpanded, setTicketExpanded] = useState(false);
 
   /* One quote at a time. A new request replaces the last, which is what an RFQ desk does. */
   function askQuote(id: MarketId, positionSide: Side, orderSide: Direction, quantity: number) {
@@ -28,6 +32,7 @@ export function useOrderDesk({ initialId, prices, fill, describeFill }: OrderDes
     setDirection(orderSide);
     setPending(createQuote(prices, id, positionSide, orderSide, quantity, Date.now()));
     setNotice('');
+    setTicketExpanded(true);
   }
 
   function cancel() {
@@ -45,6 +50,7 @@ export function useOrderDesk({ initialId, prices, fill, describeFill }: OrderDes
   function chooseSide(next: Side) {
     setSide(next);
     setPending(null);
+    setTicketExpanded(true);
   }
 
   function chooseDirection(next: Direction) {
@@ -64,5 +70,5 @@ export function useOrderDesk({ initialId, prices, fill, describeFill }: OrderDes
     setPending(null);
   }
 
-  return { focusId, side, direction, pending, notice, askQuote, cancel, confirm, pick, focusSeat, chooseSide, chooseDirection };
+  return { focusId, side, direction, pending, notice, ticketExpanded, askQuote, cancel, confirm, pick, focusSeat, chooseSide, chooseDirection, setTicketExpanded };
 }

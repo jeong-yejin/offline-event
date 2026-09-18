@@ -70,7 +70,7 @@ export function Token2049MarketPage({ view, onBack, onOpenLeaderboard, lang, onL
   const [operators] = useState(() => createOperators(T2049_FIELD));
 
   const { balances, prices, holdings, settlement, point, eliminated, lastCut, closed } = state;
-  const { focusId, side, direction, pending, notice, askQuote, cancel, confirm, pick, focusSeat, chooseSide, chooseDirection } = useOrderDesk({
+  const { focusId, side, direction, pending, notice, ticketExpanded, askQuote, cancel, confirm, pick, focusSeat, chooseSide, chooseDirection, setTicketExpanded } = useOrderDesk({
     initialId: T2049_TRADERS[0].id,
     prices,
     fill,
@@ -226,6 +226,7 @@ export function Token2049MarketPage({ view, onBack, onOpenLeaderboard, lang, onL
               <OrderTicket
                 candidate={focus}
                 direction={direction}
+                expanded={ticketExpanded}
                 holdings={holdings}
                 key={focus.id}
                 notice={notice}
@@ -233,6 +234,7 @@ export function Token2049MarketPage({ view, onBack, onOpenLeaderboard, lang, onL
                 onCancel={cancel}
                 onConfirm={confirm}
                 onDirectionChange={chooseDirection}
+                onExpandedChange={setTicketExpanded}
                 onRequestQuote={(quantity, orderSide) => askQuote(focusId, side, orderSide, quantity)}
                 onSideChange={chooseSide}
                 tradable={open && !isClosed(state, focusId)}

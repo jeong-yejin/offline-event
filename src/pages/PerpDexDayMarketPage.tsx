@@ -49,7 +49,7 @@ export function PerpDexDayMarketPage({ view, onBack, onOpenLeaderboard, lang, on
   const [operators] = useState(() => createOperators(PERP_DEX_FIELD));
 
   const { balances, prices, holdings, settlement, point } = state;
-  const { focusId, side, direction, pending, notice, askQuote, cancel, confirm, pick, focusSeat, chooseSide, chooseDirection } = useOrderDesk({
+  const { focusId, side, direction, pending, notice, ticketExpanded, askQuote, cancel, confirm, pick, focusSeat, chooseSide, chooseDirection, setTicketExpanded } = useOrderDesk({
     initialId: INITIAL_PERP_DEX_TRADER_ID,
     prices,
     fill,
@@ -170,6 +170,7 @@ export function PerpDexDayMarketPage({ view, onBack, onOpenLeaderboard, lang, on
               <OrderTicket
                 candidate={focus}
                 direction={direction}
+                expanded={ticketExpanded}
                 holdings={holdings}
                 key={focus.id}
                 notice={notice}
@@ -177,6 +178,7 @@ export function PerpDexDayMarketPage({ view, onBack, onOpenLeaderboard, lang, on
                 onCancel={cancel}
                 onConfirm={confirm}
                 onDirectionChange={chooseDirection}
+                onExpandedChange={setTicketExpanded}
                 onRequestQuote={(quantity, orderSide) => askQuote(focusId, side, orderSide, quantity)}
                 onSideChange={chooseSide}
                 tradable={tradable}

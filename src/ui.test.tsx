@@ -474,6 +474,23 @@ describe('PERP-DEX DAY interface', () => {
     expect(within(position).getAllByRole('cell')[0]).toHaveTextContent('2');
   });
 
+  it('expands the docked ticket when a price is picked on the board, because on a phone that tap starts an order', async () => {
+    const user = await openMarket('/perp-dex-day/market');
+    /* Picking another seat remounts the ticket, so the toggle is looked up fresh each time. */
+    const toggle = () => within(screen.getByRole('form', { name: /order ticket/i })).getByRole('button', { name: /order ticket/i });
+
+    /* Below 700px the ticket docks to the bottom edge, collapsed to the seat and its two prices. A Yes
+       picked in the table has to open the rest, or the tap would only move a highlight. */
+    expect(toggle()).toHaveAttribute('aria-expanded', 'false');
+
+    const traders = screen.getAllByRole('row').filter((row) => row.classList.contains('trader-row'));
+    await user.click(within(traders[1]).getByRole('button', { name: /^yes/i }));
+    expect(toggle()).toHaveAttribute('aria-expanded', 'true');
+
+    await user.click(toggle());
+    expect(toggle()).toHaveAttribute('aria-expanded', 'false');
+  });
+
   it('refuses to quote an order the point balance cannot cover, and says how many it can', async () => {
     const user = await openMarket('/perp-dex-day/market');
 
