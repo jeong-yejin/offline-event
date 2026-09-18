@@ -1,6 +1,6 @@
 export type PerpDexTraderId = 'variational' | 'lighter' | 'aster' | 'extended';
 
-export type PerpDexTrader = {
+type PerpDexTrader = {
   id: PerpDexTraderId;
   trader: string;
   exchange: string;

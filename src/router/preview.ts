@@ -44,9 +44,9 @@ const T2049_CASES: Record<string, number> = {
 
 /* The Kalshi account screen is its own route rather than a position on the clock, so the router reads
    this name instead of the case maps. */
-export const PREVIEW_ROUTE_CASES: readonly string[] = ['kalshi'];
+const PREVIEW_ROUTE_CASES: readonly string[] = ['kalshi'];
 
-export const PREVIEW_CASES: readonly string[] =
+const PREVIEW_CASES: readonly string[] =
   [...new Set([...Object.keys(PERP_DEX_CASES), ...Object.keys(T2049_CASES), ...PREVIEW_ROUTE_CASES])];
 
 /* A misspelt case would otherwise look like the screen simply rendering as usual, so it is named and

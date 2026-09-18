@@ -1,7 +1,7 @@
 import { quote as priceOf, type Direction, type MarketId, type PriceMap, type Side } from './engine';
 
 /* An RFQ quote is a firm price with a short life. Past it the trader has to ask again. */
-export const QUOTE_TTL_MS = 4000;
+const QUOTE_TTL_MS = 4000;
 
 export type OrderQuote = {
   quoteId: string;

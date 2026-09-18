@@ -6,7 +6,7 @@ import type { KalshiStatus } from '../../data/token2049Content';
 
 /* The survival format carries four numbers the PERP-DEX DAY spec has no room for, so the row list
    takes one shape instead of eight positional arguments. */
-export type T2049Spec = {
+type T2049Spec = {
   seats: number;
   sessionMinutes: number;
   breakMinutes: number;
@@ -191,7 +191,7 @@ const shared = {
   t2049RulesResolve: (payout: number) => `A cut seat settles at once: its YES pays 0 and its NO pays ${payout} back into your point. At the close the highest final margin balance wins, its YES settles at ${payout}, and a tie splits the ${payout} between the tied YES markets. Closing settlement is paid out a few days after the event, not into your point.`,
 };
 
-export const token2049En = {
+const token2049En = {
   ...shared,
 
   /* Session and elimination states. The page currently uses English only. */
@@ -208,7 +208,7 @@ export const token2049En = {
   hintEliminated: 'This seat is out. Its market is closed.',
 };
 
-export const token2049Ko: typeof token2049En = {
+const token2049Ko: typeof token2049En = {
   ...shared,
 
   /* Session and elimination states. The page currently uses English only. */

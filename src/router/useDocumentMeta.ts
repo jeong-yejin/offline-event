@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
 /* Which attribute names the tag: Open Graph uses property, everything else uses name. */
-export type MetaTag = readonly [attribute: 'name' | 'property', key: string, content: string];
+type MetaTag = readonly [attribute: 'name' | 'property', key: string, content: string];
 
-export type DocumentMeta = {
+type DocumentMeta = {
   title: string;
   tags: readonly MetaTag[];
 };

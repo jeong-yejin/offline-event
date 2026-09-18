@@ -20,7 +20,7 @@
 /* Chrome text in dim phosphor, values left white. This is the split that makes it read as a
    terminal: the machine's labels are green, the numbers it reports are not. Dim measures 5.6:1 on
    this ground, past AA for the 12px caps it lands on. */
-.matrix-market :is(.market-header span, .market-spec dt, .market-bar dt, .trader-table thead th, .position-table thead th, .leaderboard th, .board-table thead th, .rules-list dt, .ticket-summary dt, .ticket-quote dt, .positions-total dt, .chart-axis, .chart-scale) { color: var(--mx-dim); }
+.matrix-market :is(.market-header span, .market-spec dt, .market-bar dt, .trader-table thead th, .position-table thead th, .leaderboard th, .board-table thead th, .rules-list dt, .ticket-summary dt, .ticket-quote dt, .positions-total dt, .chart-axis, .chart-scale), .matrix-market .position-row > td[data-label]::before { color: var(--mx-dim); }
 
 /* A cursor before each section name. A block rather than a '>' glyph, so no screen reader announces
    punctuation that is not in the copy. */

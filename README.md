@@ -168,6 +168,8 @@ Kalshi 계정 없는 사용자가 `/perps-day/market` 또는 `/perps-day/market/
 
 `/perps-day/kalshi`에서 저장에 성공하면 그 키에 주소가 들어가고, 완료 화면의 `Back to Pulse`가 보드로 돌려보낸다. 그래서 게이트 → 폼 → 보드가 한 바퀴 걸어진다. **검증이 아니다.** 아무 주소나 통과하고, 사이트 데이터를 지우면 다시 잠긴다. devtools 한 줄로 열린다.
 
+구글 로그인에 성공할 때마다 이 키를 지운다 (`forgetKalshiAddress()`). 그래서 구글 로그인 모달 다음에는 항상 Kalshi 모달이 뜬다. 사용자가 요청한 동작이다. 로그인 전에 `/perps-day/kalshi`에서 먼저 저장했어도 로그인 뒤에 한 번 더 입력해야 한다.
+
 `App.tsx`는 이 판정을 state로 들고 있지 않고 렌더마다 읽는다. 주소를 저장하고 보드로 돌아오면 그 시점에 열린다.
 
 **없는 것.** 서버 판정. `GET /api/kalshi/status`가 없어서 `VERIFIED`/`REJECTED`가 화면에 닿지 못한다. 게이트가 봐야 하는 값은 `VERIFIED`인데, 지금은 "주소를 적었다"를 대신 본다. 둘은 다른 상태다.

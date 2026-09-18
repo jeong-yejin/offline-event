@@ -37,12 +37,7 @@ h2 { font-size: clamp(56px, 7vw, 108px); line-height: 1; }
 .reboundx-hero__title { margin: 0; max-width: 660px; position: relative; width: min(660px, 76vw); z-index: 1; }
 .reboundx-hero__title img { height: auto; width: 100%; }
 /* The hub at '/': it fills the first screen and holds the links to each event page. */
-.reboundx-hero.reboundx-hero--page { flex-direction: row; gap: 72px; min-height: 100dvh; padding: 96px 48px 88px 80px; }
-.reboundx-hero__intro { align-items: flex-start; display: flex; flex: 1; flex-direction: column; min-width: 0; }
-.reboundx-hero__intro .reboundx-hero__copy { align-items: flex-start; text-align: left; }
 /* The hub lede is Hangul, so it takes the sans face; the Wonderland hero keeps its serif. */
-.reboundx-hero--page .reboundx-hero__lede { font-family: 'Wanted Sans', sans-serif; }
-.reboundx-hero__headline { color: #f8f7f7; font-family: 'Wanted Sans', sans-serif; font-size: clamp(28px, 4.4vw, 56px); font-weight: 600; letter-spacing: -.03em; line-height: 1.32; margin: 0; max-width: 880px; position: relative; text-align: left; white-space: normal; z-index: 1; }
 .reboundx-hero--wonderland { background: #0a0509; color: #f4efe6; }
 .reboundx-hero--wonderland::after { background: radial-gradient(circle at 50% 46%, rgba(10,5,9,.74) 0 30%, rgba(10,5,9,.56) 58%, rgba(10,5,9,.86) 100%); }
 /* The tunnel runs straight behind the logo and the lede, so it is dimmed to a texture rather than a background. */

@@ -2,7 +2,7 @@ import type { Strings } from '../i18n/strings/market';
 import { formatPercent, formatPill, moveOf } from '../market/format';
 import type { DataStatus, MarketId, MarketTrader, Side, TraderState } from '../market/engine';
 
-export type TraderRow = {
+type TraderRow = {
   candidate: MarketTrader;
   balance: number;
   percent: number;

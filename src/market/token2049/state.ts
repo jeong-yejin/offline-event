@@ -49,7 +49,7 @@ import {
   type Snapshot,
 } from './market';
 
-export type T2049Settlement = { winners: MarketId[]; payout: number; balances: BalanceMap };
+type T2049Settlement = { winners: MarketId[]; payout: number; balances: BalanceMap };
 
 /* The seat that just left, so the page can raise the elimination banner over the floor. */
 export type Cut = { id: MarketId; time: number; payout: number };
@@ -57,7 +57,7 @@ export type Cut = { id: MarketId; time: number; payout: number };
 /* A position leaves the book two ways before the final bell: the holder sells it, or its seat is
    cut and the market settles under it. Both take the row off the open board, so the price it left
    at is recorded here or the holder has no way back to what the trade actually returned. */
-export type ClosedPosition = { id: MarketId; side: Side; qty: number; entry: number; exit: number; time: number };
+type ClosedPosition = { id: MarketId; side: Side; qty: number; entry: number; exit: number; time: number };
 
 export type T2049State = {
   time: number;
@@ -279,4 +279,3 @@ function applyFill(state: T2049State, time: number, quote: OrderQuote): T2049Sta
 
 export const reduceT2049 = (state: T2049State, action: T2049Action): T2049State =>
   action.type === 'tick' ? applyTick(state, action.time, action.seed) : applyFill(state, action.time, action.quote);
-

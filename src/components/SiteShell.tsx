@@ -5,7 +5,8 @@ import { LangToggle } from './LangToggle';
 import type { EventKey } from '../data/eventContent';
 import type { I18nProps } from '../i18n/strings/common';
 import { useMotionReveal } from '../motion/reveal';
-import { navClick, type AppRoute } from '../router/useAppRoute';
+import { navClick } from '../router/navigation';
+import { type AppRoute } from '../router/routes';
 
 type SiteShellProps = I18nProps & {
   /* null is the hub at '/', which introduces the events instead of showing one. */

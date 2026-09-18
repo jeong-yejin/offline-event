@@ -13,7 +13,16 @@
 }
 
 @media (max-width: 700px) {
-  .market-spec { margin-top: 28px; }
+  /* Kalshi opens a market on its price and keeps the rules at the foot of the page. The terms move
+     under the board as a card, so the first screen holds the title and the chance instead of six
+     definitions. Only the picture moves: the list has nothing to focus, and a screen reader still
+     meets it under the title. */
+  .market-content:has(> .market-intro) { display: flex; flex-direction: column; }
+  .market-intro { display: contents; }
+  .market-intro h1 { font-size: clamp(32px, 9vw, 40px); margin-bottom: 20px; }
+  .market-spec { align-self: stretch; background: var(--card); border: 1px solid var(--edge); border-radius: 20px; margin-top: 20px; max-width: none; order: 1; padding: 4px 20px; }
+  .market-spec > div:first-child { border-top: 0; }
+  .market-spec > div:last-child { border-bottom: 0; }
   .market-overview { gap: 16px; padding: 20px; }
   /* Two columns here, so the hairline belongs to the right-hand cell only and the row gap does the
      rest. The odd-numbered siblings open each row. */
@@ -28,28 +37,96 @@
   .market-card, .market-page .market-chart, .market-page .leaderboard { padding: 20px; }
   .chart-frame { gap: 12px; grid-template-columns: 32px minmax(0, 1fr); }
   .chart-plot { height: 200px; }
-  .chart-axis, .chart-chips { margin-left: 44px; }
-  .trader-probability { font-size: 16px; }
-  /* "Market probability" tracked out on one line is wider than the number under it. Let the labels
-     wrap instead, so the phone scrolls the table by a thumb-width rather than half a screen. */
-  .trader-table thead th { letter-spacing: .06em; white-space: normal; }
+  .chart-axis { margin-left: 44px; }
+  /* 40-market.css wraps the chips so the whole legend stays in view. Here two fit a line, and eight
+     seats wrapped to five lines under a 200px plot. The row scrolls sideways instead, like Kalshi's
+     range tabs, and runs to the card's edges so the cut-off chip shows there is more. */
+  .chart-chips { flex-wrap: nowrap; margin: 16px -20px 0; overflow-x: auto; overscroll-behavior-x: contain; padding: 0 20px; scrollbar-width: none; }
+  .chart-chips button { flex: none; }
+  /* Kalshi's outcome row, built from the table's own cells: the seat and its chance on the first line,
+     the balance under the name, then Yes and No as two halves of the row. Nothing scrolls sideways
+     any more, so the column labels are kept for a screen reader only. */
+  .trader-table, .trader-table tbody { display: block; min-width: 0; }
+  .trader-table thead { clip-path: inset(50%); height: 4px; overflow: hidden; position: absolute; white-space: nowrap; width: 4px; }
   /* Return is the margin balance restated against the same 10,000 USDT start, so the phone drops it
      and keeps the number the market actually settles on. */
   .trader-table thead th:nth-child(3), .trader-move { display: none; }
-  .trader-name { gap: 8px; }
-  .trader-row > th, .trader-row > td { padding: 12px 12px; }
-  .trader-actions button { gap: 8px; min-width: 72px; padding: 12px; }
-  .position-row > th, .position-row > td { padding: 12px; }
+  /* The rows run to the card's edges, so the hairlines and the focus fill do too. trader-table.css
+     insets the first and last cells by 16px, and the row adds 4px, so every line starts at the 20px
+     the card's title starts at. */
+  .trader-scroll { margin: 0 -20px; }
+  .trader-row { display: grid; grid-template-areas: "name chance" "balance chance" "actions actions"; grid-template-columns: minmax(0, 1fr) auto; padding: 16px 4px; row-gap: 4px; }
+  .trader-row > th, .trader-row > td { padding: 0 16px; }
+  .trader-row > th { grid-area: name; }
+  /* 16px of cell, 28px of logo and 8px of gap: the balance sits under the name, not under the logo. */
+  .trader-row > .trader-balance { color: rgba(248,247,247,.72); grid-area: balance; padding-left: 52px; text-align: left; }
+  .trader-row > .trader-chance { align-self: center; grid-area: chance; }
+  .trader-probability { font-size: 24px; }
+  /* A cut or a stale feed adds a line under the name rather than pushing the chance off the row. The
+     cut label stays in the name's column: spanning the rank's column too, its width went to that
+     column and stretched "#4" into an 85px pill. */
+  .trader-name { column-gap: 8px; display: grid; grid-template-columns: 28px minmax(0, max-content) auto; justify-content: start; row-gap: 4px; white-space: normal; }
+  .trader-state { grid-column: 2; }
+  /* A late feed adds its notice under the name, two or three lines at this width, so the logo and the
+     rank keep to the name's line instead of centring on the whole block. */
+  .trader-name:has(.trader-feed) { align-items: start; }
+  .trader-row > .trader-actions { display: grid; gap: 8px; grid-area: actions; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 12px; }
+  .trader-actions button { align-items: center; gap: 8px; justify-content: center; min-height: 44px; min-width: 0; padding: 0 12px; }
+  /* A position is a card here, as on Kalshi: the seat and side on top, one line per figure, the sell
+     controls across the foot. Each line is set like the totals under the card, name left and number
+     right. Three columns wrapped "Average entry" onto two lines and knocked the numbers out of line.
+     The names come from the cells because the header row is out of sight, which also keeps them
+     readable where a browser drops the table. The themes colour them as they colour the totals. */
+  .position-table, .position-table tbody { display: block; min-width: 0; }
+  .position-table thead { clip-path: inset(50%); height: 4px; overflow: hidden; position: absolute; white-space: nowrap; width: 4px; }
+  .position-row { display: grid; gap: 12px; padding: 16px 0; }
+  .position-row > th, .position-row > td { font-size: 16px; padding: 0; text-align: left; white-space: normal; }
+  /* The auto margin sends the name left and packs the figure and its percentage to the right. */
+  .position-row > td[data-label] { align-items: baseline; display: flex; gap: 4px; }
+  .position-row > td[data-label]::before { color: rgba(248,247,247,.55); content: attr(data-label); font-size: 12px; margin-right: auto; }
+  .position-row > td:last-child { background: none; border-left: 0; margin-top: 4px; position: static; }
+  .position-actions { display: grid; grid-template-columns: 72px repeat(2, minmax(0, 1fr)); }
+  .position-actions input, .position-actions button { min-height: 44px; }
   /* By this width the ticket sits under every table, 3,000px down the page. It docks to the bottom
-     edge instead, collapsed to the seat and its two prices. A price or the toggle expands it. The
-     page keeps room for the collapsed ticket, so the footer can scroll clear of it. */
-  .market-page:has(.order-ticket) { padding-bottom: calc(140px + env(safe-area-inset-bottom)); }
-  /* Rows scroll under the docked ticket, so the translucent card fill sits on the page's black. */
-  .market-page .order-ticket { background: linear-gradient(var(--card), var(--card)), #000; border-radius: 20px 20px 0 0; border-width: 1px 0 0; box-shadow: 0 -16px 32px rgba(0,0,0,.6); inset: auto 0 0; max-height: 85dvh; overflow-y: auto; overscroll-behavior: contain; padding: 16px 20px calc(16px + env(safe-area-inset-bottom)); position: fixed; z-index: 10; }
+     edge instead, collapsed to one line: the seat and its two prices. A price or the toggle opens it
+     as a sheet over the dimmed board, the way Kalshi's order sheet opens. The page keeps room for
+     the collapsed line, so the footer can scroll clear of it. */
+  .market-page:has(.order-ticket) { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  /* Rows scroll under the docked ticket, so the translucent card fill sits on the page's black. The
+     2px line along the top edge splits at the seat's chance, Yes to the left and No to the right, so
+     the collapsed ticket still shows where the seat stands. */
+  .market-page .order-ticket { background: linear-gradient(90deg, var(--up) var(--yes), var(--down) 0) 0 0 / 100% 2px no-repeat padding-box, linear-gradient(var(--card), var(--card)), #000; border-radius: 20px 20px 0 0; border-width: 1px 0 0; box-shadow: 0 -16px 32px rgba(0,0,0,.6); gap: 12px; inset: auto 0 0; max-height: 85dvh; overflow-y: auto; overscroll-behavior: contain; padding: 16px 20px calc(16px + env(safe-area-inset-bottom)); position: fixed; z-index: 10; }
+  /* The head already names the seat, so the title is kept for a screen reader only. */
+  .ticket-title { clip-path: inset(50%); height: 4px; overflow: hidden; position: absolute; white-space: nowrap; width: 4px; }
+  .order-ticket[data-expanded="false"] { align-items: center; grid-template-columns: minmax(0, 1fr) auto; }
   .order-ticket[data-expanded="false"] > :not(.ticket-head, .ticket-sides) { display: none; }
+  .order-ticket[data-expanded="false"] .ticket-sides button { gap: 8px; min-height: 44px; padding: 0 12px; }
+  .order-ticket[data-expanded="false"] .ticket-sides strong { font-size: 16px; }
+  /* Collapsed, the chevron follows the name and the whole seat takes the tap, because the name is
+     where a thumb goes to open the ticket. The toggle's hit area below then sizes to the head. */
+  .order-ticket[data-expanded="false"] .ticket-head { position: relative; }
+  .order-ticket[data-expanded="false"] .ticket-toggle { margin-left: 0; position: static; }
+  /* A quote locks every control above it and restates the price, the size and the total, so here it
+     takes their place, as Kalshi's review step replaces its order form. Stacked under them, it pushed
+     the confirm below the sheet's edge while its five seconds ran. */
+  .order-ticket:has(.ticket-quote) > :is(.ticket-qty, .ticket-input, .ticket-summary) { display: none; }
+  /* The board stays in sight behind the open sheet but out of reach until it closes. */
+  .ticket-scrim { background: rgba(0,0,0,.6); display: block; inset: 0; position: fixed; touch-action: none; z-index: 9; }
   .ticket-toggle { background: transparent; border: 0; color: rgba(248,247,247,.72); cursor: pointer; display: grid; height: 24px; margin-left: auto; padding: 0; place-items: center; position: relative; width: 24px; }
   /* 24px drawn, 44px under the thumb. */
   .ticket-toggle::before { content: ''; inset: -10px; position: absolute; }
   .ticket-toggle svg { height: 16px; width: 16px; }
   .order-ticket[data-expanded="true"] .ticket-toggle svg { transform: rotate(180deg); }
+}
+
+/* The dim and the rest of the sheet fade in as it opens. The ticket's buttons already transition
+   opacity and transform (40-market.css), so the submit keeps its own list. The query carries the
+   motion preference itself: 14-reduced-motion.css loads before this file and loses to it. */
+@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
+  .ticket-scrim { transition: opacity .2s ease; }
+  .order-ticket[data-expanded="true"] > :not(.ticket-head, .ticket-sides, .ticket-submit) { transition: opacity .2s ease, transform .2s ease; }
+  @starting-style {
+    .ticket-scrim { opacity: 0; }
+    .order-ticket[data-expanded="true"] > * { opacity: 0; transform: translateY(8px); }
+  }
 }

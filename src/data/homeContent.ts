@@ -1,4 +1,4 @@
-export type Sponsor = readonly [name: string, file: string];
+type Sponsor = readonly [name: string, file: string];
 
 export type Speaker = readonly [name: string, role: string, image: string];
 

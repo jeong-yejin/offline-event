@@ -3,7 +3,7 @@ import { commonEn, commonKo } from './common';
 import type { LocalizedProps } from '../types';
 import type { Phase } from '../../market/perpdexday/state';
 
-export const perpdexdayEn = {
+const perpdexdayEn = {
   /* Event page. */
   takeRedPill: 'Take the Red Pill',
   ctaWords: ['Take', 'the', 'Red Pill'] as readonly string[],
@@ -33,7 +33,7 @@ export const perpdexdayEn = {
   marketBrandCopy: 'Track volume, market share and rewards in one place.',
 };
 
-export const perpdexdayKo: typeof perpdexdayEn = {
+const perpdexdayKo: typeof perpdexdayEn = {
   /* Event page. */
   takeRedPill: '빨간 알약 삼키기',
   ctaWords: ['빨간', '알약', '삼키기'],

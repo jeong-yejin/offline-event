@@ -11,7 +11,7 @@ const shared = {
   reboundxPanelTitle: 'ReboundX',
 };
 
-export const wonderlandEn = {
+const wonderlandEn = {
   ...shared,
 
   /* Page hero. */
@@ -63,7 +63,7 @@ export const wonderlandEn = {
   } as PhaseNote)[phase],
 };
 
-export const wonderlandKo: typeof wonderlandEn = {
+const wonderlandKo: typeof wonderlandEn = {
   ...shared,
 
   /* Page hero. */

@@ -20,6 +20,7 @@ type PositionListProps = {
 export function PositionList({ t, traders, holdings, prices, winners, tradable, onSell }: PositionListProps) {
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const traderOf = (id: MarketId) => traders.find((candidate) => candidate.id === id) ?? traders[0];
+  const sellLabel = winners ? t.settlementPriceLabel : t.currentSell;
 
   return (
     <div className="position-scroll">
@@ -29,7 +30,7 @@ export function PositionList({ t, traders, holdings, prices, winners, tradable, 
             <th scope="col">{t.traderColumn}</th>
             <th scope="col">{t.ownedQuantity}</th>
             <th scope="col">{t.averageEntry}</th>
-            <th scope="col">{winners ? t.settlementPriceLabel : t.currentSell}</th>
+            <th scope="col">{sellLabel}</th>
             <th scope="col">{t.marketValue}</th>
             <th scope="col">{t.unrealizedPnl}</th>
             <th scope="col">{t.sellQuantity}</th>
@@ -56,11 +57,13 @@ export function PositionList({ t, traders, holdings, prices, winners, tradable, 
                     <em data-side={holding.side}>{t.sideName(holding.side)}</em>
                   </span>
                 </th>
-                <td>{holding.qty}</td>
-                <td>{formatPoint(entry)}</td>
-                <td>{formatPoint(sell)}</td>
-                <td>{formatPoint(value)} pt</td>
-                <td data-move={moveOf(pnl)}>{formatSigned(pnl)} <small>{formatPercent((pnl / holding.cost) * 100)}</small></td>
+                {/* A phone hides the header row and lays each position out as a card, so every figure
+                    carries its column's name (41-market-mobile.css). */}
+                <td data-label={t.ownedQuantity}>{holding.qty}</td>
+                <td data-label={t.averageEntry}>{formatPoint(entry)}</td>
+                <td data-label={sellLabel}>{formatPoint(sell)}</td>
+                <td data-label={t.marketValue}>{formatPoint(value)} pt</td>
+                <td data-label={t.unrealizedPnl} data-move={moveOf(pnl)}>{formatSigned(pnl)} <small>{formatPercent((pnl / holding.cost) * 100)}</small></td>
                 <td>
                   {settled === null
                     ? <span className="position-actions">

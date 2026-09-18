@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useModalDialog } from '../components/useModalDialog';
 import { ArrowIcon } from '../components/ArrowIcon';
 import { TOKEN2049_STRINGS } from '../i18n/strings/token2049';
 
@@ -9,15 +9,9 @@ import { TOKEN2049_STRINGS } from '../i18n/strings/token2049';
    see the board they are held out of has a reason to go and fill the form, and the blur says the hold
    is temporary in a way an empty page does not. */
 export function KalshiAccountModal({ onClose, onOpenKalshi }: { onClose(): void; onOpenKalshi(): void }) {
-  const dialog = useRef<HTMLDialogElement>(null);
+  const dialog = useModalDialog();
   const t = TOKEN2049_STRINGS.en;
-  useEffect(() => {
-    const previous = document.activeElement as HTMLElement | null;
-    dialog.current?.showModal();
-    const overflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = overflow; previous?.focus(); };
-  }, []);
+
   return <dialog ref={dialog} className="google-login kalshi-gate" aria-labelledby="kalshi-gate-title" aria-describedby="kalshi-gate-copy"
     onCancel={(event) => { event.preventDefault(); onClose(); }}>
     <button className="login-close" type="button" onClick={onClose} aria-label="Close">×</button>

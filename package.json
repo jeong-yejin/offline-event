@@ -2,15 +2,13 @@
   "name": "event-perpdex",
   "private": true,
   "type": "module",
-  "bin": {
-    "codex-orchestrate": "tools/codex-orchestrator/bin/codex-orchestrate.mjs"
-  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "audit:source": "node scripts/audit-source.mjs"
   },
   "dependencies": {
     "@splinetool/react-spline": "^4.1.0",

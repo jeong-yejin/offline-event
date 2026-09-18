@@ -2,10 +2,10 @@
    No exchange feed reaches this page, so the board is a pure function of the clock: the same
    second always draws the same standings, which is what lets two screens in the room agree. */
 
-export type Suit = 'spade' | 'heart' | 'club' | 'diamond';
+type Suit = 'spade' | 'heart' | 'club' | 'diamond';
 export type Phase = 'ready' | 'live' | 'settling' | 'ended';
 
-export type Standing = {
+type Standing = {
   handle: string;
   suit: Suit;
   mine: boolean;
@@ -204,4 +204,3 @@ export const scoredCount = (rows: readonly Standing[]) => rows.filter((row) => r
    number looks exactly like a quiet one on screen, so the board has to say which of the two it is. */
 const FEED_GAP = 15;
 export const feedCut = (rows: readonly Standing[]) => rows.every((row) => row.reportAge >= FEED_GAP);
-

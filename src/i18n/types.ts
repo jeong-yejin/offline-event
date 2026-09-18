@@ -1,6 +1,5 @@
 export type Lang = 'en' | 'ko';
 
-export const LANGS: readonly Lang[] = ['en', 'ko'];
 export const LANG_LABEL: Record<Lang, string> = { en: 'EN', ko: 'KO' };
 
 export type LocalizedProps<T> = {

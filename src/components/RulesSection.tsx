@@ -1,6 +1,6 @@
 import type { Strings } from '../i18n/strings/market';
 
-export type RuleRow = {
+type RuleRow = {
   term: string;
   detail: string;
 };

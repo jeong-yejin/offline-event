@@ -44,7 +44,9 @@
 
 /* TOKEN2049 Kalshi screen. It sits after the pairs above, which name no selector this page carries. */
 @import './styles/52-t2049-kalshi.css';
-@import './styles/53-hub-auth.css';
+@import './features/hub/hub.css';
+@import './auth/auth.css';
+@import './components/trader-table.css';
 
 /* Full leaderboard, one route under each market. Last, so it can adjust the market chrome it reuses. */
 @import './styles/54-market-leaderboard.css';

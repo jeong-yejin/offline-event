@@ -4,7 +4,7 @@
 
    Until it does, the address the Kalshi screen saved in this browser stands in for the answer, the way
    the sign-in modal stands in for Google. That keeps the demo walkable in one direction: gate, form,
-   board. It is not a check. Anyone can type any address, and clearing site data locks the board again.
+   board. It is not a check. Anyone can type any address, and the next sign-in forgets it.
    README, 해야 할 작업 -> Kalshi 주소 검증, carries the contract that replaces this. */
 const STORE_KEY = 'reboundx.kalshi.address';
 
@@ -15,6 +15,12 @@ export function kalshiAddress(): string {
 
 export function saveKalshiAddress(address: string): void {
   try { localStorage.setItem(STORE_KEY, address); } catch { /* The gate reopens on the next visit. */ }
+}
+
+/* Every Google sign-in is followed by the Kalshi gate. Kept past a sign-in, an address saved on an
+   earlier visit would open the board by itself, and the reader would never see the second gate. */
+export function forgetKalshiAddress(): void {
+  try { localStorage.removeItem(STORE_KEY); } catch { /* Private mode saved nothing to forget. */ }
 }
 
 /* VITE_KALSHI_VERIFIED=true opens the board without walking the form, for a demo that starts there. */

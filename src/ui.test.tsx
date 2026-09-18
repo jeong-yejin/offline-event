@@ -167,7 +167,6 @@ describe('PERP-DEX DAY interface', () => {
   });
 
   it('opens the ReboundX Drink Me link in a new tab, so the event page is never lost', async () => {
-    const user = userEvent.setup();
     renderAt('/reboundx-in-wonderland');
 
     const frame = screen.getByTitle('ReboundX in Wonderland event page');

@@ -1,6 +1,6 @@
 import { createRandom, quote, totalAsset, type Holding, type MarketId, type PriceMap, type Side } from './engine';
 
-export type Operator = { name: string; point: number; holdings: readonly Holding[] };
+type Operator = { name: string; point: number; holdings: readonly Holding[] };
 export type Rank = { name: string; place: number; asset: number; pnl: number; percent: number; you: boolean };
 /* Two competitions field different line-ups. An operator opened against the wrong id prices at
    undefined, which is how a whole leaderboard turns into NaN. */
@@ -35,7 +35,7 @@ export function createOperators(field: Field): Operator[] {
   });
 }
 
-export const assetOf = (operator: Operator, prices: PriceMap) => totalAsset(operator.point, operator.holdings, prices);
+const assetOf = (operator: Operator, prices: PriceMap) => totalAsset(operator.point, operator.holdings, prices);
 
 /* Everyone opened on the same 100 points, so profit and return read straight off total asset. */
 export function rankTraders(operators: readonly Operator[], prices: PriceMap, you: Operator, startingPoint: number): Rank[] {

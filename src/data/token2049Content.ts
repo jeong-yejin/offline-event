@@ -1,5 +1,5 @@
 /* Run of show. A slot carries a note only where the title alone does not say what happens in it. */
-export type T2049AgendaItem = readonly [time: string, title: string, note?: string];
+type T2049AgendaItem = readonly [time: string, title: string, note?: string];
 
 export const TOKEN2049_AGENDA: readonly T2049AgendaItem[] = [
   ['16:00', 'Doors open / booth missions begin'],

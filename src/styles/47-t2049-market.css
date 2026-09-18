@@ -20,6 +20,7 @@
 .t2049-market-page .ticket-summary dt,
 .t2049-market-page .ticket-quote dt,
 .t2049-market-page .position-table thead th,
+.t2049-market-page .position-row > td[data-label]::before,
 .t2049-market-page .positions-total dt { color: rgba(248,247,247,.68); font-size: 12px; letter-spacing: .12em; }
 .t2049-market-page .rules-list dd,
 .t2049-market-page .leaderboard-note,

@@ -6,8 +6,6 @@
   h1 { font-size: clamp(60px, 9vw, 104px); }
   .hero-copy { font-size: 16px; margin: 44px auto 40px; max-width: 680px; }
   .event-date { font-size: 16px; }
-  .reboundx-hero.reboundx-hero--page { flex-direction: column; gap: 48px; padding: 96px 48px 88px; }
-  .reboundx-hero__intro { flex: none; }
   .event-tab { font-size: 20px; min-height: 60px; }
   .content-section { padding: 120px 32px; }
   .sponsors { min-height: 500px; }
@@ -30,8 +28,6 @@
   h1 { font-size: clamp(52px, 15vw, 80px); white-space: normal; }
   .hero-copy { font-size: 16px; line-height: 1.5; margin: 36px auto; max-width: 520px; }
   .event-date { font-size: 12px; line-height: 1.4; }
-  .reboundx-hero.reboundx-hero--page { flex-direction: column; gap: 32px; padding: 76px 20px 64px; }
-  .reboundx-hero__intro { flex: none; }
   .event-tab { font-size: 20px; min-height: 52px; }
   .content-section { padding: 92px 20px; }
   .sponsors { min-height: 440px; }

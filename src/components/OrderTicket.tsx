@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Strings } from '../i18n/strings/market';
 import { formatPoint } from '../market/format';
-import { findHolding, quote as priceOf, type DataStatus, type Direction, type Holding, type MarketTrader, type PriceMap, type Side } from '../market/engine';
+import { chanceOf, findHolding, quote as priceOf, type DataStatus, type Direction, type Holding, type MarketTrader, type PriceMap, type Side } from '../market/engine';
 import { parseQuantity, quoteSecondsLeft, type OrderQuote } from '../market/quote';
 
 const SIDES: readonly Side[] = ['yes', 'no'];
@@ -86,69 +86,75 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
   }
 
   return (
-    <form className="order-ticket" data-expanded={expanded ? 'true' : 'false'} onSubmit={submit} aria-label={t.ticketLabel}>
-      <h3 className="ticket-title">{t.ticketLabel}</h3>
+    <>
+      {/* On a phone the open ticket is a sheet over a dimmed board, and a tap on the dim closes it.
+          The toggle is the keyboard's way out, so the dim stays out of the tab order and the tree. */}
+      {expanded ? <div aria-hidden="true" className="ticket-scrim" onClick={() => onExpandedChange(false)} /> : null}
+      {/* --yes draws the seat's chance along the docked ticket's top edge (41-market-mobile.css). */}
+      <form className="order-ticket" data-expanded={expanded ? 'true' : 'false'} onSubmit={submit} aria-label={t.ticketLabel} style={{ '--yes': `${chanceOf(prices, candidate.id)}%` } as React.CSSProperties}>
+        <h3 className="ticket-title">{t.ticketLabel}</h3>
 
-      {/* The logo already reads "Variational", so the exchange name only earns a line on the seats
-          that have no logo, where it carries the seat number instead. */}
-      <header className="ticket-head">
-        {candidate.logo ? <img alt={candidate.exchange} className="ticket-logo" src={`/assets/sponsors/${candidate.logo}`} /> : null}
-        <div><strong>{candidate.trader}</strong>{candidate.logo ? null : <span>{candidate.exchange}</span>}</div>
-        {/* Only the docked ticket on a phone shows this. The sidebar ticket is always whole. */}
-        <button aria-expanded={expanded} aria-label={t.ticketLabel} className="ticket-toggle" onClick={() => onExpandedChange(!expanded)} type="button">
-          <svg aria-hidden="true" fill="none" viewBox="0 0 16 16"><path d="M4 10 8 6l4 4" stroke="currentColor" strokeLinecap="square" strokeWidth="1.4" /></svg>
-        </button>
-      </header>
+        {/* The logo already reads "Variational", so the exchange name only earns a line on the seats
+            that have no logo, where it carries the seat number instead. */}
+        <header className="ticket-head">
+          {candidate.logo ? <img alt={candidate.exchange} className="ticket-logo" src={`/assets/sponsors/${candidate.logo}`} /> : null}
+          <div><strong>{candidate.trader}</strong>{candidate.logo ? null : <span>{candidate.exchange}</span>}</div>
+          {/* Only the docked ticket on a phone shows this. The sidebar ticket is always whole. */}
+          <button aria-expanded={expanded} aria-label={t.ticketLabel} className="ticket-toggle" onClick={() => onExpandedChange(!expanded)} type="button">
+            <svg aria-hidden="true" fill="none" viewBox="0 0 16 16"><path d="M4 10 8 6l4 4" stroke="currentColor" strokeLinecap="square" strokeWidth="1.4" /></svg>
+          </button>
+        </header>
 
-      <div className="ticket-directions" role="group" aria-label={t.directionGroup}>
-        {DIRECTIONS.map((option) => <button aria-pressed={option === direction} data-active={option === direction ? 'true' : 'false'} disabled={Boolean(quote)} key={option} onClick={() => onDirectionChange(option)} type="button">{t.directionName(option)}</button>)}
-      </div>
-
-      <div className="ticket-sides" role="group" aria-label={t.sideGroup}>
-        {SIDES.map((option) => <button aria-pressed={option === side} data-active={option === side ? 'true' : 'false'} data-side={option} disabled={Boolean(quote)} key={option} onClick={() => onSideChange(option)} type="button">
-          <span>{t.sideName(option)}</span><strong>{priceOf(prices, candidate.id, option, direction)}</strong>
-        </button>)}
-      </div>
-
-      <label className="ticket-qty" htmlFor="order-quantity">{t.quantity}</label>
-      <div className="ticket-input">
-        <div className="ticket-stepper">
-          <button aria-label={t.quantityDown} disabled={Boolean(quote) || quantity === 1} onClick={() => step(-1)} type="button">−</button>
-          <input aria-describedby="ticket-notice" aria-invalid={error ? 'true' : 'false'} disabled={Boolean(quote)} id="order-quantity" inputMode="numeric" onChange={(event) => { setDraft(event.target.value); setError(''); }} type="text" value={draft} />
-          <button aria-label={t.quantityUp} disabled={Boolean(quote)} onClick={() => step(1)} type="button">+</button>
+        <div className="ticket-directions" role="group" aria-label={t.directionGroup}>
+          {DIRECTIONS.map((option) => <button aria-pressed={option === direction} data-active={option === direction ? 'true' : 'false'} disabled={Boolean(quote)} key={option} onClick={() => onDirectionChange(option)} type="button">{t.directionName(option)}</button>)}
         </div>
-        {/* Every preset stays pressable. A size the balance cannot cover is answered by the summary
-            below and by the submit, which names the point short, rather than by a dead button. */}
-        <div className="ticket-presets">
-          {PRESETS.map((preset) => <button data-active={preset === quantity ? 'true' : 'false'} disabled={Boolean(quote)} key={preset} onClick={() => { setDraft(String(preset)); setError(''); }} type="button">{preset}</button>)}
-          <button data-active={maxQuantity > 0 && maxQuantity === quantity ? 'true' : 'false'} disabled={Boolean(quote) || maxQuantity < 1} onClick={() => { setDraft(String(maxQuantity)); setError(''); }} type="button">{t.maxCta}</button>
+
+        <div className="ticket-sides" role="group" aria-label={t.sideGroup}>
+          {SIDES.map((option) => <button aria-pressed={option === side} data-active={option === side ? 'true' : 'false'} data-side={option} disabled={Boolean(quote)} key={option} onClick={() => onSideChange(option)} type="button">
+            <span>{t.sideName(option)}</span><strong>{priceOf(prices, candidate.id, option, direction)}</strong>
+          </button>)}
         </div>
-      </div>
 
-      <dl className="ticket-summary">
-        <div><dt>{t.unitPrice}</dt><dd>{unit} pt</dd></div>
-        <div><dt>{direction === 'buy' ? t.requiredPoint : t.expectedPoint}</dt><dd>{quantity === null ? '—' : `${formatPoint(quantity * unit)} pt`}</dd></div>
-        <div><dt>{direction === 'buy' ? t.availablePoint : t.ownedQuantity}</dt><dd>{direction === 'buy' ? `${formatPoint(point)} pt` : owned}</dd></div>
-        <div><dt>{t.orderableQuantity}</dt><dd>{maxQuantity} · {formatPoint(maxQuantity * unit)} pt</dd></div>
-      </dl>
-
-      {quote
-        ? <div className="ticket-quote" data-expired={expired ? 'true' : 'false'} role="status">
-            <p className="quote-id">{t.quoteId} <code>{quote.quoteId}</code></p>
-            <dl>
-              <div><dt>{t.unitPrice}</dt><dd>{quote.unitPrice} pt</dd></div>
-              <div><dt>{t.quantity}</dt><dd>{quote.quantity}</dd></div>
-              <div><dt>{t.totalPrice}</dt><dd>{formatPoint(quote.totalPrice)} pt</dd></div>
-            </dl>
-            <p className="quote-life">{expired ? t.quoteExpired : t.quoteLife(quoteSecondsLeft(quote, now))}</p>
-            <div className="quote-actions">
-              <button className="ticket-submit" data-side={quote.positionSide} disabled={expired} onClick={onConfirm} type="button">{t.confirmOrder(quote.orderSide)}</button>
-              <button className="quote-cancel" onClick={onCancel} type="button">{expired ? t.requoteCta : t.cancelQuote}</button>
-            </div>
+        <label className="ticket-qty" htmlFor="order-quantity">{t.quantity}</label>
+        <div className="ticket-input">
+          <div className="ticket-stepper">
+            <button aria-label={t.quantityDown} disabled={Boolean(quote) || quantity === 1} onClick={() => step(-1)} type="button">−</button>
+            <input aria-describedby="ticket-notice" aria-invalid={error ? 'true' : 'false'} disabled={Boolean(quote)} id="order-quantity" inputMode="numeric" onChange={(event) => { setDraft(event.target.value); setError(''); }} type="text" value={draft} />
+            <button aria-label={t.quantityUp} disabled={Boolean(quote)} onClick={() => step(1)} type="button">+</button>
           </div>
-        : <button className="ticket-submit" data-side={side} disabled={locked} type="submit">{t.requestQuote(direction)}</button>}
+          {/* Every preset stays pressable. A size the balance cannot cover is answered by the summary
+              below and by the submit, which names the point short, rather than by a dead button. */}
+          <div className="ticket-presets">
+            {PRESETS.map((preset) => <button data-active={preset === quantity ? 'true' : 'false'} disabled={Boolean(quote)} key={preset} onClick={() => { setDraft(String(preset)); setError(''); }} type="button">{preset}</button>)}
+            <button data-active={maxQuantity > 0 && maxQuantity === quantity ? 'true' : 'false'} disabled={Boolean(quote) || maxQuantity < 1} onClick={() => { setDraft(String(maxQuantity)); setError(''); }} type="button">{t.maxCta}</button>
+          </div>
+        </div>
 
-      <p className="ticket-notice" id="ticket-notice" role="status">{error || (closed ? closedHint ?? t.hintClosed : stale ? t.hintStale(candidate.trader) : notice)}</p>
-    </form>
+        <dl className="ticket-summary">
+          <div><dt>{t.unitPrice}</dt><dd>{unit} pt</dd></div>
+          <div><dt>{direction === 'buy' ? t.requiredPoint : t.expectedPoint}</dt><dd>{quantity === null ? '—' : `${formatPoint(quantity * unit)} pt`}</dd></div>
+          <div><dt>{direction === 'buy' ? t.availablePoint : t.ownedQuantity}</dt><dd>{direction === 'buy' ? `${formatPoint(point)} pt` : owned}</dd></div>
+          <div><dt>{t.orderableQuantity}</dt><dd>{maxQuantity} · {formatPoint(maxQuantity * unit)} pt</dd></div>
+        </dl>
+
+        {quote
+          ? <div className="ticket-quote" data-expired={expired ? 'true' : 'false'} role="status">
+              <p className="quote-id">{t.quoteId} <code>{quote.quoteId}</code></p>
+              <dl>
+                <div><dt>{t.unitPrice}</dt><dd>{quote.unitPrice} pt</dd></div>
+                <div><dt>{t.quantity}</dt><dd>{quote.quantity}</dd></div>
+                <div><dt>{t.totalPrice}</dt><dd>{formatPoint(quote.totalPrice)} pt</dd></div>
+              </dl>
+              <p className="quote-life">{expired ? t.quoteExpired : t.quoteLife(quoteSecondsLeft(quote, now))}</p>
+              <div className="quote-actions">
+                <button className="ticket-submit" data-side={quote.positionSide} disabled={expired} onClick={onConfirm} type="button">{t.confirmOrder(quote.orderSide)}</button>
+                <button className="quote-cancel" onClick={onCancel} type="button">{expired ? t.requoteCta : t.cancelQuote}</button>
+              </div>
+            </div>
+          : <button className="ticket-submit" data-side={side} disabled={locked} type="submit">{t.requestQuote(direction)}</button>}
+
+        <p className="ticket-notice" id="ticket-notice" role="status">{error || (closed ? closedHint ?? t.hintClosed : stale ? t.hintStale(candidate.trader) : notice)}</p>
+      </form>
+    </>
   );
 }

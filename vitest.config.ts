@@ -6,6 +6,6 @@ export default defineConfig({
   test: {
     environment: 'node',
     setupFiles: ['./test-setup.ts'],
-    include: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'tools/codex-orchestrator/test/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
   },
 });

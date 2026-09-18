@@ -8,12 +8,6 @@ type AsciiRecipe = {
   src: string;
 };
 
-export const ASCII_D60_HERO: AsciiRecipe = {
-  label: 'D60-hero — animated ASCII art',
-  poster: 'https://assets.21st.dev/ascii-recipes/thumbnails/user_3GYHFar2zrRr79sK3wSzHGVOC0I/eb38ebaf-a2ac-432d-bf49-2fc832ae9eeb.png',
-  src: 'https://assets.21st.dev/ascii-recipes/videos/user_3GYHFar2zrRr79sK3wSzHGVOC0I/4b89c015-6b11-4816-b442-b125da0c8091.mp4',
-};
-
 export const ASCII_LOG_LEET: AsciiRecipe = {
   label: 'ASCII log leet — animated ASCII art',
   poster: 'https://assets.21st.dev/ascii-recipes/thumbnails/user_35NAal4ngoiwl586UuIyinZjTsG/b732d510-cc6f-4404-b9a4-04109f4e3c5a.webp',

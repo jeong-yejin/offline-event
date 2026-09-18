@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { EVENTS, type EventKey } from '../data/eventContent';
 import type { I18nProps } from '../i18n/strings/common';
-import { navClick, routePath, type AppRoute } from '../router/useAppRoute';
+import { navClick } from '../router/navigation';
+import { routePath, type AppRoute } from '../router/routes';
 
 type EventSwitcherProps = Pick<I18nProps, 't'> & {
   current: EventKey;

@@ -2,7 +2,7 @@ import type { Strings } from '../i18n/strings/market';
 import { formatPercent, formatPoint, formatSigned, formatTime, moveOf } from '../market/format';
 import type { Side, TraderState } from '../market/engine';
 
-export type ClosedRow = {
+type ClosedRow = {
   key: string;
   trader: string;
   state: TraderState;
