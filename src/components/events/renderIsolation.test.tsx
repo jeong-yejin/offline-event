@@ -11,9 +11,9 @@ afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.use
 const eventOf = (key: string): EventContent => EVENTS.find((event) => event.key === key)!;
 
 /* Each row builds its own element because the two pages no longer take the same props: only
-   TOKEN2049 has a Kalshi account screen to open. */
+   TOKEN2049 has a Polymarket account screen to open. */
 it.each([
-  ['countdown', 'perps-day', 1000, (event: EventContent) => <Token2049Page event={event} lang="en" onEnterKalshi={() => {}} onEnterMarket={() => {}} />],
+  ['countdown', 'perps-day', 1000, (event: EventContent) => <Token2049Page event={event} lang="en" onEnterPolymarket={() => {}} onEnterMarket={() => {}} />],
   ['speaker rotation', 'perp-dex-day', 2400, (event: EventContent) => <PerpDexDayPage event={event} lang="en" onEnterMarket={() => {}} />],
 ] as const)('%s updates its region without rerendering the hero', (_, key, interval, renderPage) => {
   vi.useFakeTimers();

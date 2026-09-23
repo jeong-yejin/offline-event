@@ -124,7 +124,12 @@ export const marketEn = {
   hintClosed: 'Trading is closed for this competition.',
   hintStale: (name: string) => `${name}'s feed is stale. New quotes are paused until it recovers.`,
   filled: (direction: Direction, qty: number, side: Side, name: string, price: number) =>
-    `${direction === 'buy' ? 'Bought' : 'Sold'} ${qty} ${side.toUpperCase()} on ${name} at ${price} points.`,
+    `${direction === 'buy' ? 'Bought' : 'Sold'} ${qty} ${side.toUpperCase()} on ${name} at ${price} pt each.`,
+  /* The receipt that replaces the submit once an order fills, and the holding the ticket head and
+     the seat's row carry from then on. */
+  filledTitle: 'Order filled',
+  filledDone: 'Done',
+  ticketHeld: 'You hold',
 };
 
 export const marketKo: typeof marketEn = {
@@ -240,7 +245,10 @@ export const marketKo: typeof marketEn = {
   hintClosed: '이 대회의 거래가 종료됐습니다.',
   hintStale: (name) => `${name}의 데이터가 끊겼습니다. 복구될 때까지 새 견적을 받을 수 없습니다.`,
   filled: (direction, qty, side, name, price) =>
-    `${name} ${side.toUpperCase()} ${qty}개를 ${price} 포인트에 ${direction === 'buy' ? '매수' : '매도'}했습니다.`,
+    `${name} ${side.toUpperCase()} ${qty}개를 개당 ${price} 포인트에 ${direction === 'buy' ? '매수' : '매도'}했습니다.`,
+  filledTitle: '체결 완료',
+  filledDone: '확인',
+  ticketHeld: '보유',
 };
 
 export const MARKET_STRINGS = {

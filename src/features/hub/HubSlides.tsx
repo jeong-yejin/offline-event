@@ -24,7 +24,7 @@ export function HubSlides({ active, onNavigate, t, lang }: Props) {
             <h1>{item.title}</h1>
             <p className="hub-description">{item.copy}</p>
             <p className="hub-date">{item.date}</p>
-            <a className="outline-button" href={routePath(item.key)} onClick={navClick(onNavigate, item.key)}>{ko ? '행사 자세히 보기' : 'Explore event'}<ArrowIcon /></a>
+            <a className="outline-button" href={routePath(item.key)} onClick={navClick(onNavigate, item.key)}>{item.cta ?? (ko ? '행사 자세히 보기' : 'Explore event')}<ArrowIcon /></a>
           </article>;
         })}
       </div>

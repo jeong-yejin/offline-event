@@ -17,7 +17,7 @@ export function EventLanding({ route, navigate, enterMarket, lang, t, ...i18n }:
       {event === null ? <HubPage onNavigate={navigate} t={t} lang={lang} /> : null}
       {event?.key === 'perp-dex-day' ? <PerpDexDayPage event={event} lang={lang} onEnterMarket={() => enterMarket('perp-dex-market')} /> : null}
       {event?.key === 'reboundx-in-wonderland' ? <WonderlandPage lang={lang} onOpenBoard={() => navigate('wonderland-board')} /> : null}
-      {event?.key === 'perps-day' ? <Token2049Page event={event} lang={lang} onEnterKalshi={() => navigate('t2049-kalshi')} onEnterMarket={() => enterMarket('t2049-market')} /> : null}
+      {event?.key === 'perps-day' ? <Token2049Page event={event} lang={lang} onEnterPolymarket={() => navigate('t2049-polymarket')} onEnterMarket={() => enterMarket('t2049-market')} /> : null}
     </SiteShell>
   );
 }

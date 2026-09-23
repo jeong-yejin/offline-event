@@ -21,7 +21,7 @@ npm test           # vitest run
 ```
 VITE_GOOGLE_CLIENT_ID=          # 비우면 로그인 모달이 껍데기 버튼으로 떨어진다
 VITE_GOOGLE_AUTH_ENDPOINT=      # 비우면 구글 로그인은 되지만 검증을 건너뛴다
-VITE_KALSHI_VERIFIED=           # true면 Kalshi 게이트를 건너뛴다. 데모가 보드에서 바로 시작할 때만
+VITE_POLYMARKET_VERIFIED=           # true면 Polymarket 게이트를 건너뛴다. 데모가 보드에서 바로 시작할 때만
 ```
 
 `VITE_` 변수는 번들에 그대로 박힌다. client secret을 넣으면 안 된다.
@@ -50,12 +50,12 @@ Test Files  1 failed | 11 passed (12)
 | `/reboundx-in-wonderland` | WONDERLAND 랜딩 (배포 번들) | 아니오 | ko / en |
 | `/reboundx-in-wonderland/leaderboard` | WONDERLAND 실시간 순위 | 아니오 | ko / en |
 | `/perps-day` | PERPS DAY 랜딩 | 아니오 | **en 고정** |
-| `/perps-day/market` | PERPS DAY 서바이벌 마켓 | **예** + Kalshi 계정 | **en 고정** |
-| `/perps-day/market/leaderboard` | 전체 참가자 58명 순위. 마켓 페이지의 한 뷰다 | **예** + Kalshi 계정 | **en 고정** |
-| `/perps-day/kalshi` | Kalshi 주소 등록 | 아니오 | **en 고정** |
+| `/perps-day/market` | PERPS DAY 서바이벌 마켓 | **예** + Polymarket 계정 | **en 고정** |
+| `/perps-day/market/leaderboard` | 전체 참가자 58명 순위. 마켓 페이지의 한 뷰다 | **예** + Polymarket 계정 | **en 고정** |
+| `/perps-day/polymarket` | Polymarket 주소 등록 | 아니오 | **en 고정** |
 | `/token2049-side-event/market` | 레거시. `replaceState`로 `/perps-day/market`으로 다시 쓴다 | 예 | en |
 
-TOKEN2049 마켓 두 경로만 게이트가 둘이다. 로그인 뒤에도 Kalshi 계정이 없으면 보드가 블러 처리되고 안내 모달이 `/perps-day/kalshi`로 보낸다. 해야 할 작업 3번 참고.
+TOKEN2049 마켓 두 경로만 게이트가 둘이다. 로그인 뒤에도 Polymarket 계정이 없으면 보드가 블러 처리되고 안내 모달이 `/perps-day/polymarket`로 보낸다. 해야 할 작업 3번 참고.
 
 모르는 slug는 허브로 떨어진다. 404 화면이 따로 없다.
 
@@ -68,8 +68,8 @@ TOKEN2049 마켓 두 경로만 게이트가 둘이다. 로그인 뒤에도 Kalsh
 | 라우트 | 사용 가능한 케이스 |
 | --- | --- |
 | `/perp-dex-day/market?preview=` | `ready` `live` `settling` `ended` |
-| `/perps-day/market?preview=` | `ready` `session-a` `break` `session-c` `settling` `ended` |
-| `/?preview=` | `kalshi` (해당 화면으로 직행) |
+| `/perps-day/market?preview=` | `ready` `cut` (첫 탈락 10초 전) `session-a` `break` `session-c` `settling` `ended` |
+| `/?preview=` | `polymarket` (해당 화면으로 직행) |
 
 모르는 케이스 이름은 `console.warn` 찍고 무시한다. 프리뷰 값은 모듈 로드 시점에 한 번만 읽는다. 값을 바꾸면 새로고침해야 한다.
 
@@ -145,9 +145,9 @@ GET  /api/market/leaderboard -> [{ rank, handle, point, ... }]
 
 **검증.** `src/market/perpdexday/market.test.ts`, `src/market/token2049/market.test.ts`, `src/market/leaderboard.test.ts`, `src/market/performance.test.ts`.
 
-### 3. Kalshi 주소 검증과 Pulse 게이트
+### 3. Polymarket 주소 검증과 Pulse 게이트
 
-**지금 동작 (1) 주소 입력.** `/perps-day/kalshi`에서 이메일 형식만 본다.
+**지금 동작 (1) 주소 입력.** `/perps-day/polymarket`에서 이메일 형식만 본다.
 
 ```ts
 const EMAIL_ADDRESS = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -155,39 +155,39 @@ const EMAIL_ADDRESS = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 통과하면 완료 화면에 `PENDING` 배지를 띄운다. **하드코딩이다.** 상태 타입에는 4개가 있는데 (`NOT_SUBMITTED` `PENDING` `VERIFIED` `REJECTED`) `PENDING` 말고는 화면에 도달할 방법이 없다. 아무 곳에도 보내지 않는다.
 
-**지금 동작 (2) Pulse 게이트.** TOKEN2049 예측마켓은 두 번 막힌다. 구글 로그인은 "누구냐"를 묻고, Kalshi 계정은 "Kalshi가 이 사람에게 지급할 수 있느냐"를 묻는다. 상금이 Kalshi 마켓에서 정산되니까 Kalshi 계정이 없는 사람에게는 보드가 무의미하다.
+**지금 동작 (2) Pulse 게이트.** TOKEN2049 예측마켓은 두 번 막힌다. 구글 로그인은 "누구냐"를 묻고, Polymarket 계정은 "Polymarket가 이 사람에게 지급할 수 있느냐"를 묻는다. 상금이 Polymarket 마켓에서 정산되니까 Polymarket 계정이 없는 사람에게는 보드가 무의미하다.
 
-Kalshi 계정 없는 사용자가 `/perps-day/market` 또는 `/perps-day/market/leaderboard`에 들어가면 보드는 그대로 렌더되고 `filter: blur(6px)` + `pointer-events: none`이 걸린다 (`.t2049-locked`). 그 위에 안내 모달이 뜨고, 버튼이 `/perps-day/kalshi`로 보낸다.
+Polymarket 계정 없는 사용자가 `/perps-day/market` 또는 `/perps-day/market/leaderboard`에 들어가면 보드는 그대로 렌더되고 `filter: blur(6px)` + `pointer-events: none`이 걸린다 (`.t2049-locked`). 그 위에 안내 모달이 뜨고, 버튼이 `/perps-day/polymarket`로 보낸다.
 
 **의도된 껍데기다.** 구글 로그인과 같은 성격이다. 사용자가 요청한 상태다. 버그로 신고하거나 되돌리지 말 것.
 
 | 판정 | 근거 |
 | --- | --- |
-| `VITE_KALSHI_VERIFIED=true` | 무조건 통과. 게이트를 건너뛰는 데모용 스위치 |
-| 그 외 | `localStorage['reboundx.kalshi.address']`에 값이 있으면 통과 |
+| `VITE_POLYMARKET_VERIFIED=true` | 무조건 통과. 게이트를 건너뛰는 데모용 스위치 |
+| 그 외 | `localStorage['reboundx.polymarket.address']`에 값이 있으면 통과 |
 
-`/perps-day/kalshi`에서 저장에 성공하면 그 키에 주소가 들어가고, 완료 화면의 `Back to Pulse`가 보드로 돌려보낸다. 그래서 게이트 → 폼 → 보드가 한 바퀴 걸어진다. **검증이 아니다.** 아무 주소나 통과하고, 사이트 데이터를 지우면 다시 잠긴다. devtools 한 줄로 열린다.
+`/perps-day/polymarket`에서 저장에 성공하면 그 키에 주소가 들어가고, 완료 화면의 `Back to Pulse`가 보드로 돌려보낸다. 그래서 게이트 → 폼 → 보드가 한 바퀴 걸어진다. **검증이 아니다.** 아무 주소나 통과하고, 사이트 데이터를 지우면 다시 잠긴다. devtools 한 줄로 열린다.
 
-구글 로그인에 성공할 때마다 이 키를 지운다 (`forgetKalshiAddress()`). 그래서 구글 로그인 모달 다음에는 항상 Kalshi 모달이 뜬다. 사용자가 요청한 동작이다. 로그인 전에 `/perps-day/kalshi`에서 먼저 저장했어도 로그인 뒤에 한 번 더 입력해야 한다.
+구글 로그인에 성공할 때마다 이 키를 지운다 (`forgetPolymarketAddress()`). 그래서 구글 로그인 모달 다음에는 항상 Polymarket 모달이 뜬다. 사용자가 요청한 동작이다. 로그인 전에 `/perps-day/polymarket`에서 먼저 저장했어도 로그인 뒤에 한 번 더 입력해야 한다.
 
 `App.tsx`는 이 판정을 state로 들고 있지 않고 렌더마다 읽는다. 주소를 저장하고 보드로 돌아오면 그 시점에 열린다.
 
-**없는 것.** 서버 판정. `GET /api/kalshi/status`가 없어서 `VERIFIED`/`REJECTED`가 화면에 닿지 못한다. 게이트가 봐야 하는 값은 `VERIFIED`인데, 지금은 "주소를 적었다"를 대신 본다. 둘은 다른 상태다.
+**없는 것.** 서버 판정. `GET /api/polymarket/status`가 없어서 `VERIFIED`/`REJECTED`가 화면에 닿지 못한다. 게이트가 봐야 하는 값은 `VERIFIED`인데, 지금은 "주소를 적었다"를 대신 본다. 둘은 다른 상태다.
 
 **필요한 계약.**
 
 ```
-POST /api/kalshi/link      { email }  -> { status: "PENDING" }
-GET  /api/kalshi/status              -> { status: "PENDING" | "VERIFIED" | "REJECTED", reason? }
+POST /api/polymarket/link      { email }  -> { status: "PENDING" }
+GET  /api/polymarket/status              -> { status: "PENDING" | "VERIFIED" | "REJECTED", reason? }
 ```
 
-교체 지점은 `src/auth/kalshiAccount.ts`의 `hasKalshiAccount()` 하나다. `GET /api/kalshi/status`를 호출해서 `status === "VERIFIED"`일 때만 통과시키면 된다. 비동기가 되니까 `App.tsx`에 로딩 상태가 하나 필요하다. 그동안 보드를 열어두면 안 된다.
+교체 지점은 `src/auth/polymarketAccount.ts`의 `hasPolymarketAccount()` 하나다. `GET /api/polymarket/status`를 호출해서 `status === "VERIFIED"`일 때만 통과시키면 된다. 비동기가 되니까 `App.tsx`에 로딩 상태가 하나 필요하다. 그동안 보드를 열어두면 안 된다.
 
 `VERIFIED`와 `REJECTED`를 그릴 때 `REJECTED`에 이유 문구가 필요하다. 지금은 카피가 없다. 게이트 모달에도 `REJECTED` 문구가 없다.
 
-**프론트 게이트는 인가가 아니다.** 주문 API를 만들 때 Kalshi 계정 보유 여부를 서버에서 다시 확인해야 한다.
+**프론트 게이트는 인가가 아니다.** 주문 API를 만들 때 Polymarket 계정 보유 여부를 서버에서 다시 확인해야 한다.
 
-**파일.** `src/auth/kalshiAccount.ts` (껍데기 판정), `src/auth/KalshiAccountModal.tsx` (안내 모달), `src/App.tsx` (게이트 배선), `src/pages/Token2049KalshiPage.tsx` (주소 저장), `src/pages/Token2049MarketPage.tsx` (`locked` prop), `src/styles/47-t2049-market.css` (`.t2049-locked`), `src/styles/53-hub-auth.css` (`.kalshi-gate`), `src/data/token2049Content.ts` (`KalshiStatus`, `isEmailAddress`), `.env.example`.
+**파일.** `src/auth/polymarketAccount.ts` (껍데기 판정), `src/auth/PolymarketAccountModal.tsx` (안내 모달), `src/App.tsx` (게이트 배선), `src/pages/Token2049PolymarketPage.tsx` (주소 저장), `src/pages/Token2049MarketPage.tsx` (`locked` prop), `src/styles/47-t2049-market.css` (`.t2049-locked`), `src/styles/53-hub-auth.css` (`.polymarket-gate`), `src/data/token2049Content.ts` (`PolymarketStatus`, `isEmailAddress`), `.env.example`.
 
 **검증.** `src/auth/marketGate.test.tsx`.
 
@@ -355,7 +355,7 @@ TOKEN2049 Singapore · 2026-10-05 00:00 SGT. **영어 전용.** 트레이더 8�
 | --- | --- |
 | `/perps-day` | `T2049Hero` (`EventCountdown` 포함) → `T2049Nav` → `T2049Format` → `T2049Field` → `T2049Predict` → `T2049Attend` → `T2049Join` |
 | `/perps-day/market` | `.market-header` → `.market-content` → `.market-overview` (국면 배지, 확률, 내 순위, `.market-cut-clock`) → 조건부 블록 (`.market-break` 휴식/정산, `.market-cut` 탈락 알림, `SettledBanner`) → `.market-layout` (좌: 좌석 표, 차트, 포지션, 리더보드, `RulesSection` / 우: `OrderTicket` + `.market-history`) → `.market-footer`. ASCII 히어로 (`.market-feature`) 없음 |
-| `/perps-day/kalshi` | 이메일 입력 → 완료 화면 (`PENDING` 배지 + 지급 안내 + 다시 입력) |
+| `/perps-day/polymarket` | 이메일 입력 → 완료 화면 (`PENDING` 배지 + 지급 안내 + 다시 입력) |
 
 #### 상태 케이스
 
@@ -386,8 +386,8 @@ TOKEN2049 Singapore · 2026-10-05 00:00 SGT. **영어 전용.** 트레이더 8�
 
 | 상황 | 결과 |
 | --- | --- |
-| Kalshi 이메일 형식 오류 | `t.t2049KalshiErrorEmail` |
-| Kalshi 제출 성공 | 항상 `PENDING`. `VERIFIED`와 `REJECTED`는 도달 불가 |
+| Polymarket 이메일 형식 오류 | `t.t2049PolymarketErrorEmail` |
+| Polymarket 제출 성공 | 항상 `PENDING`. `VERIFIED`와 `REJECTED`는 도달 불가 |
 | 탈락 좌석에 주문 | 리듀서가 거부 (`state.eliminated.includes(marketId)`) |
 | 휴식 중 주문 | 거부. 티켓에 `t.hintPaused` |
 | 저장된 런이 4220초를 넘김 | `isSpent`가 걸려서 새 런으로 다시 시작한다. PERP-DEX DAY와 다른 동작 |
@@ -436,7 +436,7 @@ TOKEN2049 Singapore · 2026-10-05 00:00 SGT. **영어 전용.** 트레이더 8�
 
 **CSS 로드 순서.** `src/styles/NN-*.css`. 파일명 앞 숫자가 로드 순서다. Tailwind 없음. Framer Motion 없음. 플레인 CSS다.
 
-**영어 전용 라우트.** `perps-day`, `perps-day/market`, `perps-day/kalshi`. 언어 토글을 넣지 말 것. `App.tsx`의 `englishOnly` 플래그가 이 목록을 들고 있다.
+**영어 전용 라우트.** `perps-day`, `perps-day/market`, `perps-day/polymarket`. 언어 토글을 넣지 말 것. `App.tsx`의 `englishOnly` 플래그가 이 목록을 들고 있다.
 
 **발표자 사진 폴더.** `PerpDexDay/`는 매트릭스 그린 원본, `Wonderland/`는 투명 컷아웃. 처리 방식이 반대라서 섞으면 안 된다.
 

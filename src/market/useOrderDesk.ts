@@ -21,9 +21,18 @@ export function useOrderDesk({ initialId, prices, fill, describeFill }: OrderDes
   const [direction, setDirection] = useState<Direction>('buy');
   const [pending, setPending] = useState<OrderQuote | null>(null);
   const [notice, setNotice] = useState('');
+  /* The order that just went through. The ticket shows it in place of the submit until the reader
+     moves on: a new quote, another side, direction or seat, or folding the sheet away. */
+  const [filled, setFilled] = useState<OrderQuote | null>(null);
   /* A phone docks the ticket to the bottom edge, collapsed to the seat and its two prices. Picking a
      side or asking for a quote anywhere on the page expands it, because that tap starts an order. */
-  const [ticketExpanded, setTicketExpanded] = useState(false);
+  const [ticketExpanded, setExpanded] = useState(false);
+
+  /* Folding the sheet away is moving on, so the receipt goes with it. */
+  function setTicketExpanded(next: boolean) {
+    setExpanded(next);
+    if (!next) setFilled(null);
+  }
 
   /* One quote at a time. A new request replaces the last, which is what an RFQ desk does. */
   function askQuote(id: MarketId, positionSide: Side, orderSide: Direction, quantity: number) {
@@ -32,6 +41,7 @@ export function useOrderDesk({ initialId, prices, fill, describeFill }: OrderDes
     setDirection(orderSide);
     setPending(createQuote(prices, id, positionSide, orderSide, quantity, Date.now()));
     setNotice('');
+    setFilled(null);
     setTicketExpanded(true);
   }
 
@@ -43,6 +53,7 @@ export function useOrderDesk({ initialId, prices, fill, describeFill }: OrderDes
     if (!pending) return;
     fill(pending);
     setNotice(describeFill(pending));
+    setFilled(pending);
     setPending(null);
   }
 
@@ -50,12 +61,14 @@ export function useOrderDesk({ initialId, prices, fill, describeFill }: OrderDes
   function chooseSide(next: Side) {
     setSide(next);
     setPending(null);
+    setFilled(null);
     setTicketExpanded(true);
   }
 
   function chooseDirection(next: Direction) {
     setDirection(next);
     setPending(null);
+    setFilled(null);
   }
 
   function pick(id: MarketId, nextSide: Side) {
@@ -68,7 +81,8 @@ export function useOrderDesk({ initialId, prices, fill, describeFill }: OrderDes
   function focusSeat(id: MarketId) {
     setFocusId(id);
     setPending(null);
+    setFilled(null);
   }
 
-  return { focusId, side, direction, pending, notice, ticketExpanded, askQuote, cancel, confirm, pick, focusSeat, chooseSide, chooseDirection, setTicketExpanded };
+  return { focusId, side, direction, pending, filled, notice, ticketExpanded, askQuote, cancel, confirm, pick, focusSeat, chooseSide, chooseDirection, setTicketExpanded };
 }

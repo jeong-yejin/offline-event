@@ -1,11 +1,41 @@
 /* TOKEN2049 survival market. Eight seats, a cut every 7:30, and two trading sessions. */
 
-.t2049-market-page .market-content { border-top: 0; }
+/* The head is a title and a line of numbers now rather than a screen of editorial, so the page starts
+   where a market page starts: near the top, with the chart and the book already in view. */
+.t2049-market-page .market-content { border-top: 0; padding-top: 56px; }
+
+
+/* ---- the market head ----------------------------------------------------------------------- */
+/* The question, then one line of facts, then the market. The headline used to run to 108px beside a
+   seven row terms list, which is an opening for an essay and cost the first screen of a page whose
+   whole job is a chart, a book and a ticket. It drops to the size a title is read at and the four
+   numbers that filled a four-up card run under it as a single line.
+   Nothing was dropped to get there: the numbers are the same four, the terms moved down to the rules
+   they repeat, and the split bar moved to the top of the book it prices. */
+/* The measure is set on the title alone. Set on the block it would wrap the line of numbers too, at a
+   width the title wants rather than the width they need. */
+.t2049-mkt-head { margin: 0 0 24px; }
+.t2049-mkt-head h1 { font-size: 32px; letter-spacing: -.025em; line-height: 1.15; margin: 0; max-width: 46ch; text-wrap: balance; }
+/* The pill and the numbers read as one line, so the pill sits in the flow rather than above it. */
+.t2049-mkt-meta { align-items: center; display: flex; flex-wrap: wrap; gap: 12px 16px; margin: 16px 0 0; }
+.t2049-market-page .t2049-mkt-meta .market-state { justify-self: auto; }
+
+/* A row of label-value pairs, not a card of four tiles. The hairlines that separated the tiles would
+   be vertical rules through a single line of text, and a printed separator between the cells lands at
+   the head of the line whenever the row wraps, so the gap is what separates them: each cell opens on
+   a muted uppercase label, which is a clearer edge than any mark would be. */
+.t2049-market-page .market-bar { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.t2049-market-page .market-bar > div { align-items: baseline; display: flex; gap: 8px; padding: 0; }
+.t2049-market-page .market-bar > div + div { border-left: 0; }
+.t2049-market-page .market-bar dd { font-size: 16px; font-variant-numeric: tabular-nums; }
+/* The clock is the one number on this line that is running, so it keeps full strength while the rest
+   of the line sits back. Red still means one thing: a seat is going out inside the minute. */
+.t2049-market-page .market-cut-clock dd { color: #f8f7f7; }
 
 /* This page sits outside the site shell, so it names the TOKEN2049 pair itself. Inter reads the copy;
    headings keep the site-wide 'Neue Machina', 'Wanted Sans' chain, whose Hangul fallback never
    fires on an English-only page. */
-.t2049-market-page { --t2049-accent: #00dd94; --t2049-accent-2: #caff5d; font-family: 'Inter', sans-serif; }
+.t2049-market-page { --t2049-accent: #2E5CFF; --t2049-accent-2: #caff5d; --t2049-ease-out: cubic-bezier(.16, 1, .3, 1); font-family: 'Inter', sans-serif; }
 
 /* Every section label on the page was set at .55 alpha and 11px. Both move up together. */
 .t2049-market-page .market-bar dt,
@@ -16,9 +46,11 @@
 .t2049-market-page .market-rules h3,
 .t2049-market-page .chart-head h3,
 .t2049-market-page .leaderboard h3,
+.t2049-market-page .t2049-mkt-details h3,
 .t2049-market-page .leaderboard th,
 .t2049-market-page .ticket-summary dt,
 .t2049-market-page .ticket-quote dt,
+.t2049-market-page .ticket-filled dt,
 .t2049-market-page .position-table thead th,
 .t2049-market-page .position-row > td[data-label]::before,
 .t2049-market-page .positions-total dt { color: rgba(248,247,247,.68); font-size: 12px; letter-spacing: .12em; }
@@ -50,65 +82,137 @@
 
 
 /* ---- the seat board ---------------------------------------------------------------------- */
+/* A market is read as a list of outcomes: the chance is the number the eye lands on, and the two
+   prices are buttons wide enough to carry a word and a price without either wrapping. The margin
+   balance and the return keep their columns, because an elimination is decided on the balance and a
+   reader who cannot see it cannot read the next cut coming.
+   44px is also the smallest a target should be under a thumb; the old 40 was short of it. */
+/* "Market probability" is 160px of nowrap header over a column whose widest figure is three
+   characters, so the heading, not the data, was setting the column. Let it wrap onto two lines and
+   the column sizes to what it holds; the width that buys goes to the number the eye lands on. */
+.t2049-market-page .trader-table thead th { white-space: normal; }
+.t2049-market-page .trader-probability { font-size: 28px; }
+.t2049-market-page .trader-meter { height: 6px; }
+.t2049-market-page .trader-row > th, .t2049-market-page .trader-row > td { padding: 18px 14px; }
+.t2049-market-page .trader-actions button { border-radius: 8px; letter-spacing: .08em; min-height: 44px; min-width: 104px; }
+
+/* The name cell used to grow by the width of a tag the moment a seat took a standing, and this board
+   is five columns inside a 900px main column: one cut, and the row ran past its scroller and carried
+   the NO button out of the card, reachable only by scrolling the table sideways. The rank and the
+   standing drop under the name instead, which is where an outcome's detail belongs, and the row stops
+   growing when the first seat goes. */
+.t2049-market-page .trader-row > th { max-width: 250px; }
+.t2049-market-page .trader-name { align-items: baseline; flex-wrap: wrap; row-gap: 8px; }
+.t2049-market-page .trader-logo { align-self: center; }
+.t2049-market-page .trader-id { flex: 1 1 auto; }
+
+/* The split bar heads the book now. At the 12px it wore inside the overview card it runs the width of
+   the board and, on a seat the room is 89 against, arrives as a full red bar reading as a broken
+   state rather than a price. Halved and set against the rows, it reads as what it is: the line that
+   names the seat the ticket is pointed at, and what the room pays for and against it. */
+.t2049-market-page .market-traders .market-prob { border-bottom: 1px solid var(--edge); gap: 10px; margin: 0 0 4px; padding: 0 0 20px; }
+.t2049-market-page .market-traders .prob-bar { height: 6px; }
+.t2049-market-page .market-traders .prob-legend { font-size: 14px; }
+
 /* Only this event cuts seats, so only its cards carry a standing. */
 .trader-state { border: 1px solid currentcolor; color: rgba(248,247,247,.55); font-size: 12px; justify-self: start; letter-spacing: .12em; margin: 0; padding: 4px 8px; text-transform: uppercase; }
 .trader-state[data-state="finalist"] { color: var(--t2049-accent-2); }
 .trader-state[data-state="winner"] { color: var(--t2049-accent); }
 .trader-state[data-state="eliminated"] { color: #ff6467; }
 .trader-row[data-state="eliminated"] { opacity: .45; }
-.trader-row[data-state="winner"] { background: rgba(0,221,148,.08); }
+.trader-row[data-state="winner"] { background: rgba(46,92,255,.08); }
+/* For six seconds after a cut the seat keeps full strength under a red wash, so the tag can be read,
+   then it drops to the .45 every cut seat keeps. It outranks the focus fill: the cut is the news. */
+.t2049-market-page .trader-row[data-state="eliminated"][data-just-cut="true"] { background: rgba(255,100,103,.08); opacity: 1; }
+/* The line runs the width of the name, not of the column under it. */
+.trader-row[data-state="eliminated"] .trader-id strong { justify-self: start; position: relative; }
+.trader-id strong > i { background: #ff6467; height: 2px; inset: calc(50% - 1px) 0 auto; position: absolute; }
 
 
 /* ---- the order ticket --------------------------------------------------------------------- */
 /* The ticket names a seat instead of a sponsor, so the head stacks rather than sitting inline. */
 .t2049-market-page .ticket-head div { display: flex; flex-direction: column; gap: 4px; }
 .t2049-market-page .ticket-head span { color: rgba(248,247,247,.6); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+/* The column's gap already spaces the holding under the name. */
+.t2049-market-page .ticket-head .ticket-held { margin-top: 0; }
 
 
-/* ---- the Kalshi green --------------------------------------------------------------------- */
-/* Kalshi settles this event's rewards and its symbol file is filled #00DD94, so the board takes that
-   exact green as its main colour: the mark and the page read as one brand rather than a logo
-   dropped onto a green screen. Overriding the shared token is the whole recolour. It reaches the
-   live pill, the YES side, the probability bar, the focus ring and every positive move at once,
-   without a shared rule being touched. */
+/* ---- the Polymarket blue ---------------------------------------------------------------------- */
+/* Polymarket settles this event's rewards and its lockup is filled #2E5CFF, so the board takes that
+   exact blue as its main colour: the mark and the page read as one brand rather than a logo dropped
+   onto a screen of someone else's colour. Overriding the shared token carries most of the recolour.
+   It reaches the live pill, the YES text, the focus ring and every positive move at once, without a
+   shared rule being touched. */
 .t2049-market-page { --up: var(--t2049-accent); }
 
-/* The same green where the shared shell writes it as a literal. Each rule names the phase or state
+/* The same blue where the shared shell writes it as a literal. Each rule names the phase or state
    it replaces, so the ready, break, settling and ended pills keep the colours that mean those. */
 .t2049-market-page .market-state[data-phase="sessionA"],
-.t2049-market-page .market-state[data-phase="sessionC"] { background: rgba(0,221,148,.1); border-color: rgba(0,221,148,.25); }
-.t2049-market-page .market-settled { background: rgba(0,221,148,.06); border-color: rgba(0,221,148,.35); }
-.t2049-market-page .trader-row[data-focus="true"] { background: rgba(0,221,148,.07); }
-.t2049-market-page .trader-actions [data-side="yes"] { background: rgba(0,221,148,.1); border-color: rgba(0,221,148,.28); }
-.t2049-market-page .ticket-quote { border-color: rgba(0,221,148,.45); }
-.t2049-market-page .board-jump:hover { background: rgba(0,221,148,.1); border-color: rgba(0,221,148,.35); }
+.t2049-market-page .market-state[data-phase="sessionC"] { background: rgba(46,92,255,.1); border-color: rgba(46,92,255,.25); }
+.t2049-market-page .market-settled { background: rgba(46,92,255,.06); border-color: rgba(46,92,255,.35); }
+.t2049-market-page .trader-row[data-focus="true"] { background: rgba(46,92,255,.07); }
+.t2049-market-page .trader-actions [data-side="yes"] { background: rgba(46,92,255,.1); border-color: rgba(46,92,255,.28); }
+.t2049-market-page .ticket-quote, .t2049-market-page .ticket-filled { border-color: rgba(46,92,255,.45); }
+.t2049-market-page .board-jump:hover { background: rgba(46,92,255,.1); border-color: rgba(46,92,255,.35); }
+
+/* Four more literals the token cannot reach. They were a second green among greens and went unread;
+   against the blue they name a different market, so each one keeps its rule and swaps the colour.
+   The hover takes white ink: blue-on-blue at .55 leaves the label at 2:1. */
+.t2049-market-page .prob-bar [data-side="yes"] { background: var(--up); }
+.t2049-market-page .trader-actions [data-side="yes"]:enabled:hover { background: rgba(46,92,255,.55); border-color: var(--up); color: #f8f7f7; }
+.t2049-market-page .ticket-sides [data-side="yes"][data-active="true"] { background: var(--up); border-color: var(--up); }
+.t2049-market-page .ticket-submit { background: var(--up); }
+
+/* TOP PREDICTOR names the leader, not you, so it takes the main colour rather than the secondary. The
+   shared rule stays green for PERP-DEX DAY; only the two colour declarations are restated here. */
+.t2049-market-page .leader-name em { border-color: rgba(46,92,255,.45); color: var(--t2049-accent); }
 
 
 /* ---- the secondary, #CAFF5D ----------------------------------------------------------------- */
 /* The second colour marks one thing: you. Your rank in the overview bar, your row on both boards,
-   and the seats still standing at the end. Spending it anywhere else turns it into decoration and
+   what you hold on a seat, and the seats still standing at the end. Spending it anywhere else turns it into decoration and
    the reader stops reading it as a signal. */
 .t2049-market-page .market-place dd { color: var(--t2049-accent-2); }
 .t2049-market-page .leaderboard tr[data-you="true"] .leader-name span,
 .t2049-market-page .leader-place [data-scramble="true"] { color: var(--t2049-accent-2); }
 .t2049-market-page .leaderboard tr[data-you="true"] td:first-child { box-shadow: inset 2px 0 0 var(--t2049-accent-2); }
+/* A filled pill, so a holding never reads as one of the bordered standing tags beside it. */
+.t2049-market-page .trader-held,
+.t2049-market-page .ticket-head .ticket-held { background: rgba(202,255,93,.12); color: var(--t2049-accent-2); }
+.t2049-market-page .ticket-head .ticket-held span { color: inherit; }
 
 
-/* ---- Kalshi on the page --------------------------------------------------------------------- */
-/* Rewards are paid to Kalshi accounts, which is a fact the board otherwise leaves to the rules. The
+/* ---- the terms ----------------------------------------------------------------------------- */
+/* The list that used to sit beside the headline, now a card above the rules. It is inside a frame
+   here, so it drops the rules it drew at its own top and bottom edge and lets the card's border do
+   that, and it stops capping its width: the card already sets one. */
+/* The heading was the one card title on the page the shared rule does not name, so it arrived as
+   sentence-case bold beside six tracked uppercase labels. */
+.t2049-market-page .t2049-mkt-details h3 { margin: 0 0 16px; text-transform: uppercase; }
+.t2049-mkt-details .market-spec { max-width: none; }
+.t2049-mkt-details .market-spec > div:first-child { border-top: 0; padding-top: 0; }
+.t2049-mkt-details .market-spec > div:last-child { border-bottom: 0; padding-bottom: 0; }
+
+
+/* ---- Polymarket on the page --------------------------------------------------------------------- */
+/* Rewards are paid to Polymarket accounts, which is a fact the board otherwise leaves to the rules. The
    card sits at the end of the main column so the mark carries information rather than sponsorship.
-   It asks for nothing: the Kalshi account is collected by the gate in front of this page, and every
+   It asks for nothing: the Polymarket account is collected by the gate in front of this page, and every
    reader who gets this far already has one. */
-.t2049-kalshi-card { align-items: center; display: grid; gap: 8px 20px; grid-template-columns: auto minmax(0, 1fr); }
-.t2049-kalshi-card img { border-radius: 10px; display: block; }
-.t2049-kalshi-card h3 { font-size: 20px; letter-spacing: -.01em; margin: 0; }
-.t2049-kalshi-card p { color: rgba(248,247,247,.7); font-size: 16px; line-height: 1.5; margin: 6px 0 0; text-wrap: pretty; }
-/* There is no Kalshi wordmark in the repo, so the footer sets the name as page text beside the
-   official symbol instead of drawing a lettermark that is not theirs. */
-.t2049-kalshi-mark { align-items: center; color: rgba(248,247,247,.68); display: flex; font-size: 12px; gap: 10px; letter-spacing: .08em; margin: 0; text-transform: uppercase; }
-.t2049-kalshi-mark img { border-radius: 5px; display: block; }
+/* The symbol alone, because the heading beside it already sets the name. The full lockup here would
+   put "Polymarket" on the card four times. It is a transparent glyph, so nothing rounds it. */
+.t2049-polymarket-card { align-items: center; display: grid; gap: 8px 20px; grid-template-columns: auto minmax(0, 1fr); }
+.t2049-polymarket-card img { display: block; }
+.t2049-polymarket-card h3 { font-size: 20px; letter-spacing: -.01em; margin: 0; }
+.t2049-polymarket-card p { color: rgba(248,247,247,.7); font-size: 16px; line-height: 1.5; margin: 6px 0 0; text-wrap: pretty; }
+/* The footer line runs into the lockup, which is why the copy stops at "by". The mark keeps its own
+   blue against the uppercase grey, so nothing here colours it. */
+.t2049-polymarket-mark { align-items: center; color: rgba(248,247,247,.68); display: flex; font-size: 12px; gap: 10px; letter-spacing: .08em; margin: 0; text-transform: uppercase; }
+/* The shared footer rule crops every mark to a 24px circle for the PERP-DEX DAY sponsor row. A
+   wordmark cannot take that, so this one states its own box. */
+.t2049-polymarket-mark img { border-radius: 0; display: block; height: 16px; width: 87px; }
 
-/* ---- Held behind the Kalshi gate ------------------------------------------------------------- */
+/* ---- Held behind the Polymarket gate ------------------------------------------------------------- */
 /* The board stays on screen under the gate, blurred past reading. Six pixels leaves the shape of a
    live market legible and takes every number off it, which is the point: the reader should want in
    and not be able to trade from out here.
@@ -116,3 +220,78 @@
    it outside is what makes the blur safe; a filter on an ancestor would drag a fixed child with it.
    showModal() makes everything outside the dialog inert, so this only has to stop the pointer. */
 .t2049-locked { filter: blur(6px); pointer-events: none; user-select: none; }
+
+
+/* ---- the pinned strip ---------------------------------------------------------------------- */
+/* A phone scrolls the overview bar away in one swipe. The strip keeps the clock and the points free to
+   spend under the thumb instead. Wider screens keep both in the bar, which stays on the first screen there. */
+.t2049-strip { display: none; }
+
+@media (max-width: 700px) {
+  .t2049-strip { background: linear-gradient(var(--card), var(--card)), #000; border: 1px solid var(--edge); border-radius: 16px; box-shadow: 0 16px 32px rgba(0,0,0,.6); display: block; margin-bottom: 16px; padding: 12px 16px; position: sticky; top: calc(12px + env(safe-area-inset-top)); z-index: 8; }
+  .t2049-strip dl { column-gap: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; }
+  .t2049-strip dl > div { display: grid; gap: 4px; min-width: 0; }
+  .t2049-strip dl > div + div { border-left: 1px solid rgba(248,247,247,.12); padding-left: 16px; }
+  .t2049-strip dt { color: rgba(248,247,247,.68); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  .t2049-strip dd { font-size: 24px; font-variant-numeric: tabular-nums; letter-spacing: -.01em; margin: 0; }
+  /* Red means one thing here: a seat is going out, or has just gone. */
+  .t2049-strip-cut :is(dt, dd), .t2049-strip[data-urgent="true"] .t2049-strip-clock :is(dt, dd) { color: #ff6467; }
+  .t2049-strip-cut dd { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* The dd clips, so the name can rise into it from below. */
+  .t2049-strip-cut dd span { display: inline-block; max-width: 100%; overflow: hidden; position: relative; text-overflow: ellipsis; vertical-align: top; }
+  .t2049-strip-cut dd i { background: currentcolor; height: 2px; inset: calc(50% - 1px) 0 auto; position: absolute; }
+  .t2049-strip:is([data-urgent="true"], [data-cut="true"]) { border-color: rgba(255,100,103,.45); }
+  /* A red wash fills the strip while it names the cut seat. Under the text, over the card. */
+  .t2049-strip::before { background: rgba(255,100,103,.16); border-radius: inherit; content: ''; inset: -1px; position: absolute; transform: scaleX(0); transform-origin: right; z-index: -1; }
+  .t2049-strip[data-cut="true"]::before { transform: none; transform-origin: left; }
+  /* The strip holds the points free to spend and the clock, so the bar keeps the two only it carries:
+     the total and the rank. */
+  .t2049-market-page .market-bar > div:is(:first-child, :nth-child(4)) { display: none; }
+
+  /* A phone reads the title at a phone's size, and the card the terms list wore when it was loose in
+     the page is now the card around it. */
+  .t2049-mkt-head { margin-bottom: 20px; max-width: none; }
+  .t2049-mkt-head h1 { font-size: 26px; }
+  .t2049-market-page .t2049-mkt-details .market-spec { background: none; border: 0; border-radius: 0; margin-top: 0; padding: 0; }
+}
+
+
+/* ---- motion -------------------------------------------------------------------------------- */
+/* A cut is the one moment this board announces. The banner lands and its lines follow, the seat's
+   tag stamps down and a line strikes its name. On a phone the strip is the one place sure to be in
+   view, so it carries the most: a red wash crosses it, the name rises into the clock's cell and is
+   struck through, and six seconds later the wash runs off to the right. A fill gets a smaller
+   beat: the receipt rises and its check lands. Nothing loops; a ticking clock is motion enough.
+   Rows are re-inserted as ranks reorder, so nothing inside a row enters on insertion unless the
+   row was just cut. The query carries the preference because 14-reduced-motion.css loads before
+   this file and loses to it. */
+@media (prefers-reduced-motion: no-preference) {
+  .t2049-market-page .market-cut { transition: opacity .3s ease; }
+  .t2049-market-page .market-cut > * { transition: opacity .5s var(--t2049-ease-out), transform .5s var(--t2049-ease-out); }
+  .t2049-market-page .market-cut > :nth-child(2) { transition-delay: .06s; }
+  .t2049-market-page .market-cut > :nth-child(3) { transition-delay: .12s; }
+  .t2049-market-page .trader-row { transition: background .2s ease, opacity .65s var(--t2049-ease-out); }
+  .t2049-market-page .trader-row[data-just-cut="true"] .trader-state { transition: opacity .4s var(--t2049-ease-out), transform .4s var(--t2049-ease-out); }
+  .t2049-market-page .trader-row[data-just-cut="true"] .trader-id strong > i { transform-origin: left; transition: transform .6s var(--t2049-ease-out) .3s; }
+  .t2049-strip { transition: border-color .4s ease; }
+  .t2049-strip::before { transition: transform .5s ease-in; }
+  .t2049-strip[data-cut="true"]::before { transition: transform .8s var(--t2049-ease-out); }
+  .t2049-strip-clock { transition: opacity .4s var(--t2049-ease-out), transform .4s var(--t2049-ease-out); }
+  .t2049-strip-cut dt { transition: opacity .4s var(--t2049-ease-out); }
+  .t2049-strip-cut dd span { transition: transform .7s var(--t2049-ease-out) .08s; }
+  .t2049-strip-cut dd i { transform-origin: left; transition: transform .5s var(--t2049-ease-out) .6s; }
+  .t2049-market-page .ticket-held, .t2049-market-page .ticket-filled { transition: opacity .25s var(--t2049-ease-out), transform .25s var(--t2049-ease-out); }
+  .t2049-market-page .filled-title svg { transition: opacity .4s var(--t2049-ease-out) .1s, transform .4s var(--t2049-ease-out) .1s; }
+  @starting-style {
+    .t2049-market-page .market-cut { opacity: 0; }
+    .t2049-market-page .market-cut > * { opacity: 0; transform: translateY(8px); }
+    .t2049-market-page .trader-row[data-just-cut="true"] .trader-state { opacity: 0; transform: scale(1.3); }
+    .t2049-market-page .trader-row[data-just-cut="true"] .trader-id strong > i { transform: scaleX(0); }
+    .t2049-strip-clock { opacity: 0; transform: translateY(6px); }
+    .t2049-strip-cut dt { opacity: 0; }
+    .t2049-strip-cut dd span { transform: translateY(100%); }
+    .t2049-strip-cut dd i { transform: scaleX(0); }
+    .t2049-market-page .ticket-held, .t2049-market-page .ticket-filled { opacity: 0; transform: translateY(4px); }
+    .t2049-market-page .filled-title svg { opacity: 0; transform: scale(.4); }
+  }
+}

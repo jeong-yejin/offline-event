@@ -7,6 +7,8 @@ export type EventContent = {
   title: string;
   copy: string;
   date: string;
+  /* The hub's link into this event. Left out, the hub falls back to its generic label. */
+  cta?: string;
 };
 
 export const EVENTS: readonly EventContent[] = [
@@ -31,7 +33,8 @@ export const EVENTS: readonly EventContent[] = [
     label: 'TOKEN2049 PERPS DAY',
     eyebrow: 'ASIA TRADING COMPETITION',
     title: 'PERPS DAY',
-    copy: 'Predict and trade on which of the eight traders will take the win.',
+    copy: 'Eight traders compete live as you trade your pick for the top spot.',
     date: 'TOKEN2049 Singapore · 05 October 2026',
+    cta: 'Enter Perps Day',
   },
 ];

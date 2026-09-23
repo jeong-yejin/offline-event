@@ -6,7 +6,7 @@ const RULE_ICONS = ['imgGroup', 'imgGroup1', 'imgGroup2'];
 
 export function T2049Format({ t }: { t: Strings }) {
   const ladder = [
-    { round: t.t2049Semifinal, detail: t.t2049SemifinalDetail, accent: 'green' },
+    { round: t.t2049Semifinal, detail: t.t2049SemifinalDetail, accent: 'blue' },
     { round: t.t2049Intermission, detail: t.t2049IntermissionDetail, accent: 'violet' },
     { round: t.t2049Final, detail: t.t2049FinalDetail, accent: 'lime' },
   ];

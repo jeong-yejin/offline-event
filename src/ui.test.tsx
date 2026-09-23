@@ -120,7 +120,7 @@ describe('PERP-DEX DAY interface', () => {
     renderAt('/');
 
     await user.click(screen.getByRole('button', { name: /TOKEN2049 PERPS DAY/ }));
-    await user.click(screen.getByRole('link', { name: /explore event/i }));
+    await user.click(screen.getByRole('link', { name: /enter perps day/i }));
 
     expect(window.location.pathname).toBe('/perps-day');
     expect(document.querySelector('.hero')).toHaveAttribute('data-event', 'perps-day');
@@ -247,7 +247,7 @@ describe('PERP-DEX DAY interface', () => {
     expect(screen.getByRole('heading', { level: 2, name: /run of show|timetable/i })).toBeInTheDocument();
   });
 
-  it('names Kalshi as a co-host of the TOKEN2049 experience, not a line in the fine print', () => {
+  it('names Polymarket as a co-host of the TOKEN2049 experience, not a line in the fine print', () => {
     renderAt('/perps-day');
     const hero = document.querySelector('.hero') as HTMLElement;
 
@@ -256,11 +256,11 @@ describe('PERP-DEX DAY interface', () => {
     expect(within(hero).getByRole('heading', { level: 1 })).toHaveTextContent('PERPS DAY');
 
     const venue = document.querySelector('.t2049-venue') as HTMLElement;
-    expect(within(venue).getByText(/ReboundX and Kalshi/)).toBeInTheDocument();
+    expect(within(venue).getByText(/ReboundX and Polymarket/)).toBeInTheDocument();
 
-    const kalshi = document.querySelector('.t2049-kalshi') as HTMLElement;
-    expect(within(kalshi).getByRole('heading', { level: 2 })).toBeInTheDocument();
-    expect(within(kalshi).getAllByRole('listitem')).toHaveLength(3);
+    const polymarket = document.querySelector('.t2049-polymarket') as HTMLElement;
+    expect(within(polymarket).getByRole('heading', { level: 2 })).toBeInTheDocument();
+    expect(within(polymarket).getAllByRole('listitem')).toHaveLength(3);
   });
 
   it('states the confirmed TOKEN2049 venue and keeps TBA only where nothing is settled', () => {
@@ -523,37 +523,37 @@ describe('PERP-DEX DAY interface', () => {
     expect(within(rsvp).getByText(/predict the winner with your points/i)).toBeInTheDocument();
   });
 
-  it('opens the Kalshi account screen on its own route, because it is promoted before the competition', async () => {
+  it('opens the Polymarket account screen on its own route, because it is promoted before the competition', async () => {
     const user = userEvent.setup();
     renderAt('/perps-day');
 
     /* The address is collected in the run-up to the event and the link is handed out on its own, so
        the screen has to be somewhere a reader can land directly. */
-    await user.click(screen.getByRole('button', { name: /add your kalshi account/i }));
+    await user.click(screen.getByRole('button', { name: /add your polymarket account/i }));
 
-    expect(window.location.pathname).toBe('/perps-day/kalshi');
-    expect(document.querySelector('.t2049-kalshi-page')).toBeInTheDocument();
+    expect(window.location.pathname).toBe('/perps-day/polymarket');
+    expect(document.querySelector('.t2049-polymarket-page')).toBeInTheDocument();
   });
 
   it('refuses an address that is not one, because a typo is only found when rewards are paid', async () => {
     const user = userEvent.setup();
-    renderAt('/perps-day/kalshi');
+    renderAt('/perps-day/polymarket');
 
-    await user.type(screen.getByLabelText(/kalshi account email/i), 'not-an-address');
-    await user.click(screen.getByRole('button', { name: /save kalshi email/i }));
+    await user.type(screen.getByLabelText(/polymarket account email/i), 'not-an-address');
+    await user.click(screen.getByRole('button', { name: /save polymarket email/i }));
 
-    expect(screen.getByRole('alert')).toHaveTextContent(/email address on your kalshi account/i);
+    expect(screen.getByRole('alert')).toHaveTextContent(/email address on your polymarket account/i);
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 
-  it('stops a saved address at Pending, because only Kalshi can say Verified or Rejected', async () => {
+  it('stops a saved address at Pending, because only Polymarket can say Verified or Rejected', async () => {
     const user = userEvent.setup();
-    renderAt('/perps-day/kalshi');
+    renderAt('/perps-day/polymarket');
 
-    await user.type(screen.getByLabelText(/kalshi account email/i), 'ha-eun.seo@fastmail.com');
-    await user.click(screen.getByRole('button', { name: /save kalshi email/i }));
+    await user.type(screen.getByLabelText(/polymarket account email/i), 'ha-eun.seo@fastmail.com');
+    await user.click(screen.getByRole('button', { name: /save polymarket email/i }));
 
-    /* Nothing is sent to Kalshi here. Reading the receipt as Verified would promise a reward the site
+    /* Nothing is sent to Polymarket here. Reading the receipt as Verified would promise a reward the site
        has no way to owe. */
     const done = screen.getByRole('status');
     expect(done).toHaveTextContent('ha-eun.seo@fastmail.com');

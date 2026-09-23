@@ -14,8 +14,8 @@
 | `src/app/useRouteMeta.ts` | runtime | 2 |
 | `src/auth/GoogleLoginModal.test.tsx` | test | 1 |
 | `src/auth/GoogleLoginModal.tsx` | runtime | 3 |
-| `src/auth/kalshiAccount.ts` | runtime | 0 |
-| `src/auth/KalshiAccountModal.tsx` | runtime | 3 |
+| `src/auth/polymarketAccount.ts` | runtime | 0 |
+| `src/auth/PolymarketAccountModal.tsx` | runtime | 3 |
 | `src/auth/marketGate.test.tsx` | test | 1 |
 | `src/auth/useGoogleSignIn.ts` | runtime | 2 |
 | `src/auth/useMarketAccess.ts` | runtime | 1 |
@@ -116,7 +116,7 @@
 | `src/pages/MarketLeaderboardPage.tsx` | runtime | 7 |
 | `src/pages/PerpDexDayMarketPage.tsx` | runtime | 21 |
 | `src/pages/PerpDexDayPage.tsx` | runtime | 10 |
-| `src/pages/Token2049KalshiPage.tsx` | runtime | 6 |
+| `src/pages/Token2049PolymarketPage.tsx` | runtime | 6 |
 | `src/pages/Token2049MarketPage.tsx` | runtime | 21 |
 | `src/pages/Token2049Page.tsx` | runtime | 10 |
 | `src/pages/WonderlandBoardPage.tsx` | runtime | 5 |

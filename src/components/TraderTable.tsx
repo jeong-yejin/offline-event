@@ -15,6 +15,11 @@ type TraderRow = {
   tradable: boolean;
   /* Only the elimination competition carries one. The PERP-DEX DAY market leaves it off. */
   state?: TraderState;
+  /* What the reader holds on this seat, e.g. "2 YES · 1 NO". Only Pulse passes it. */
+  held?: string;
+  /* The seat went out a moment ago. The row carries the cut's motion only while this holds: rows are
+     re-inserted as the ranks reorder, and an entrance keyed to the tag alone would replay each time. */
+  justCut?: boolean;
 };
 
 type TraderTableProps = {
@@ -42,8 +47,8 @@ export function TraderTable({ t, rows, onPick, onFocusSeat }: TraderTableProps) 
           </tr>
         </thead>
         <tbody>
-          {rows.map(({ candidate, balance, percent, rank, probability, yesPrice, noPrice, status, focused, tradable, state }) => (
-            <tr className="trader-row" data-focus={focused ? 'true' : 'false'} data-state={state} data-status={status} key={candidate.id} onClick={() => onFocusSeat(candidate.id)}>
+          {rows.map(({ candidate, balance, percent, rank, probability, yesPrice, noPrice, status, focused, tradable, state, held, justCut }) => (
+            <tr className="trader-row" data-focus={focused ? 'true' : 'false'} data-just-cut={justCut ? 'true' : undefined} data-state={state} data-status={status} key={candidate.id} onClick={() => onFocusSeat(candidate.id)}>
               <th scope="row">
                 {/* The row is the click target; the name is the same target for a keyboard, and a flex box
                     inside the cell keeps the cell a table cell so the columns still line up. */}
@@ -51,13 +56,16 @@ export function TraderTable({ t, rows, onPick, onFocusSeat }: TraderTableProps) 
                   {/* The mark is the only place the exchange is named now, so it carries the name as its alt. */}
                   <img alt={candidate.exchange} className="trader-logo" src={`/assets/sponsors/${candidate.logo}`} />
                   <span className="trader-id">
-                    <strong>{candidate.trader}</strong>
+                    {/* A cut seat's name is struck through. The empty i draws the line, so it can be drawn in. */}
+                    <strong>{candidate.trader}{state === 'eliminated' ? <i aria-hidden="true" /> : null}</strong>
                     {/* The feed only speaks up when it stops being live, so eight healthy rows stay quiet. */}
                     {status === 'live' ? null : <small className="trader-feed" data-status={status}>{t.feedStatus(status)}</small>}
                   </span>
                   <span className="trader-rank" aria-label={t.currentRank}>#{rank}</span>
                   {/* Every seat is active until the first cut, so the label only earns its place once a seat's standing changes. */}
                   {state && state !== 'active' ? <span className="trader-state" data-state={state}>{t.traderStateName(state)}</span> : null}
+                  {/* A fill shows on the board too, on the seat it went to. */}
+                  {held ? <span className="trader-held">{t.ticketHeld} {held}</span> : null}
                 </button>
               </th>
 

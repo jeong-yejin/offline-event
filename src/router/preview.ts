@@ -1,6 +1,6 @@
 import { COMPETITION_SECONDS, SETTLING_SECONDS } from '../data/perpDexMarketContent';
 import { createRandom } from '../market/engine';
-import { T2049_BREAK_SECONDS, T2049_SESSION_A_SECONDS, T2049_SESSION_C_SECONDS } from '../data/t2049MarketContent';
+import { T2049_BREAK_SECONDS, T2049_ELIMINATION_INTERVAL_SECONDS, T2049_SESSION_A_SECONDS, T2049_SESSION_C_SECONDS } from '../data/t2049MarketContent';
 import { T2049_RUN_SECONDS } from '../market/token2049/clock';
 
 /* A case screen sits somewhere on a clock that runs 30 minutes on PERP-DEX DAY and 70 on PERPS DAY,
@@ -35,6 +35,8 @@ const PERP_DEX_CASES: Record<string, number> = {
 /* Cuts land on the 7:30 grid, so five minutes into Session C the field is already the four finalists. */
 const T2049_CASES: Record<string, number> = {
   ready: BEFORE_START,
+  /* Ten seconds short of the first cut. A cut comes once every 7:30, too long to wait on to watch it. */
+  cut: T2049_ELIMINATION_INTERVAL_SECONDS - 10,
   'session-a': 600,
   break: T2049_SESSION_A_SECONDS + 60,
   'session-c': T2049_SESSION_A_SECONDS + T2049_BREAK_SECONDS + 300,
@@ -42,9 +44,9 @@ const T2049_CASES: Record<string, number> = {
   ended: T2049_RUN_SECONDS + 60,
 };
 
-/* The Kalshi account screen is its own route rather than a position on the clock, so the router reads
+/* The Polymarket account screen is its own route rather than a position on the clock, so the router reads
    this name instead of the case maps. */
-const PREVIEW_ROUTE_CASES: readonly string[] = ['kalshi'];
+const PREVIEW_ROUTE_CASES: readonly string[] = ['polymarket'];
 
 const PREVIEW_CASES: readonly string[] =
   [...new Set([...Object.keys(PERP_DEX_CASES), ...Object.keys(T2049_CASES), ...PREVIEW_ROUTE_CASES])];

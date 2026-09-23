@@ -1,9 +1,12 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-
-/* Code export rather than a viewer link, so the scene draws into a canvas in this page. The viewer link
-   (`my.spline.design/<slug>/`) only works as a top-level page: framed, it loads and paints its watermark
-   but never renders the canvas, in any browser we tried. */
-const SCENE = 'https://prod.spline.design/bzE7kJS5BQNYI0uX/scene.splinecode';
+/* Spline's code export rather than a viewer link, so the scene draws into a canvas in this page. The
+   viewer link (`my.spline.design/<slug>/`) only works as a top-level page: framed, it loads and paints
+   its watermark but never renders the canvas, in any browser we tried.
+   The export ships with the app instead of loading from prod.spline.design, because that host sends no
+   cache-control header: browsers fall back to heuristic freshness and keep serving an old scene for days
+   after a re-export. Built from here the filename carries a hash of the contents, so a re-export
+   invalidates itself and nothing has to be remembered. `npm run scene:pull` fetches the current export. */
+import SCENE from '../assets/hero-scene.splinecode?url';
 
 /* The runtime is around half a megabyte, so it loads on its own after the hero copy is already up. */
 const Spline = lazy(() => import('@splinetool/react-spline'));

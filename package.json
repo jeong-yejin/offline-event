@@ -8,11 +8,12 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "audit:source": "node scripts/audit-source.mjs"
+    "audit:source": "node scripts/audit-source.mjs",
+    "scene:pull": "curl -fsS -o src/assets/hero-scene.splinecode https://prod.spline.design/bzE7kJS5BQNYI0uX/scene.splinecode"
   },
   "dependencies": {
     "@splinetool/react-spline": "^4.1.0",
-    "@splinetool/runtime": "^2.0.41",
+    "@splinetool/runtime": "^2.0.55",
     "@vitejs/plugin-react": "latest",
     "react": "latest",
     "react-dom": "latest",

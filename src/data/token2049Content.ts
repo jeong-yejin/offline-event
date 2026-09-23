@@ -22,12 +22,22 @@ export const T2049_EVENT_DAY_AT = Date.UTC(2026, 9, 4, 16, 0, 0);
    its number and its status and nothing else. */
 export const T2049_SEATS = 8;
 
-/* Reward eligibility, /perps-day/kalshi. The competition never signs a reader in to Kalshi and never
-   calls its API: it collects the address, and Kalshi checks the reward list against its own accounts
+/* Partner marks under the hero date line, in the order they sit there. The files are the white
+   wordmarks the PERP-DEX DAY sponsor row shares, but that row inverts them for its own section, so the
+   hero states its own sizing and leaves the white alone. Both files are cropped to their ink, so equal
+   height would not read as equal size: ZOKU is all caps and fills its box, while Polymarket is mixed
+   case and spends nearly half its box on ascenders and descenders. The scale is what each mark takes of
+   the row's height to land at the same optical weight. */
+export const T2049_HERO_PARTNERS: readonly (readonly [name: string, file: string, scale: number])[] = [
+  ['Polymarket', 'polymarket.svg', 1], ['Zoku', 'zoku.svg', 0.75],
+];
+
+/* Reward eligibility, /perps-day/polymarket. The competition never signs a reader in to Polymarket and never
+   calls its API: it collects the address, and Polymarket checks the reward list against its own accounts
    once the final leaderboard is fixed. So the address never blocks entry, and until that check lands
    the only honest thing the page can say is that the address was received. */
-export type KalshiStatus = 'NOT_SUBMITTED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
+export type PolymarketStatus = 'NOT_SUBMITTED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
 
-/* Shape only. A typo that still parses is caught by Kalshi, not here. */
+/* Shape only. A typo that still parses is caught by Polymarket, not here. */
 const EMAIL_ADDRESS = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export const isEmailAddress = (email: string): boolean => EMAIL_ADDRESS.test(email.trim());

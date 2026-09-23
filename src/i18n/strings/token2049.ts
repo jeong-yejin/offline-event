@@ -2,7 +2,7 @@ import { marketEn, marketKo } from './market';
 import { commonEn, commonKo } from './common';
 import type { LocalizedProps } from '../types';
 import type { Session } from '../../market/token2049/clock';
-import type { KalshiStatus } from '../../data/token2049Content';
+import type { PolymarketStatus } from '../../data/token2049Content';
 
 /* The survival format carries four numbers the PERP-DEX DAY spec has no room for, so the row list
    takes one shape instead of eight positional arguments. */
@@ -23,7 +23,7 @@ const shared = {
   t2049MetaTitle: 'PERPS DAY — Eight Traders. The Best Trader Wins.',
   t2049MetaDescription: 'Eight traders compete live in Singapore on October 5, 2026. Everyone starts with an equal balance, and one trader is eliminated every 7 minutes 30 seconds in the semifinal. Free entry with RSVP.',
   t2049OgDescription: 'October 5, 2026 · Singapore. Eight traders compete on live accounts with an equal starting balance. One elimination every 7 minutes 30 seconds. Limited capacity. RSVP required.',
-  t2049OgImageAlt: 'PERPS DAY by ReboundX and Kalshi · October 5, 2026 · Singapore',
+  t2049OgImageAlt: 'PERPS DAY by ReboundX and Polymarket · October 5, 2026 · Singapore',
   t2049TwitterDescription: 'October 5, 2026 · Singapore. Eight traders compete live with an equal starting balance. One elimination every 7 minutes 30 seconds.',
 
   /* Section navigation. */
@@ -34,13 +34,14 @@ const shared = {
   t2049NavRsvp: 'RSVP',
 
   /* Hero and countdown. */
+  t2049HeroCopy: 'Trade your pick with Polymarket as eight traders compete live.',
   t2049HeroCta: 'Join Pulse',
   /* The strip along the foot of the hero. Six lines, because the loop reads as a loop only once it is
      long enough that a reader does not see the same phrase twice in a glance. */
   t2049HeroMarquee: [
     'LIVE TRADING ON STAGE',
     'LIVE ELIMINATIONS',
-    'REBOUNDX \u00d7 KALSHI',
+    'REBOUNDX \u00d7 POLYMARKET',
     'FOLLOW THE PULSE',
     'PREDICT THE OUTCOME',
     'ONE TRADER TAKES THE WIN',
@@ -80,10 +81,10 @@ const shared = {
   t2049TradersCopy: 'Every trader competes individually under the same conditions. The full line-up is announced the week of the event.',
 
   /* Live standings and Pulse. */
-  t2049KalshiEyebrow: 'Live Standings & Pulse',
-  t2049KalshiTitle: ['Track the standings', 'and predict the winner'] as readonly string[],
-  t2049KalshiCopy: 'Pulse is the prediction game the audience plays. Follow the live leaderboard and trade YES or NO on the trader you think will win.',
-  t2049KalshiPoints: [
+  t2049PolymarketEyebrow: 'Live Standings & Pulse',
+  t2049PolymarketTitle: ['Track the standings', 'and predict the winner'] as readonly string[],
+  t2049PolymarketCopy: 'Pulse is the prediction game the audience plays. Follow the live leaderboard and trade YES or NO on the trader you think will win.',
+  t2049PolymarketPoints: [
     'Start with 100 points',
     'Trade YES or NO on any trader',
     'Winning positions settle at 100 points, paid out after the event',
@@ -92,11 +93,11 @@ const shared = {
   /* Date and venue. */
   t2049VenueEyebrow: 'Date & Venue',
   t2049VenueTitle: ['Token2049', 'Live in Singapore'] as readonly string[],
-  t2049VenueCopy: 'Join ReboundX and Kalshi for a live trading competition during TOKEN2049 Week. Capacity is limited, and entry is available to confirmed guests only.',
+  t2049VenueCopy: 'Join ReboundX and Polymarket for a live trading competition during TOKEN2049 Week. Capacity is limited, and entry is available to confirmed guests only.',
   t2049VenueLabel: 'Date and venue details',
   t2049AgendaNote: 'Exact timings for the live trading competition and the filming can shift with operations on the night.',
 
-  /* Pulse is the audience prediction game. Kalshi runs the market behind it, so the rules sit under the
+  /* Pulse is the audience prediction game. Polymarket runs the market behind it, so the rules sit under the
      run of show where a reader decides whether they can play. */
   t2049PulseTitle: 'Pulse rules',
   t2049PulseRules: [
@@ -117,49 +118,49 @@ const shared = {
   t2049RsvpCopy: 'RSVP now for free entry and receive your confirmation, venue details and door time before spots fill up.',
   t2049RsvpPoints: ['Play Pulse and predict the winner with your points as the odds change in real time.', 'Follow the live standings on the venue screen or your phone as the competition unfolds.', 'Meet traders and builders from around the world throughout TOKEN2049 Week.'],
 
-  /* Kalshi account screen, /perps-day/kalshi. It ships before the competition, so it has to read on its
+  /* Polymarket account screen, /perps-day/polymarket. It ships before the competition, so it has to read on its
      own to somebody who has not played yet. */
-  t2049KalshiBack: 'Back to PERPS DAY',
-  t2049KalshiTag: 'TOKEN2049 / KALSHI ACCOUNT',
-  t2049KalshiPageTitle: 'Add your Kalshi account.',
-  t2049KalshiPageCopy: 'Rewards are paid to Kalshi accounts. Give us the email address on yours so it can be matched after the competition. Predictions are open either way: the address decides who gets paid, not who can play.',
-  t2049KalshiFlowLabel: 'How the check runs',
-  t2049KalshiFlow: [
+  t2049PolymarketBack: 'Back to PERPS DAY',
+  t2049PolymarketTag: 'TOKEN2049 / POLYMARKET ACCOUNT',
+  t2049PolymarketPageTitle: 'Add your Polymarket account.',
+  t2049PolymarketPageCopy: 'Rewards are paid to Polymarket accounts. Give us the email address on yours so it can be matched after the competition. Predictions are open either way: the address decides who gets paid, not who can play.',
+  t2049PolymarketFlowLabel: 'How the check runs',
+  t2049PolymarketFlow: [
     'Sign in to ReboundX.',
-    'Enter the email on your Kalshi account.',
+    'Enter the email on your Polymarket account.',
     'Play the prediction competition.',
     'The final leaderboard is fixed at the close, and the reward list is drawn from it.',
-    'Kalshi checks each address on that list, then rewards are paid.',
+    'Polymarket checks each address on that list, then rewards are paid.',
   ] as readonly string[],
-  t2049KalshiPayoutNote: 'Rewards are paid through Kalshi. A Kalshi account is required to receive one.',
-  t2049KalshiStatusName: (status: KalshiStatus): string => ({
+  t2049PolymarketPayoutNote: 'Rewards are paid through Polymarket. A Polymarket account is required to receive one.',
+  t2049PolymarketStatusName: (status: PolymarketStatus): string => ({
     NOT_SUBMITTED: 'Not submitted',
     PENDING: 'Pending',
     VERIFIED: 'Verified',
     REJECTED: 'Rejected',
   })[status],
-  t2049KalshiFormLabel: 'Kalshi account',
-  t2049KalshiEmailLabel: 'Kalshi account email',
-  t2049KalshiEmailHint: 'Use the address you signed up to Kalshi with. Another address cannot be matched.',
-  t2049KalshiSubmit: 'Save Kalshi Email',
-  t2049KalshiErrorEmail: 'Enter the email address on your Kalshi account.',
-  t2049KalshiCurrent: 'Your status',
-  t2049KalshiDoneTitle: 'Address received.',
-  t2049KalshiDoneCopy: 'Your status stays Pending until the competition closes. Kalshi checks the address once the final leaderboard is fixed, and the result shows here.',
-  t2049KalshiDoneEmail: 'Kalshi account email',
-  t2049KalshiAgain: 'Change Address',
+  t2049PolymarketFormLabel: 'Polymarket account',
+  t2049PolymarketEmailLabel: 'Polymarket account email',
+  t2049PolymarketEmailHint: 'Use the address you signed up to Polymarket with. Another address cannot be matched.',
+  t2049PolymarketSubmit: 'Save Polymarket Email',
+  t2049PolymarketErrorEmail: 'Enter the email address on your Polymarket account.',
+  t2049PolymarketCurrent: 'Your status',
+  t2049PolymarketDoneTitle: 'Address received.',
+  t2049PolymarketDoneCopy: 'Your status stays Pending until the competition closes. Polymarket checks the address once the final leaderboard is fixed, and the result shows here.',
+  t2049PolymarketDoneEmail: 'Polymarket account email',
+  t2049PolymarketAgain: 'Change Address',
   /* The way on from the done screen. A reader who got here through the gate came to open the board,
      so the board is the primary action and changing the address is the second thought. */
-  t2049KalshiToMarket: 'Back to Pulse',
-  t2049KalshiNote: 'We never ask for a Kalshi password and never sign in on your behalf. The address is used to confirm reward eligibility after the competition, nothing else.',
-  t2049KalshiCta: 'Add Your Kalshi Account',
+  t2049PolymarketToMarket: 'Back to Pulse',
+  t2049PolymarketNote: 'We never ask for a Polymarket password and never sign in on your behalf. The address is used to confirm reward eligibility after the competition, nothing else.',
+  t2049PolymarketCta: 'Add Your Polymarket Account',
 
-  /* The gate that stands in front of Pulse for a reader with no Kalshi account. It states the reason
+  /* The gate that stands in front of Pulse for a reader with no Polymarket account. It states the reason
      rather than the rule, because the reader did just sign in and is entitled to know why that was
      not enough. */
-  t2049GateTitle: 'Pulse runs on your Kalshi account.',
-  t2049GateCopy: 'Rewards settle in Kalshi markets, so Pulse opens for Kalshi account holders only. Add the address you signed up to Kalshi with and the board opens.',
-  t2049GateCta: 'Verify Kalshi Account',
+  t2049GateTitle: 'Pulse runs on your Polymarket account.',
+  t2049GateCopy: 'Rewards settle in Polymarket markets, so Pulse opens for Polymarket account holders only. Add the address you signed up to Polymarket with and the board opens.',
+  t2049GateCta: 'Verify Polymarket Account',
   t2049GateBack: 'Back to PERPS DAY',
 
   /* Prediction CTA and marquee. */
@@ -171,12 +172,19 @@ const shared = {
   t2049MarketTag: 'TOKEN2049 / PULSE',
   /* Overrides the shared board label: on this event the market a reader goes back to has a name. */
   boardBack: 'Back to Pulse',
-  /* Kalshi pays the rewards, so the board names it where a reader can act on it rather than only in
+  /* Overrides the shared label on every surface of this page at once. "Available point" breaks onto
+     two lines in the phone strip's half-width cell below 375px, and the value already reads "pt". */
+  availablePoint: 'Available',
+  /* Polymarket pays the rewards, so the board names it where a reader can act on it rather than only in
      the rules further down. Its brand green is this page's main colour, so the mark and the palette
      are the same move. */
-  t2049MarketKalshiTitle: 'Rewards by Kalshi',
-  t2049MarketKalshiFooter: 'Prediction rewards by Kalshi',
+  t2049MarketPolymarketTitle: 'Rewards by Polymarket',
+  /* The lockup after this line sets the name, so the line stops short of it. */
+  t2049MarketPolymarketFooter: 'Prediction rewards by',
   t2049MarketHeading: 'Read the pulse and predict who survives.',
+  /* Heads the terms list where it now sits, under the book. The heading used to be unnecessary: the
+     list was beside the title and read as part of it. */
+  t2049MarketDetails: 'Market details',
   t2049MarketSpec: ({ seats, sessionMinutes, breakMinutes, finalMinutes, point, payout, cutSeconds, finalists }: T2049Spec) => [
     { term: 'Markets', detail: `One perpetual DEX per trader, ${seats} seats` },
     { term: 'Trading Time', detail: `${sessionMinutes} minutes, a ${breakMinutes} minute break, then ${finalMinutes} more` },

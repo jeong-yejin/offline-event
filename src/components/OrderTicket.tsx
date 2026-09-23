@@ -24,6 +24,9 @@ type OrderTicketProps = {
   status: DataStatus;
   now: number;
   quote: OrderQuote | null;
+  /* The order that just filled. Its receipt takes the submit's place until the reader moves on. A
+     board that leaves it off keeps the submit and reports the fill in the notice line alone. */
+  filled?: OrderQuote | null;
   notice: string;
   /* A phone docks the ticket to the bottom edge. Collapsed, it shows the seat and its two prices. */
   expanded: boolean;
@@ -35,7 +38,7 @@ type OrderTicketProps = {
   onExpandedChange(expanded: boolean): void;
 };
 
-export function OrderTicket({ t, candidate, prices, side, direction, point, holdings, tradable, closedHint, status, now, quote, notice, expanded, onSideChange, onDirectionChange, onRequestQuote, onConfirm, onCancel, onExpandedChange }: OrderTicketProps) {
+export function OrderTicket({ t, candidate, prices, side, direction, point, holdings, tradable, closedHint, status, now, quote, filled, notice, expanded, onSideChange, onDirectionChange, onRequestQuote, onConfirm, onCancel, onExpandedChange }: OrderTicketProps) {
   const [draft, setDraft] = useState('1');
   const [error, setError] = useState('');
 
@@ -52,6 +55,10 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
      up front instead of waiting for the quantity box to reject a number. A sale is capped by the
      position on the book, not by point. */
   const maxQuantity = direction === 'buy' ? Math.floor(point / unit) : owned;
+  /* A quantity is counted in positions of one side, and a price in points. Every count on the ticket
+     names its side, so "3" never reads as three points. */
+  const unitOf = (option: Side) => t.sideName(option).toUpperCase();
+  const held = holdings.filter((holding) => holding.id === candidate.id).map((holding) => `${holding.qty} ${unitOf(holding.side)}`);
 
   /* Quantity is a count of positions. Anything else never reaches a quote request. */
   function check(): number | null {
@@ -98,7 +105,9 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
             that have no logo, where it carries the seat number instead. */}
         <header className="ticket-head">
           {candidate.logo ? <img alt={candidate.exchange} className="ticket-logo" src={`/assets/sponsors/${candidate.logo}`} /> : null}
-          <div><strong>{candidate.trader}</strong>{candidate.logo ? null : <span>{candidate.exchange}</span>}</div>
+          {/* What the reader already holds on this seat, so a fill shows up where the next order starts.
+              The key replays its entrance when the holding changes. */}
+          <div><strong>{candidate.trader}</strong>{candidate.logo ? null : <span>{candidate.exchange}</span>}{held.length > 0 ? <span className="ticket-held" key={held.join()}><span>{t.ticketHeld}</span> {held.join(' · ')}</span> : null}</div>
           {/* Only the docked ticket on a phone shows this. The sidebar ticket is always whole. */}
           <button aria-expanded={expanded} aria-label={t.ticketLabel} className="ticket-toggle" onClick={() => onExpandedChange(!expanded)} type="button">
             <svg aria-hidden="true" fill="none" viewBox="0 0 16 16"><path d="M4 10 8 6l4 4" stroke="currentColor" strokeLinecap="square" strokeWidth="1.4" /></svg>
@@ -111,7 +120,7 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
 
         <div className="ticket-sides" role="group" aria-label={t.sideGroup}>
           {SIDES.map((option) => <button aria-pressed={option === side} data-active={option === side ? 'true' : 'false'} data-side={option} disabled={Boolean(quote)} key={option} onClick={() => onSideChange(option)} type="button">
-            <span>{t.sideName(option)}</span><strong>{priceOf(prices, candidate.id, option, direction)}</strong>
+            <span>{t.sideName(option)}</span><strong>{priceOf(prices, candidate.id, option, direction)}<small> pt</small></strong>
           </button>)}
         </div>
 
@@ -119,7 +128,10 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
         <div className="ticket-input">
           <div className="ticket-stepper">
             <button aria-label={t.quantityDown} disabled={Boolean(quote) || quantity === 1} onClick={() => step(-1)} type="button">−</button>
-            <input aria-describedby="ticket-notice" aria-invalid={error ? 'true' : 'false'} disabled={Boolean(quote)} id="order-quantity" inputMode="numeric" onChange={(event) => { setDraft(event.target.value); setError(''); }} type="text" value={draft} />
+            <span className="ticket-field">
+              <input aria-describedby="ticket-notice" aria-invalid={error ? 'true' : 'false'} disabled={Boolean(quote)} id="order-quantity" inputMode="numeric" onChange={(event) => { setDraft(event.target.value); setError(''); }} type="text" value={draft} />
+              <span aria-hidden="true" data-side={side}>{unitOf(side)}</span>
+            </span>
             <button aria-label={t.quantityUp} disabled={Boolean(quote)} onClick={() => step(1)} type="button">+</button>
           </div>
           {/* Every preset stays pressable. A size the balance cannot cover is answered by the summary
@@ -132,9 +144,10 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
 
         <dl className="ticket-summary">
           <div><dt>{t.unitPrice}</dt><dd>{unit} pt</dd></div>
-          <div><dt>{direction === 'buy' ? t.requiredPoint : t.expectedPoint}</dt><dd>{quantity === null ? '—' : `${formatPoint(quantity * unit)} pt`}</dd></div>
-          <div><dt>{direction === 'buy' ? t.availablePoint : t.ownedQuantity}</dt><dd>{direction === 'buy' ? `${formatPoint(point)} pt` : owned}</dd></div>
-          <div><dt>{t.orderableQuantity}</dt><dd>{maxQuantity} · {formatPoint(maxQuantity * unit)} pt</dd></div>
+          {/* The sum is spelled out, so the count and the point total cannot be read as each other. */}
+          <div><dt>{direction === 'buy' ? t.requiredPoint : t.expectedPoint}</dt><dd>{quantity === null ? '—' : <><small>{quantity} {unitOf(side)} × {unit} pt =</small> {formatPoint(quantity * unit)} pt</>}</dd></div>
+          <div><dt>{direction === 'buy' ? t.availablePoint : t.ownedQuantity}</dt><dd>{direction === 'buy' ? `${formatPoint(point)} pt` : `${owned} ${unitOf(side)}`}</dd></div>
+          <div><dt>{t.orderableQuantity}</dt><dd>{maxQuantity} {unitOf(side)} · {formatPoint(maxQuantity * unit)} pt</dd></div>
         </dl>
 
         {quote
@@ -142,7 +155,7 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
               <p className="quote-id">{t.quoteId} <code>{quote.quoteId}</code></p>
               <dl>
                 <div><dt>{t.unitPrice}</dt><dd>{quote.unitPrice} pt</dd></div>
-                <div><dt>{t.quantity}</dt><dd>{quote.quantity}</dd></div>
+                <div><dt>{t.quantity}</dt><dd>{quote.quantity} {unitOf(quote.positionSide)}</dd></div>
                 <div><dt>{t.totalPrice}</dt><dd>{formatPoint(quote.totalPrice)} pt</dd></div>
               </dl>
               <p className="quote-life">{expired ? t.quoteExpired : t.quoteLife(quoteSecondsLeft(quote, now))}</p>
@@ -151,7 +164,15 @@ export function OrderTicket({ t, candidate, prices, side, direction, point, hold
                 <button className="quote-cancel" onClick={onCancel} type="button">{expired ? t.requoteCta : t.cancelQuote}</button>
               </div>
             </div>
-          : <button className="ticket-submit" data-side={side} disabled={locked} type="submit">{t.requestQuote(direction)}</button>}
+          /* The fill takes the submit's place, so the sheet stops offering the order it just placed.
+             The notice line under it still says what filled; this card only says that it did. */
+          : filled
+            ? <div className="ticket-filled">
+                <p className="filled-title"><svg aria-hidden="true" fill="none" viewBox="0 0 16 16"><path d="m3 8.5 3.5 3.5L13 4.5" stroke="currentColor" strokeLinecap="square" strokeWidth="1.4" /></svg>{t.filledTitle}</p>
+                <dl><div><dt>{t.totalPrice}</dt><dd>{formatPoint(filled.totalPrice)} pt</dd></div></dl>
+                <button className="ticket-done" onClick={() => onExpandedChange(false)} type="button">{t.filledDone}</button>
+              </div>
+            : <button className="ticket-submit" data-side={side} disabled={locked} type="submit">{t.requestQuote(direction)}</button>}
 
         <p className="ticket-notice" id="ticket-notice" role="status">{error || (closed ? closedHint ?? t.hintClosed : stale ? t.hintStale(candidate.trader) : notice)}</p>
       </form>

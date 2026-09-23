@@ -12,7 +12,7 @@ import { TOKEN2049_STRINGS } from '../i18n/strings/token2049';
 type Token2049PageProps = {
   event: EventContent;
   lang: Lang;
-  onEnterKalshi(): void;
+  onEnterPolymarket(): void;
   onEnterMarket(): void;
 };
 
@@ -21,7 +21,7 @@ type Token2049PageProps = {
 
    The page answers five questions in order: how the competition works, who is in it, how to play
    along, where and when to turn up, and how to get in. One section per question. */
-export function Token2049Page({ event, onEnterKalshi, onEnterMarket }: Token2049PageProps) {
+export function Token2049Page({ event, onEnterPolymarket, onEnterMarket }: Token2049PageProps) {
   const t = TOKEN2049_STRINGS.en;
 
   return (
@@ -30,7 +30,7 @@ export function Token2049Page({ event, onEnterKalshi, onEnterMarket }: Token2049
       <T2049Nav t={t} />
       <T2049Format t={t} />
       <T2049Field t={t} />
-      <T2049Predict t={t} onEnterKalshi={onEnterKalshi} onEnterMarket={onEnterMarket} />
+      <T2049Predict t={t} onEnterPolymarket={onEnterPolymarket} onEnterMarket={onEnterMarket} />
       <T2049Attend t={t} />
       <T2049Join t={t} />
     </div>

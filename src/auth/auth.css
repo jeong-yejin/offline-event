@@ -8,14 +8,14 @@
 .google-button { min-height: 44px; }
 .login-continue { min-height: 44px; width: 100%; background: #edf1ed; color: #344038; border: 0; border-radius: 4px; cursor: pointer; }
 .google-login [role="status"], .google-login [role="alert"] { font-size: 14px; color: #d6ded7; }
-/* The Kalshi gate borrows the sign-in dialog's frame and changes what it is made of: this one stands
-   in front of a TOKEN2049 board, so it takes that event's green rather than the hub's lime. */
-.kalshi-gate { --hub-accent: #00dd94; }
-.kalshi-gate .login-event { color: #00dd94; letter-spacing: .08em; }
-.kalshi-gate #kalshi-gate-copy { color: #bfc8c0; margin: 16px 0 28px; }
-.kalshi-gate .login-continue { align-items: center; background: #00dd94; color: #04150d; display: flex; gap: 8px; justify-content: center; }
-.kalshi-gate .login-continue .arrow-icon { height: 14px; width: 14px; }
+/* The Polymarket gate borrows the sign-in dialog's frame and changes what it is made of: this one stands
+   in front of a TOKEN2049 board, so it takes that event's blue rather than the hub's lime. */
+.polymarket-gate { --hub-accent: #2E5CFF; }
+.polymarket-gate .login-event { color: #2E5CFF; letter-spacing: .08em; }
+.polymarket-gate #polymarket-gate-copy { color: #bfc8c0; margin: 16px 0 28px; }
+.polymarket-gate .login-continue { align-items: center; background: #2E5CFF; color: #f8f7f7; display: flex; gap: 8px; justify-content: center; }
+.polymarket-gate .login-continue .arrow-icon { height: 14px; width: 14px; }
 /* Leaving is the quieter of the two, so it reads as text and still fills a thumb. */
-.kalshi-gate-leave { background: none; border: 0; color: #9aa79d; cursor: pointer; font: inherit; font-size: 14px; margin-top: 8px; min-height: 44px; text-decoration: underline; text-underline-offset: 5px; width: 100%; }
-.kalshi-gate-leave:hover { color: #edf1ed; }
+.polymarket-gate-leave { background: none; border: 0; color: #9aa79d; cursor: pointer; font: inherit; font-size: 14px; margin-top: 8px; min-height: 44px; text-decoration: underline; text-underline-offset: 5px; width: 100%; }
+.polymarket-gate-leave:hover { color: #edf1ed; }
 @media (max-width: 480px) { .google-login { padding: 40px 24px 28px; } }

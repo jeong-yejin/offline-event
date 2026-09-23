@@ -1,7 +1,7 @@
 /* PERPS DAY, /perps-day. The page reads as a rail of section headings on the left with the body
    beside it, so the reader keeps the heading in view instead of losing it after the first screen. */
 
-.t2049-page { --t2049-rule: rgba(248,247,247,.18); --t2049-dim: #a7a7a7; --t2049-ink: #f8f7f7; --t2049-accent: #00dd94; --t2049-accent-2: #caff5d; --t2049-nav: 52px; }
+.t2049-page { --t2049-rule: rgba(248,247,247,.18); --t2049-dim: #a7a7a7; --t2049-ink: #f8f7f7; --t2049-accent: #2E5CFF; --t2049-accent-2: #caff5d; --t2049-nav: 52px; }
 /* English-only route, so one face per job rather than one face per script. Inter reads the copy; Neue
    Machina keeps the display lines and the chrome this event shares. h1, h2 and .footer-brand name Neue
    Machina site-wide already, so only the clock and the header pieces are listed here. */
@@ -16,6 +16,10 @@
 .hero[data-event="perps-day"] h1 { margin-top: 21px; max-width: 1080px; white-space: normal; }
 .hero[data-event="perps-day"] .hero-copy { font-size: 18px; margin: 21px 0 0; }
 .hero[data-event="perps-day"] .event-date { font-size: 17px; line-height: 18px; margin: 21px 0 0; }
+/* The two marks read as one line under the date, so they share a height rather than a width: both files
+   are drawn at about 5.5:1, so equal height leaves them the same optical weight. */
+.t2049-hero-logos { --mark: 24px; align-items: center; display: flex; gap: 32px; margin: 28px 0 0; }
+.t2049-hero-logos img { display: block; height: calc(var(--mark) * var(--mark-scale, 1)); object-fit: contain; width: auto; }
 .t2049-clock { margin: 48px 0 0; }
 .t2049-clock-title { color: var(--t2049-dim); font-size: 13px; letter-spacing: .16em; line-height: 14px; margin: 0; text-transform: uppercase; }
 .t2049-clock dl { display: flex; gap: 32px; margin: 17px 0 0; }
@@ -63,7 +67,7 @@
 .t2049-ladder { align-items: center; display: flex; grid-column: 1 / -1; justify-content: center; list-style: none; margin: 0; padding: 36px 0 24px; }
 .t2049-ladder li { align-items: center; display: flex; flex: 0 1 var(--t2049-round-span, 336px); min-width: 0; }
 .t2049-ladder li:not(:last-child) { --t2049-round-span: 504px; }
-.t2049-ladder li[data-accent="green"] { --t2049-round-tint: rgba(0,193,130,.5); --t2049-round-run: #00dd94, #20bdff 50%, #5433ff; }
+.t2049-ladder li[data-accent="blue"] { --t2049-round-tint: rgba(46,92,255,.5); --t2049-round-run: #2E5CFF, #20bdff 50%, #5433ff; }
 .t2049-ladder li[data-accent="violet"] { --t2049-round-tint: rgba(84,51,255,.5); --t2049-round-run: #5433ff, rgba(202,255,93,.1); }
 .t2049-ladder li[data-accent="lime"] { --t2049-round-tint: rgba(202,255,93,.5); }
 .t2049-ladder li:not(:last-child)::after { background-image: linear-gradient(90deg, var(--t2049-round-run)); content: ''; flex: 0 1 168px; height: 4px; }
@@ -84,14 +88,12 @@
 .t2049-trader-grid span { color: rgba(248,247,247,.72); font-size: 13px; letter-spacing: .14em; line-height: 14px; text-transform: uppercase; }
 
 /* A small, responsive presentation surface for the three original pinned cards. */
-.t2049-kalshi { grid-template-columns: minmax(0, 448px) minmax(0, 1fr); }
+.t2049-polymarket { grid-template-columns: minmax(0, 448px) minmax(0, 1fr); }
 .t2049-predict-actions { display: flex; gap: 12px; margin-top: 44px; }
 .t2049-predict-actions .outline-button { flex: none; }
 /* The reward address is a smaller ask than the prediction, so it sits under the filled CTA as a
    text link rather than a second button of the same weight. */
-.t2049-kalshi-cta { align-items: center; background: none; border: 0; color: var(--t2049-ink); cursor: pointer; display: flex; font: inherit; font-size: 15px; gap: 10px; margin-top: 20px; min-height: 44px; padding: 0; text-decoration: underline; text-underline-offset: 6px; transition: opacity .2s ease; width: fit-content; }
-.t2049-kalshi-cta:hover { opacity: .68; }
-.t2049-kalshi .t2049-body { display: flex; justify-content: flex-end; }
+.t2049-polymarket .t2049-body { display: flex; justify-content: flex-end; }
 .t2049-prediction-board { aspect-ratio: 580 / 450; flex: none; max-width: 100%; position: relative; width: 580px; }
 .t2049-prediction-steps { list-style: none; margin: 0; padding: 0; }
 .t2049-prediction-steps li { --step-color: #e223c2; --step-tint: rgba(255,37,188,.04); --step-rule: rgba(255,37,188,.4); background-color: #0e0f11; background-image: linear-gradient(var(--step-tint),var(--step-tint)), linear-gradient(156deg,transparent 3%,#0e0f11 38%), url('/assets/token2049/figma/imgStepCard01.png'); background-size: auto,auto,12.6px 12.6px; border: .3px solid var(--step-rule); box-shadow: 0 12px 12px rgba(0,0,0,.04); display: flex; flex-direction: column; gap: 8px; padding: 26px 18px; position: absolute; width: 44.83%; }
@@ -126,8 +128,6 @@
 .t2049-points { list-style: none; margin: 32px 0 0; padding: 0; }
 .t2049-rsvp .t2049-points { display: grid; gap: 12px; }
 .t2049-rsvp .t2049-points li { background: rgba(255,255,255,.06); border-radius: 16px; color: var(--t2049-ink); font-size: 17px; line-height: 25px; padding: 16px 32px; }
-.t2049-marquee { display: flex; flex-wrap: wrap; gap: 11px 40px; justify-content: center; list-style: none; margin: 0; padding: 32px 64px; }
-.t2049-marquee li { color: var(--t2049-dim); font-size: 13px; font-weight: 600; letter-spacing: .14em; line-height: 14px; text-transform: uppercase; }
 
 @media (min-width: 701px) and (max-width: 1180px) {
   .t2049-section { column-gap: 40px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding-inline: 32px; }
@@ -160,7 +160,7 @@
   .t2049-trader-grid span { font-size: 11px; letter-spacing: .08em; }
   .t2049-predict-actions { flex-wrap: wrap; margin-top: 32px; }
   .t2049-predict-actions .outline-button { flex: 0 1 auto; }
-  .t2049-kalshi .t2049-body { padding: 16px 4px; }
+  .t2049-polymarket .t2049-body { padding: 16px 4px; }
   .t2049-prediction-steps li { padding: 20px 12px; }
   .t2049-step-number { font-size: 24px; }
   .t2049-prediction-steps p { font-size: 12px; }
@@ -170,11 +170,10 @@
   .t2049-venue .agenda-row strong { font-size: 18px; }
   .t2049-venue .agenda-row p { font-size: 15px; }
   .t2049-rsvp .t2049-points li { font-size: 16px; padding: 16px 20px; }
-  .t2049-marquee { gap: 12px 24px; padding: 24px 20px; }
-  .t2049-marquee li { font-size: 12px; }
   /* The design is drawn at 1440. On a phone the same rhythm reads as a hero the reader has to scroll
      past before the first line, so only the frame around it shrinks. */
   .hero[data-event="perps-day"] .hero-content { padding: 88px 24px 72px; }
+  .t2049-hero-logos { --mark: 20px; gap: 24px; margin-top: 24px; }
   .t2049-clock dl { gap: 20px; }
   .t2049-clock-title { font-size: 12px; }
   .t2049-hero-actions { justify-content: center; margin-top: 40px; }
@@ -202,7 +201,7 @@
    The track holds the list twice and travels exactly half its own width, so the loop has no seam.
    Nothing divides the lines but the gap between them: at .16em tracking on a 60px band the spacing
    already reads as a break, and a punctuation mark repeated twelve times reads as noise. */
-.t2049-hero-marquee { background: #00dd94; bottom: 0; color: #04150d; inset-inline: 0; overflow: hidden; position: absolute; z-index: 3; }
+.t2049-hero-marquee { background: #2E5CFF; bottom: 0; color: #f8f7f7; inset-inline: 0; overflow: hidden; position: absolute; z-index: 3; }
 .t2049-hero-marquee-track { animation: t2049-marquee 34s linear infinite; display: flex; width: max-content; }
 .t2049-hero-marquee ul { display: flex; list-style: none; margin: 0; padding: 0; }
 .t2049-hero-marquee li { align-items: center; display: flex; font-size: 13px; font-weight: 600; letter-spacing: .16em; line-height: 16px; padding: 22px 30px; white-space: nowrap; }

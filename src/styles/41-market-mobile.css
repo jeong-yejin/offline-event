@@ -13,7 +13,7 @@
 }
 
 @media (max-width: 700px) {
-  /* Kalshi opens a market on its price and keeps the rules at the foot of the page. The terms move
+  /* Polymarket opens a market on its price and keeps the rules at the foot of the page. The terms move
      under the board as a card, so the first screen holds the title and the chance instead of six
      definitions. Only the picture moves: the list has nothing to focus, and a screen reader still
      meets it under the title. */
@@ -39,11 +39,11 @@
   .chart-plot { height: 200px; }
   .chart-axis { margin-left: 44px; }
   /* 40-market.css wraps the chips so the whole legend stays in view. Here two fit a line, and eight
-     seats wrapped to five lines under a 200px plot. The row scrolls sideways instead, like Kalshi's
+     seats wrapped to five lines under a 200px plot. The row scrolls sideways instead, like Polymarket's
      range tabs, and runs to the card's edges so the cut-off chip shows there is more. */
   .chart-chips { flex-wrap: nowrap; margin: 16px -20px 0; overflow-x: auto; overscroll-behavior-x: contain; padding: 0 20px; scrollbar-width: none; }
   .chart-chips button { flex: none; }
-  /* Kalshi's outcome row, built from the table's own cells: the seat and its chance on the first line,
+  /* Polymarket's outcome row, built from the table's own cells: the seat and its chance on the first line,
      the balance under the name, then Yes and No as two halves of the row. Nothing scrolls sideways
      any more, so the column labels are kept for a screen reader only. */
   .trader-table, .trader-table tbody { display: block; min-width: 0; }
@@ -66,13 +66,14 @@
      cut label stays in the name's column: spanning the rank's column too, its width went to that
      column and stretched "#4" into an 85px pill. */
   .trader-name { column-gap: 8px; display: grid; grid-template-columns: 28px minmax(0, max-content) auto; justify-content: start; row-gap: 4px; white-space: normal; }
-  .trader-state { grid-column: 2; }
+  .trader-state, .trader-held { grid-column: 2; justify-self: start; }
+  .trader-held { display: block; }
   /* A late feed adds its notice under the name, two or three lines at this width, so the logo and the
      rank keep to the name's line instead of centring on the whole block. */
   .trader-name:has(.trader-feed) { align-items: start; }
   .trader-row > .trader-actions { display: grid; gap: 8px; grid-area: actions; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 12px; }
   .trader-actions button { align-items: center; gap: 8px; justify-content: center; min-height: 44px; min-width: 0; padding: 0 12px; }
-  /* A position is a card here, as on Kalshi: the seat and side on top, one line per figure, the sell
+  /* A position is a card here, as on Polymarket: the seat and side on top, one line per figure, the sell
      controls across the foot. Each line is set like the totals under the card, name left and number
      right. Three columns wrapped "Average entry" onto two lines and knocked the numbers out of line.
      The names come from the cells because the header row is out of sight, which also keeps them
@@ -89,7 +90,7 @@
   .position-actions input, .position-actions button { min-height: 44px; }
   /* By this width the ticket sits under every table, 3,000px down the page. It docks to the bottom
      edge instead, collapsed to one line: the seat and its two prices. A price or the toggle opens it
-     as a sheet over the dimmed board, the way Kalshi's order sheet opens. The page keeps room for
+     as a sheet over the dimmed board, the way Polymarket's order sheet opens. The page keeps room for
      the collapsed line, so the footer can scroll clear of it. */
   .market-page:has(.order-ticket) { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
   /* Rows scroll under the docked ticket, so the translucent card fill sits on the page's black. The
@@ -102,12 +103,16 @@
   .order-ticket[data-expanded="false"] > :not(.ticket-head, .ticket-sides) { display: none; }
   .order-ticket[data-expanded="false"] .ticket-sides button { gap: 8px; min-height: 44px; padding: 0 12px; }
   .order-ticket[data-expanded="false"] .ticket-sides strong { font-size: 16px; }
+  /* Collapsed, the seat gets about 90px beside the prices. The prices drop the unit the open ticket
+     spells out, and the holding keeps its label for a screen reader only, so "2 YES" fits there. */
+  .order-ticket[data-expanded="false"] .ticket-sides small { display: none; }
+  .order-ticket[data-expanded="false"] .ticket-held > span { clip-path: inset(50%); height: 4px; overflow: hidden; position: absolute; white-space: nowrap; width: 4px; }
   /* Collapsed, the chevron follows the name and the whole seat takes the tap, because the name is
      where a thumb goes to open the ticket. The toggle's hit area below then sizes to the head. */
   .order-ticket[data-expanded="false"] .ticket-head { position: relative; }
   .order-ticket[data-expanded="false"] .ticket-toggle { margin-left: 0; position: static; }
   /* A quote locks every control above it and restates the price, the size and the total, so here it
-     takes their place, as Kalshi's review step replaces its order form. Stacked under them, it pushed
+     takes their place, as Polymarket's review step replaces its order form. Stacked under them, it pushed
      the confirm below the sheet's edge while its five seconds ran. */
   .order-ticket:has(.ticket-quote) > :is(.ticket-qty, .ticket-input, .ticket-summary) { display: none; }
   /* The board stays in sight behind the open sheet but out of reach until it closes. */
